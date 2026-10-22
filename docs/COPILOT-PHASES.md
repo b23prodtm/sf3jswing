@@ -11,7 +11,7 @@ Les sources Bitbucket n'existent plus : la phase 0 reconstruit le dépôt à par
 
 ## Phase 0 — Reconstruction du dépôt depuis les archives SourceForge
 
-**Contexte** : les archives d'origine (SourceForge, 2009-2015) sont dans la release GitHub `legacy-sourceforge`. Le workflow `copilot-setup-steps.yml` télécharge aussi la dernière archive publiée sur SourceForge (`The Game (SF3JSWING)/0.9/sf3jswing-thegame-ant-0.9.10.tar.gz`) et ces archives dans `$HOME/legacy-archives`, avec un fichier `SHA256SUMS`. L'agent n'a pas besoin d'accéder à SourceForge. Si ce dossier est absent ou vide, s'arrêter et le signaler.
+**Contexte** : les archives d'origine (SourceForge, 2009-2015) sont dans la release GitHub `legacy-sourceforge`. Le workflow `copilot-setup-steps.yml` télécharge aussi tous les tarballs du dossier `Latest/` de SourceForge (`https://sourceforge.net/projects/sf3jswing/files/Latest/`) et ces archives dans `$HOME/legacy-archives`, avec un fichier `SHA256SUMS`. L'agent n'a pas besoin d'accéder à SourceForge. Si ce dossier est absent ou vide, s'arrêter et le signaler.
 
 **Objectif** : un dépôt de sources propre, avec la structure d'origine et sans binaires.
 

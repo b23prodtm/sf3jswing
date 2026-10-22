@@ -36,10 +36,18 @@ jobs:
         run: |
           mkdir -p "$HOME/legacy-archives"
           cd "$HOME/legacy-archives"
-          # Dernière archive des sources : The Game (SF3JSWING) 0.9.10
-          curl -fL --retry 3 -o sf3jswing-thegame-ant-0.9.10.tar.gz \
-            "https://sourceforge.net/projects/sf3jswing/files/The%20Game%20%28SF3JSWING%29/0.9/sf3jswing-thegame-ant-0.9.10.tar.gz/download" \
-            || echo "Téléchargement impossible : sf3jswing-thegame-ant-0.9.10.tar.gz"
+          # Tous les tarballs du dossier Latest/ de SourceForge (via le flux RSS du dossier)
+          base="https://sourceforge.net/projects/sf3jswing/files/Latest"
+          curl -fsL --retry 3 "https://sourceforge.net/projects/sf3jswing/rss?path=/Latest&limit=100" \
+            | grep -oE "<link>${base}/[^<]+\.(tar\.gz|tgz|tar\.bz2|tar\.xz)/download</link>" \
+            | sed -E 's#</?link>##g' | sort -u > /tmp/latest-urls.txt || true
+          if [ -s /tmp/latest-urls.txt ]; then
+            while read -r url; do
+              curl -fL --retry 3 -OJ "$url" || echo "Téléchargement impossible : $url"
+            done < /tmp/latest-urls.txt
+          else
+            echo "Aucun tarball trouvé dans SourceForge Latest/"
+          fi
           gh release download legacy-sourceforge --dir . \
             || echo "Release legacy-sourceforge absente (archives complémentaires)"
           ls -la
