@@ -48,6 +48,10 @@ jobs:
           else
             echo "Aucun tarball trouvé dans SourceForge Latest/"
           fi
+          game_archive="sf3jswing-thegame-ant-0.9.10.tar.gz"
+          game_url="https://sourceforge.net/projects/sf3jswing/files/The%20Game%20%28SF3JSWING%29/0.9/${game_archive}/download"
+          curl -fL --retry 3 -o "$game_archive" "$game_url" \
+            || echo "Téléchargement impossible : $game_url"
           gh release download legacy-sourceforge --dir . \
             || echo "Release legacy-sourceforge absente (archives complémentaires)"
           ls -la
