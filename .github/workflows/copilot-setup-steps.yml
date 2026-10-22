@@ -1,0 +1,48 @@
+name: "Copilot Setup Steps"
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  # Le nom du job doit rester exactement "copilot-setup-steps"
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: JDK 8 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "8"
+
+      - name: Ant, Xvfb et bibliothèques X11 pour le build LWJGL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ant xvfb libxxf86vm-dev
+
+      - name: Archives SourceForge (release legacy-sourceforge)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$HOME/legacy-archives"
+          gh release download legacy-sourceforge --dir "$HOME/legacy-archives" \
+            || echo "Release legacy-sourceforge absente : la phase 0 ne pourra pas s'exécuter"
+          cd "$HOME/legacy-archives"
+          ls -la
+          sha256sum -- * > /tmp/SHA256SUMS 2>/dev/null && mv /tmp/SHA256SUMS . || true
+
+      - name: Versions
+        run: |
+          java -version
+          ant -version
+          mvn -version
