@@ -1,0 +1,60 @@
+name: "Copilot Setup Steps"
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  # Le nom du job doit rester exactement "copilot-setup-steps"
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: JDK 8 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "8"
+
+      - name: Ant, Xvfb et bibliothèques X11 pour le build LWJGL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ant xvfb libxxf86vm-dev
+
+      - name: Archives SourceForge (dernière archive + release legacy-sourceforge)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$HOME/legacy-archives"
+          cd "$HOME/legacy-archives"
+          # Tous les tarballs du dossier Latest/ de SourceForge (via le flux RSS du dossier)
+          base="https://sourceforge.net/projects/sf3jswing/files/Latest"
+          curl -fsL --retry 3 "https://sourceforge.net/projects/sf3jswing/rss?path=/Latest&limit=100" \
+            | grep -oE "<link>${base}/[^<]+\.(tar\.gz|tgz|tar\.bz2|tar\.xz)/download</link>" \
+            | sed -E 's#</?link>##g' | sort -u > /tmp/latest-urls.txt || true
+          if [ -s /tmp/latest-urls.txt ]; then
+            while read -r url; do
+              curl -fL --retry 3 -OJ "$url" || echo "Téléchargement impossible : $url"
+            done < /tmp/latest-urls.txt
+          else
+            echo "Aucun tarball trouvé dans SourceForge Latest/"
+          fi
+          gh release download legacy-sourceforge --dir . \
+            || echo "Release legacy-sourceforge absente (archives complémentaires)"
+          ls -la
+          sha256sum -- * > /tmp/SHA256SUMS 2>/dev/null && mv /tmp/SHA256SUMS . || true
+
+      - name: Versions
+        run: |
+          java -version
+          ant -version
+          mvn -version
