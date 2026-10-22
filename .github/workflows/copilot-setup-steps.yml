@@ -30,14 +30,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ant xvfb libxxf86vm-dev
 
-      - name: Archives SourceForge (release legacy-sourceforge)
+      - name: Archives SourceForge (dernière archive + release legacy-sourceforge)
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p "$HOME/legacy-archives"
-          gh release download legacy-sourceforge --dir "$HOME/legacy-archives" \
-            || echo "Release legacy-sourceforge absente : la phase 0 ne pourra pas s'exécuter"
           cd "$HOME/legacy-archives"
+          curl -fL --retry 3 -OJ "https://sourceforge.net/projects/sf3jswing/files/latest/download" \
+            || echo "Dernière archive SourceForge indisponible"
+          gh release download legacy-sourceforge --dir . \
+            || echo "Release legacy-sourceforge absente (archives complémentaires)"
           ls -la
           sha256sum -- * > /tmp/SHA256SUMS 2>/dev/null && mv /tmp/SHA256SUMS . || true
 
