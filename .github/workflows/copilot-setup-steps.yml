@@ -36,8 +36,15 @@ jobs:
         run: |
           mkdir -p "$HOME/legacy-archives"
           cd "$HOME/legacy-archives"
-          curl -fL --retry 3 -OJ "https://sourceforge.net/projects/sf3jswing/files/latest/download" \
-            || echo "Dernière archive SourceForge indisponible"
+          # Dernière archive : dossier "Latest" du projet SourceForge (flux RSS, plus récent en premier)
+          url=$(curl -fsL --retry 3 "https://sourceforge.net/projects/sf3jswing/rss?path=/Latest" \
+            | grep -oE '<link>https://sourceforge.net/projects/sf3jswing/files/Latest/[^<]+/download</link>' \
+            | head -n 1 | sed -E 's#</?link>##g') || true
+          if [ -n "$url" ]; then
+            curl -fL --retry 3 -OJ "$url" || echo "Téléchargement impossible : $url"
+          else
+            echo "Aucune archive trouvée dans le dossier Latest de SourceForge"
+          fi
           gh release download legacy-sourceforge --dir . \
             || echo "Release legacy-sourceforge absente (archives complémentaires)"
           ls -la
