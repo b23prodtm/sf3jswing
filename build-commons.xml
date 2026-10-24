@@ -1,0 +1,48 @@
+<project>
+    <property name="commons.httpclient.version" value="3.1"/>
+    <property name="commons.codec.version" value="1.3"/>
+    <property name="commons.io.version" value="2.1"/>
+    <property name="commons.logging.version" value="1.1.1"/>
+
+    <target name="resolve-kernel-commons">
+        <mkdir dir="${lib.all}"/>
+        <get src="https://repo.maven.apache.org/maven2/commons-httpclient/commons-httpclient/${commons.httpclient.version}/commons-httpclient-${commons.httpclient.version}.jar"
+             dest="${lib.all}/commons-httpclient-${commons.httpclient.version}.jar" skipexisting="true"/>
+        <get src="https://repo.maven.apache.org/maven2/commons-codec/commons-codec/${commons.codec.version}/commons-codec-${commons.codec.version}.jar"
+             dest="${lib.all}/commons-codec-${commons.codec.version}.jar" skipexisting="true"/>
+        <get src="https://repo.maven.apache.org/maven2/commons-io/commons-io/${commons.io.version}/commons-io-${commons.io.version}.jar"
+             dest="${lib.all}/commons-io-${commons.io.version}.jar" skipexisting="true"/>
+        <get src="https://repo.maven.apache.org/maven2/commons-logging/commons-logging/${commons.logging.version}/commons-logging-${commons.logging.version}.jar"
+             dest="${lib.all}/commons-logging-${commons.logging.version}.jar" skipexisting="true"/>
+
+        <checksum file="${lib.all}/commons-httpclient-${commons.httpclient.version}.jar"
+                  algorithm="SHA-256" property="commons.httpclient.actual.sha256"/>
+        <checksum file="${lib.all}/commons-codec-${commons.codec.version}.jar"
+                  algorithm="SHA-256" property="commons.codec.actual.sha256"/>
+        <checksum file="${lib.all}/commons-io-${commons.io.version}.jar"
+                  algorithm="SHA-256" property="commons.io.actual.sha256"/>
+        <checksum file="${lib.all}/commons-logging-${commons.logging.version}.jar"
+                  algorithm="SHA-256" property="commons.logging.actual.sha256"/>
+
+        <condition property="commons.httpclient.checksum.valid">
+            <equals arg1="dbd4953d013e10e7c1cc3701a3e6ccd8c950c892f08d804fabfac21705930443"
+                    arg2="${commons.httpclient.actual.sha256}"/>
+        </condition>
+        <condition property="commons.codec.checksum.valid">
+            <equals arg1="1bafd2ece2e88db4cdf835a7f8f0de65fab5b1147977a5dcc59b7c1b8c6f5080"
+                    arg2="${commons.codec.actual.sha256}"/>
+        </condition>
+        <condition property="commons.io.checksum.valid">
+            <equals arg1="88dff860b1983f9640979196a4dfd9ae6cddd4a88119c81ce3a61de2f28cc927"
+                    arg2="${commons.io.actual.sha256}"/>
+        </condition>
+        <condition property="commons.logging.checksum.valid">
+            <equals arg1="ce6f913cad1f0db3aad70186d65c5bc7ffcc9a99e3fe8e0b137312819f7c362f"
+                    arg2="${commons.logging.actual.sha256}"/>
+        </condition>
+        <fail unless="commons.httpclient.checksum.valid" message="Commons HttpClient ${commons.httpclient.version} SHA-256 verification failed."/>
+        <fail unless="commons.codec.checksum.valid" message="Commons Codec ${commons.codec.version} SHA-256 verification failed."/>
+        <fail unless="commons.io.checksum.valid" message="Commons IO ${commons.io.version} SHA-256 verification failed."/>
+        <fail unless="commons.logging.checksum.valid" message="Commons Logging ${commons.logging.version} SHA-256 verification failed."/>
+    </target>
+</project>
