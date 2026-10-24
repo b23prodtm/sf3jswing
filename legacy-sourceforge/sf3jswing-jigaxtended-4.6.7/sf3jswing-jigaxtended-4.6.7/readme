@@ -1,0 +1,137 @@
+BUILDING JXA WITH THE ANT TOOL
+----------------------
+(you need Java JDK 1.6 Update 10 or 1.5 for a Mac OS X use, at least)
+(ant may be run from a command-line like from OS X bourne-shell : myhome/sf3jswing-jxakernel-1.1.4/:$ ant clean DO-lib )
+----------------------
+Using the keytool to solve any "jarsigner error: java.lang.RuntimeException" when using building SF3JSWING.
+The file build-jars.xml contains the following first lines 
+<property name="username" value="b23prodtm"/>
+...="keystore" location="../.keystore"/>
+...="keystore-type" value="jks"/>
+...
+...="storepass" value="password"/>
+Something went wrong with the .keystore file that had to be found at two parent folders upside of your project.
+Run the Keytool of the JDK from the two-up parent folder "../../" :
+:\>keytool (to see if it is available, if not, you must set up the JDK properly again (easy), or adjust you PATH settings)
+Then use the Keytool to choose an alias/password (in that case you have to change the build-jars.xml properties)
+:\>keytool -anycommand -keystore .keystore
+Run :\>keytool -storepasswd -keystore .keystore -new yourpassword to change the password to yourpassword
+:\>keytool -anycommand -keystore .keystore -list
+You should see 
+b23prodtm (SHA1) : TH:E:KE:Y:...
+----------------------
+IMPORTANT NOTE about Applets :
+You may experience problem with the Signing Certificate if you are using various .keystore's among your machines. Please make copy of the .keystore you created to ensure the same private/public key is used to sign your .jars!
+If you run a JFCApplet locally, you must manually set the jxa.localApplet property to enabled (-Djxa.localApplet=true),
+otherwise you may experience some Class cast error with serialization.
+----------------------
+
+
+To make a self-build of the sf3jswing-jigaxtended API package, please use the provided files :
+    With the help of an Ant build tool or IDE (e.g. Netbeans.org), open or create a new project with the provided files and folders :
+        - lib/all/; 
+			<- put here the additional libs to pack in the final .jar
+        - lib/Your OS Ant name/all/, 
+			i.e. Java System property os.name;
+        - lib/Your OS Ant name/Your OS Ant arch./, 
+			i.e. Java System property os.arch;
+   (*)  - resources/all/; 
+			<- put here the additional libs to load externally as .jar (LICENSE FILES ARE LOCATED here)
+        - resources/Your OS Ant name/all/, 
+			i.e. Java System property os.name;
+        - resources/Your OS Ant name/Your OS Ant arch./, 
+			i.e. Java System property os.arch;
+        - resources/properties/all/; 
+			<- put here the additional non-Java.jar files such as .PNG
+        - resources/properties/Your OS Ant name/all/, 
+			i.e. Java System property os.name;
+        - resources/properties/Your OS Ant name/Your OS Ant arch./, 
+			i.e. Java System property os.arch;
+    !!  - resources/properties/Your OS Ant name/Your OS Ant arch./natives, 
+			i.e. Java System property os.arch; 
+			<- PUT HERE ALL THE REQUIRED NATIVE LIBS (.dll, .so or .jnilib/.dylib depending on your OS)
+        - src/*;
+        - build.xml;
+   (**) - Manifest-Your OS Ant name-Your OS Ant arch.; 
+			<- customize it as well for loading optional packages or extensions
+        - Manifest-ext-native-Your OS Ant name-Your OS Ant arch.; 
+			(you can copy the sf3jswing-jigaxtended Manifest.)
+        - Manifest-ext-props-Your OS Ant name-Your OS Ant arch.; 
+			(you can copy the sf3jswing-jigaxtended Manifest.)
+        - sf3jswing-jigaxtended-Your OS Ant name-Your OS Ant arch.html;
+and you're on to build the JXA API !
+
+iiiii There are Java Ant @Annotations@ in the file and folders listed above. To get the full list of available tokens, see in the upper part of _build*.xml files_.
+iiiii see HOWTO for adding tokens
+
+-----------
+TOCOMPILE
+-----------
+
+!!!! Check First that you also have downloaded the latest jxakernel revision from sf.net and built it with the DO-lib ant task !!!!
+!!!! sf3jswing-jxakernel-x.x.x/dist/YOUROS/unsigned/lib/lib-sf3jswing-jxakernel-YOUROS-YOURARCH.jar must be copied into the lib/YOUROS/YOURARCH/ folder to compile JXA API !!!!
+
+To compile sources in the bin/, run the "compile" target !
+To compile and pack the sources in the dist/ folder, run either "jar" or "DO-jar-extension" !
+To compile, pack and run the JXA API, either choose "run" or "run-applet" !
+PLEASE TAKE CARE OF YOUR BUILD.XML file it's configured to build JXA enabled softwares !
+
+RUNNABLE DIST FILES ARE THE FOLLOWING and need (+):
+    APPLET mode :
+        - sf3jswing-jigaxtended-....html
+            + sf3jswing-jigaxtended-..._signed.jar
+            + any external resources .jar
+    JAVA APPLICATION mode :
+        - run-sf3jswing-jigaxtended-....
+            + sf3jswing-jigaxtended-..._signed.jar
+            + any external resources .jar
+    JAVA WEB START mode :
+        - sf3jswing-jigaxtended-ext.jnlp
+            + whether the .jnlp are modified, an accessible web server that you MUST REFER AND PUBLISH IN THE .jnlp, please.
+            + the extension is available like this from an external application/applet JNLP:
+            <resources>
+                <extension href="http://sf3jswing.sf.net/sf3jswing-jigaxtended-ext.jnlp">
+                    <ext-download ext-part="net.sf.jiga.xtended.kernel"/>
+                    <ext-download ext-part="net.sf.jiga.xtended.lib"/>
+                    <ext-download ext-part="net.sf.jiga.xtended.natives"/>
+                    <ext-download ext-part="net.sf.jiga.xtended.props"/>
+                    <ext-download ext-part="net.sf.jiga.xtended.bin"/>
+                </extension>
+            </resources>
+
+### TO FULLY COMPILE sf3jswing-jigaxtended, YOU MUST FIRST
+COMPILE  --- sf3jswing-jxakernel ----
+AND COPY THE -- UNSIGNED -- lib/lib-sf3jswing-jxakernel-OS-ARCH.JAR INTO THE LIB/OS/ARCH FOLDER.
+###
+
+### USING THE API ###
+a) FOR Common USE (NON-JXA-FREE-FORM compliant projects) : compile sf3jswing-jigaxtended with DO-jar-extension and copy those extensions files into the resources/ folder of your project :
+    + sf3jswing-jigaxtended-OS-ARCH-ext_signed.jar
+    + sf3jswing-jigaxtended-OS-ARCH-ext-kernel_signed.jar
+    + sf3jswing-jigaxtended-OS-ARCH-ext-native_signed.jar
+    + sf3jswing-jigaxtended-OS-ARCH-ext-props_signed.jar
+add them to the classpath of your Applet/Application ! 
+
+b) FOR JXA FREE-FORM PROJECTS (e.g. sf3jswing-thegame, sf3jswing-imagemulticonverter-ant,... or ones that you create, see c) below) receives build "updates" with update-template ant task (in the sf3jswing-jigaxtended build.xml file).
+
+!! SEE HOWTO file for more information or wiki page of the sf3jswing project. !!
+
+
+c) making a new application/applet for JXA
+ - run in command shell or your IDE with the sf3jswing-jigaxtended project build.xml file :
+	ant DO-new-jxa-project 
+!! SEE HOWTO file for more information or wiki page of the sf3jswing project. !!
+#########
+
+-------------------------------------------------------------------
+* : this folder WON'T be packed to the final .jar but its .jar files are copied 1-to-1, so that you can add SIGNED optional packages (.jar).
+    IT IS SOMETIMES REQUIRED NOT TO PACK AND MERGE (SIGNING IS IN DUTY) EXTERNAL JARS BECAUSE OF CONFLICTS WITH THE CLASSLOADER SO PUT THEM .JAR IN THE RESOURCES/OS/ARCH/
+    FOLDER AND ADD THEIR REF TO THE CLASSPATH (EITHER IN THE MANIFEST OR COMMANDLINE OR APPLET CODE BASE OR ANY OTHER LOCATION.
+** : the Manifest file MUST CONTAIN ALL OPTIONAL PACKAGES REFERENCES as well as EXTENSIONS you might want to add to work properly.
+
+xx DEPRECATED (< JXA 4.4+) :
+xx See http://java.sun.com/javase/6/docs/technotes/guides/extensions/extensions.html for a good explanation of what to know about
+OPTIONAL PACKAGES and their usages !
+See http://java.sun.com/products/plugin/1.3/docs/extensions.html for more about the Java Plug-In and extensions (THESE ARE NOT optional packages) !
+--------------------------------------------------------------------
+Thank you ! If you want to do so, donate at http://sf.net/projects/sf3jswing !

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="sf3jswing-thegame-ant" default="jar" basedir=".">
+    
+    <property name="company.project.os.name" value="Windows"/>
+    <property name="company.project.os.name.1" value="Windows XP"/>
+    <property name="company.project.os.name.2" value="Windows Vista"/>
+    <property name="company.project.os.name.3" value="Windows 7"/>
+    <property name="company.project.os.name.4" value="Windows NT (unknown)"/>
+    <property name="company.project.os.name.token" value="PROJECTOSNAME"/>
+    <property name="company.project.os.name.1.token" value="PROJECTOSNAME1"/>
+    <property name="company.project.os.name.2.token" value="PROJECTOSNAME2"/>
+    <property name="company.project.os.name.3.token" value="PROJECTOSNAME3"/>
+    <property name="company.project.os.name.4.token" value="PROJECTOSNAME4"/>
+    <property name="company.project.os.arch" value="x86"/>
+    <property name="company.project.os.arch.token" value="PROJECTOSARCH"/>
+    <property name="company.project.os.arch.1" value="x86"/>
+    <property name="company.project.os.arch.1.token" value="PROJECTOSARCH1"/>
+    <property name="company.project.os.arch.2" value="unknown"/>
+    <property name="company.project.os.arch.2.token" value="PROJECTOSARCH2"/>
+    <property name="company.project.os.arch.3" value="amd64"/>
+    <property name="company.project.os.arch.3.token" value="PROJECTOSARCH3"/>
+    <property name="company.project.os.arch.4" value="unknown"/>
+    <property name="company.project.os.arch.4.token" value="PROJECTOSARCH4"/>
+    <property name="company.project.codebase" value="http://sf3jswing.sourceforge.net/"/>
+    <property name="company.project.codebase.token" value="PROJECTCODEBASE"/>
+    <!-- #### EXTENSIONS INSTALL
+        ### os and arch target configuration ####/-->
+    <property name="company.project.os.extensionsInstaller.base.url" value="${company.project.codebase}/api/"/>
+    <property name="company.project.os.extensionsInstaller.base.url.token" value="PROJECTEXTBASEURL"/>
+    <property name="company.project.os.extensionsInstaller.base.project.name" value="sf3jswing-jigaxtended"/>
+    <property name="company.project.os.extensionsInstaller.base.project.name.token" value="PROJECTEXTBASEPROJECTNAME"/> 
+    <property name="company.project.os.extensionsInstaller.base.project.name.binary" value="net.sf.jiga.xtended"/>
+    <property name="company.project.os.extensionsInstaller.base.project.name.binary.token" value="PROJECTEXTBASEPROJECTNAMEBINARY"/> 
+    <property name="company.project.os.extensionsInstaller.base.project.version.spec" value="4.4"/>
+    <property name="company.project.os.extensionsInstaller.base.project.version.spec.token" value="PROJECTEXTBASEPROJECTVERSIONSPEC"/> 
+    <property name="company.project.os.extensionsInstaller.base.project.version.impl" value="4.4.0"/>
+    <property name="company.project.os.extensionsInstaller.base.project.version.impl.token" value="PROJECTEXTBASEPROJECTVERSIONIMPL"/>
+    <!-- #### -->
+    <property name="company.project.os.kernel.jar" value="${company.project.os.extensionsInstaller.base.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-kernel_signed.jar"/>
+    <property name="company.project.os.kernel.jar.token" value="PROJECTOSKERNELJAR"/>
+    <property name="company.project.os.jar.classpath" value="mysql-connector-java-3.0.17-ga-bin.jar ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-lib_signed.jar ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-props_signed.jar ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-native_signed.jar"/>
+    <property name="company.project.os.jar.classpath.token" value="PROJECTJARCLASSPATH"/>
+    <property name="company.project.os.application.run.prefix" value=""/>
+    <property name="company.project.os.application.run.prefix.token" value="PROJECTAPPLICATIONRUNPREFIX"/>
+    <property name="company.project.os.application.run.cmd" value="java"/>
+    <property name="company.project.os.application.run.cmd.token" value="PROJECTAPPLICATIONRUNCMD"/>
+    <property name="company.project.os.application.run.maxheap" value="600M"/>
+    <property name="company.project.os.application.run.maxheap.token" value="PROJECTAPPLICATIONRUNMAXHEAP"/>
+    <property name="company.project.os.application.run.minheap" value="64M"/>
+    <property name="company.project.os.application.run.minheap.token" value="PROJECTAPPLICATIONRUNMINHEAP"/>
+    <!-- WRITE RUN ARGUMENTS AND CLASSPATHS VALUES ON ONE SINGLE LINE ! IMPORTANT NOTE about Applets : if you run a JFCApplet locally, you must manually set the jxa.localApplet property to enabled (-Djxa.localApplet=true), or all extensions will be downloaded from the remote defined extensions server./-->
+    <property name="company.project.os.application.run.params" value="-XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled  -Dorg.lwjgl.opengl.Display.allowSoftwareOpenGL=true -Xss2m -XX:PermSize=32m -XX:MaxPermSize=300m -Xms${company.project.os.application.run.minheap} -Xmx${company.project.os.application.run.maxheap} -Dcom.sun.media.imageio.disableCodecLib=false -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote -Djava.security.policy=JavaSecurityPolicy -Dsun.java2d.d3d=True -Dsun.java2d.noddraw=false -Dsun.java2d.translaccel=false"/>
+    <property name="company.project.os.application.run.params.token" value="PROJECTAPPLICATIONPARAMS"/>
+    <property name="company.project.os.application.run.classpath" value="api/${company.project.os.kernel.jar};api/${company.project.os.extensionsInstaller.base.project.name}-${company.project.os.name}-${company.project.os.arch}-ext_signed.jar;${ant.project.name}-${company.project.os.name}-${company.project.os.arch}_signed.jar"/>
+    <property name="company.project.os.application.run.classpath.token" value="PROJECTAPPLICATIONRUNCLASSPATH"/>
+    <property name="company.project.os.application.run.main" value="net.sf.jiga.xtended.ui.JFCApplet"/>
+    <property name="company.project.os.application.run.main.token" value="PROJECTAPPLICATIONRUNMAIN"/>
+    <property name="company.project.os.applet.width" value="640"/>
+    <property name="company.project.os.applet.width.token" value="PROJECTAPPLETWIDTH"/>
+    <property name="company.project.os.applet.height" value="500"/>
+    <property name="company.project.os.applet.height.token" value="PROJECTAPPLETHEIGHT"/>
+    <property name="company.project.os.application.run.args" value="-vram -antapplet thegame.Sf3 -width ${company.project.os.applet.width} -height ${company.project.os.applet.height}"/>
+    <property name="company.project.os.application.run.args.token" value="PROJECTAPPLICATIONRUNARGS"/>
+    <property name="company.project.os.applet.jnlphref" value="${company.project.codebase}/${ant.project.name}.jnlp"/>
+    <property name="company.project.os.applet.jnlphref.token" value="PROJECTAPPLETJNLPHREF"/>
+    <property name="company.project.os.applet.classpath" value="mysql-connector-java-3.0.17-ga-bin.jar, ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}_signed.jar, ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-lib_signed.jar, ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-props_signed.jar, ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-native_signed.jar"/>
+    <property name="company.project.os.applet.classpath.token" value="PROJECTAPPLETCLASSPATH"/>
+    <property name="company.project.os.applet.main" value="net.sf.jiga.xtended.ui.JFCApplet"/>
+    <property name="company.project.os.applet.main.token" value="PROJECTAPPLETMAIN"/>
+    <property name="company.project.os.applet.antapplet" value="thegame.Sf3"/>
+    <property name="company.project.os.applet.antapplet.token" value="PROJECTAPPLETANTAPPLET"/>
+    <property name="company.project.os.applet.additional.tags.token" value="PROJECTAPPLETADDITIONALTAGS"/>
+    <property name="company.project.os.applet.args" value="-vram ${company.project.os.application.run.params}"/>
+    <property name="company.project.os.applet.args.token" value="PROJECTAPPLETARGS"/>
+    <property name="company.project.os.appletviewer.args" value=" -J-Djxa.localApplet=true -J-Dorg.lwjgl.opengl.Display.allowSoftwareOpenGL=true
+                    -J-Dsun.java2d.d3d=True -J-Dsun.java2d.noddraw=false
+                    -J-Dsun.java2d.translaccel=false
+                    -J-Djava.security.policy=JavaSecurityPolicy
+                    -J-Dcom.sun.media.imageio.disableCodecLib=false
+                   -J-Dcom.sun.management.jmxremote.local.only=false
+                   -J-Dcom.sun.management.jmxremote
+                   -J-XX:+UseConcMarkSweepGC -J-XX:+CMSClassUnloadingEnabled  -J-Xss2m -J-XX:PermSize=32m -J-XX:MaxPermSize=300m -J-Xms${company.project.os.application.run.minheap} -J-Xmx${company.project.os.application.run.maxheap}"/>
+    <property name="company.project.os.appletviewer.args.token" value="PROJECTAPPLETVIEWERARGS"/>
+
+   <!-- #### EXTENSIONS INSTALL #### -->
+    <!-- KERNEL -->
+    <property name="company.project.os.extensionsInstaller.kernel.jar" value="${company.project.os.extensionsInstaller.base.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-kernel_signed.jar"/><property name="company.project.os.extensionsInstaller.kernel.jar.url" value="${company.project.os.extensionsInstaller.base.url}/${company.project.os.extensionsInstaller.kernel.jar}"/>
+    <property name="company.project.os.extensionsInstaller.kernel.jar.url.token" value="PROJECTEXTKERNELJARURL"/>
+    <property name="company.project.os.extensionsInstaller.kernel.version.spec" value="${company.project.os.extensionsInstaller.base.project.version.spec}"/>
+    <property name="company.project.os.extensionsInstaller.kernel.version.spec.token" value="PROJECTEXTKERNELVERSIONSPEC"/>
+    <property name="company.project.os.extensionsInstaller.kernel.version.impl" value="${company.project.os.extensionsInstaller.base.project.version.impl}"/>
+    <property name="company.project.os.extensionsInstaller.kernel.version.impl.token" value="PROJECTEXTKERNELVERSIONIMPL"/>
+    <property name="company.project.os.extensionsInstaller.kernel.name" value="${company.project.os.extensionsInstaller.base.project.name.binary}.kernel"/>
+    <property name="company.project.os.extensionsInstaller.kernel.name.token" value="PROJECTEXTKERNELNAME"/>
+    <property name="company.project.os.extensionsInstaller.kernel.vendor.id" value="${company.project.os.extensionsInstaller.base.project.name.binary}"/>
+    <property name="company.project.os.extensionsInstaller.kernel.vendor.id.token" value="PROJECTEXTKERNELVENDORID"/>
+<!-- NATIVE -->
+    <property name="company.project.os.extensionsInstaller.native.jar" value="${company.project.os.extensionsInstaller.base.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-native_signed.jar"/><property name="company.project.os.extensionsInstaller.native.jar.url" value="${company.project.os.extensionsInstaller.base.url}/${company.project.os.extensionsInstaller.native.jar}"/>
+    <property name="company.project.os.extensionsInstaller.native.jar.url.token" value="PROJECTEXTNATIVEJARURL"/>
+    <property name="company.project.os.extensionsInstaller.native.version.spec" value="${company.project.os.extensionsInstaller.base.project.version.spec}"/>
+    <property name="company.project.os.extensionsInstaller.native.version.spec.token" value="PROJECTEXTNATIVEVERSIONSPEC"/>
+    <property name="company.project.os.extensionsInstaller.native.version.impl" value="${company.project.os.extensionsInstaller.base.project.version.impl}"/>
+    <property name="company.project.os.extensionsInstaller.native.version.impl.token" value="PROJECTEXTNATIVEVERSIONIMPL"/>
+    <property name="company.project.os.extensionsInstaller.native.name" value="${company.project.os.extensionsInstaller.base.project.name.binary}.native"/>
+    <property name="company.project.os.extensionsInstaller.native.name.token" value="PROJECTEXTNATIVENAME"/>
+    <property name="company.project.os.extensionsInstaller.native.vendor.id" value="${company.project.os.extensionsInstaller.base.project.name.binary}"/>
+    <property name="company.project.os.extensionsInstaller.native.vendor.id.token" value="PROJECTEXTNATIVEVENDORID"/>
+<!-- LIB -->
+    <property name="company.project.os.extensionsInstaller.lib.jar" value="${company.project.os.extensionsInstaller.base.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-lib_signed.jar"/><property name="company.project.os.extensionsInstaller.lib.jar.url" value="${company.project.os.extensionsInstaller.base.url}/${company.project.os.extensionsInstaller.lib.jar}"/>
+    <property name="company.project.os.extensionsInstaller.lib.jar.url.token" value="PROJECTEXTLIBJARURL"/>
+    <property name="company.project.os.extensionsInstaller.lib.version.spec" value="${company.project.os.extensionsInstaller.base.project.version.spec}"/>
+    <property name="company.project.os.extensionsInstaller.lib.version.spec.token" value="PROJECTEXTLIBVERSIONSPEC"/>
+    <property name="company.project.os.extensionsInstaller.lib.version.impl" value="${company.project.os.extensionsInstaller.base.project.version.impl}"/>
+    <property name="company.project.os.extensionsInstaller.lib.version.impl.token" value="PROJECTEXTLIBVERSIONIMPL"/>
+    <property name="company.project.os.extensionsInstaller.lib.name" value="${company.project.os.extensionsInstaller.base.project.name.binary}.lib"/>
+    <property name="company.project.os.extensionsInstaller.lib.name.token" value="PROJECTEXTLIBNAME"/>
+    <property name="company.project.os.extensionsInstaller.lib.vendor.id" value="${company.project.os.extensionsInstaller.base.project.name.binary}"/>
+    <property name="company.project.os.extensionsInstaller.lib.vendor.id.token" value="PROJECTEXTLIBVENDORID"/>
+    <!-- BIN -->
+    <property name="company.project.os.extensionsInstaller.bin.jar" value="${company.project.os.extensionsInstaller.base.project.name}-${company.project.os.name}-${company.project.os.arch}-ext_signed.jar"/><property name="company.project.os.extensionsInstaller.bin.jar.url" value="${company.project.os.extensionsInstaller.base.url}/${company.project.os.extensionsInstaller.bin.jar}"/>
+    <property name="company.project.os.extensionsInstaller.bin.jar.url.token" value="PROJECTEXTBINJARURL"/>
+    <property name="company.project.os.extensionsInstaller.bin.version.spec" value="${company.project.os.extensionsInstaller.base.project.version.spec}"/>
+    <property name="company.project.os.extensionsInstaller.bin.version.spec.token" value="PROJECTEXTBINVERSIONSPEC"/>
+    <property name="company.project.os.extensionsInstaller.bin.version.impl" value="${company.project.os.extensionsInstaller.base.project.version.impl}"/>
+    <property name="company.project.os.extensionsInstaller.bin.version.impl.token" value="PROJECTEXTBINVERSIONIMPL"/>
+    <property name="company.project.os.extensionsInstaller.bin.name" value="${company.project.os.extensionsInstaller.base.project.name.binary}.bin"/>
+    <property name="company.project.os.extensionsInstaller.bin.name.token" value="PROJECTEXTBINNAME"/>
+    <property name="company.project.os.extensionsInstaller.bin.vendor.id" value="${company.project.os.extensionsInstaller.base.project.name.binary}"/>
+    <property name="company.project.os.extensionsInstaller.bin.vendor.id.token" value="PROJECTEXTBINVENDORID"/>
+    <!-- PROPS -->
+    <property name="company.project.os.extensionsInstaller.props.jar" value="${company.project.os.extensionsInstaller.base.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-props_signed.jar"/><property name="company.project.os.extensionsInstaller.props.jar.url" value="${company.project.os.extensionsInstaller.base.url}/${company.project.os.extensionsInstaller.props.jar}"/>
+    <property name="company.project.os.extensionsInstaller.props.jar.url.token" value="PROJECTEXTPROPSJARURL"/>
+    <property name="company.project.os.extensionsInstaller.props.version.spec" value="${company.project.os.extensionsInstaller.base.project.version.spec}"/>
+    <property name="company.project.os.extensionsInstaller.props.version.spec.token" value="PROJECTEXTPROPSVERSIONSPEC"/>
+    <property name="company.project.os.extensionsInstaller.props.version.impl" value="${company.project.os.extensionsInstaller.base.project.version.impl}"/>
+    <property name="company.project.os.extensionsInstaller.props.version.impl.token" value="PROJECTEXTPROPSVERSIONIMPL"/>
+    <property name="company.project.os.extensionsInstaller.props.name" value="${company.project.os.extensionsInstaller.base.project.name.binary}.props"/>
+    <property name="company.project.os.extensionsInstaller.props.name.token" value="PROJECTEXTPROPSNAME"/>
+    <property name="company.project.os.extensionsInstaller.props.vendor.id" value="${company.project.os.extensionsInstaller.base.project.name.binary}"/>
+    <property name="company.project.os.extensionsInstaller.props.vendor.id.token" value="PROJECTEXTPROPSVENDORID"/>
+    <!-- END EXTENSIONS /-->
+<!-- EXTENSIONS INSTALLER -->
+
+    <!-- recommended to be disabled. But it may be enabled if your operating systems uses writeable user Extensions paths (e.g. Mac OS X /Library/Java/Extensions/) /--> 
+    <property name="company.project.os.extensionsInstaller.useSystemExtensionsPaths" value="false"/>
+    <property name="company.project.os.extensionsInstaller.useSystemExtensionsPaths.token" value="PROJECTEXTUSESYSTEMEXTENSIONSPATHS"/>
+    <!--  specify the native libraries to install
+            syntax is : nativeName:resourcePathToLibraryFile{:load}
+            load is default to false which will not call System.load()
+            seperate with " " (one blank space) /-->
+    <property name="company.project.os.extensionsInstaller.extNatives" value="clib_jiio:/clib_jiio.dll clib_jiio_sse2:/clib_jiio_sse2.dll clib_jiio_util:/clib_jiio_util.dll jinput-dx8_64:/jinput-dx8_64.dll jinput-dx8:/jinput-dx8.dll jinput-raw_64:/jinput-raw_64.dll jinput-raw:/jinput-raw.dll jinput-wintab:/jinput-wintab.dll lwjgl64:/lwjgl64.dll lwjgl:/lwjgl.dll mlib_jai:/mlib_jai.dll mlib_jai_mmx:/mlib_jai_mmx.dll mlib_jai_util:/mlib_jai_util.dll OpenAL64:/OpenAL64.dll OpenAL32:/OpenAL32.dll jdic:/jdic.dll tray:/tray.dll jmacm:/jmacm.dll jmam:/jmam.dll jmcvid:/jmcvid.dll jmdaud:/jmdaud.dll jmdaudc:/jmdaudc.dll jmddraw:/jmddraw.dll jmfjawt:/jmfjawt.dll jmg723:/jmg723.dll jmgdi:/jmgdi.dll jmgsm:/jmgsm.dll jmh261:/jmh261.dll jmh263enc:/jmh263enc.dll jmmci:/jmmci.dll jmmpa:/jmmpa.dll jmmpegv:/jmmpegv.dll jmutil:/jmutil.dll jmvcm:/jmvcm.dll jmvfw:/jmvfw.dll jmvh263:/jmvh263.dll jsound:/jsound.dll"/>
+    <property name="company.project.os.extensionsInstaller.extNatives.token" value="PROJECTEXTNATIVES"/>
+    <!--  ONLY FOR APPLETS : here should be the extension JARS you want to install in ${java.home}/lib/ext
+            seperate jar resources filenames by " " (one blank space)
+            Please use full qualified class-loader resources paths ! /-->
+    <property name="company.project.os.extensionsInstaller.extPathURL" value="${company.project.os.extensionsInstaller.base.url}"/>
+    <property name="company.project.os.extensionsInstaller.extPathURL.token" value="PROJECTEXTPATHURL"/>
+    <!-- jars are w/o slashes, as of URL(URL context, String spec) constructors (otherwise spec will replace any contextual paths)/-->
+    <property name="company.project.os.extensionsInstaller.extJars" value="${company.project.os.extensionsInstaller.native.jar} ${company.project.os.extensionsInstaller.props.jar} ${company.project.os.extensionsInstaller.lib.jar} ${company.project.os.extensionsInstaller.bin.jar}"/>
+    <property name="company.project.os.extensionsInstaller.extJars.token" value="PROJECTEXTJARS"/>
+    <!-- Java SE installer /-->
+    <property name="company.project.os.extensionsInstaller.extInstallerJar" value="${company.project.os.extensionsInstaller.kernel.jar}"/>
+    <property name="company.project.os.extensionsInstaller.extInstallerJar.token" value="PROJECTEXTINSTALLERJAR"/>
+    <!-- Optional Java Applet installer /-->
+    <property name="company.project.os.extensionsInstaller.appletInstallerURL" value="${company.project.os.extensionsInstaller.extPathURL}/${company.project.os.extensionsInstaller.base.project.name}-${company.project.os.name}-${company.project.os.arch}-kernel.html"/>
+    <property name="company.project.os.extensionsInstaller.appletInstallerURL.token" value="PROJECTEXTAPPLETINSTALLERURL"/>
+    <!-- name of the extension installer app name /-->
+    <property name="company.project.os.extensionsInstaller.appName" value="Setup JXA.bat"/>
+    <property name="company.project.os.extensionsInstaller.appName.token" value="PROJECTEXTAPPNAME"/>
+
+    <!-- END EXTENSIONS INSTALLER /-->
+
+    <import file="build-jars.xml"/>
+
+    <target name="install" depends="clean, jar" description="create .exe executable">
+        <property name="exej.file" value="exej.run"/>
+        <copy overwrite="true" file="${resources.os.all.dir}/${exej.file}" tofile="${resources.os.all.dir}/${exej.file}.${ant.project.name}">
+            <filterset refid="filtertokens"/>
+        </copy>
+        <exec osfamily="unix" dir="${resources.os.all.dir}" executable="/usr/bin/wine">
+            <arg line="${resources.os.all.dir}/exej.exe"/>
+            <arg line="-cfg ${exej.file}.${ant.project.name}"/>
+        </exec>
+        <exec osfamily="windows" dir="${resources.os.all.dir}" executable="${resources.os.all.dir}/exej.exe">
+            <arg line="-cfg ${exej.file}.${ant.project.name}"/>
+        </exec>
+        <copy overwrite="true" file="${resources.os.all.dir}/using_java.exe" tofile="${dist}/${ant.project.name}-${company.project.os.arch}_debug.exe"/>
+        <copy overwrite="true" file="${resources.os.all.dir}/using_javaw.exe" tofile="${dist}/${ant.project.name}-${company.project.os.arch}.exe"/>
+    </target>
+</project>

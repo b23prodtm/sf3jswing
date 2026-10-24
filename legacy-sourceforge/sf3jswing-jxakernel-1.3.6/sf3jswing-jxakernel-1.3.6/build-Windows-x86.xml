@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="DO-lib" basedir=".">
+ <!-- this build file is for all windows releases, mixing "x86" (32 bits) and new "amd64" (64bits) in one package. The natives payload is listed at the end of the EXTENSION INSTALLER section. Some 64 bits native libraries may be loaded at first in order to check if it is necessary to use the 32 bits one or not, resp. /-->
+    <property name="co.prj" value="sf3jswing-jxakernel"/><property name="co.prj.os" value="Windows"/>
+    <property name="co.prj.os.1" value="Windows XP"/>
+    <property name="co.prj.os.2" value="Windows Vista"/>
+    <property name="co.prj.os.3" value="Windows 7"/>
+    <property name="co.prj.os.4" value="Windows 8"/>
+    <property name="co.prj.os.token" value="PROJECTOSNAME"/>
+    <property name="co.prj.os.1.token" value="PROJECTOSNAME1"/>
+    <property name="co.prj.os.2.token" value="PROJECTOSNAME2"/>
+    <property name="co.prj.os.3.token" value="PROJECTOSNAME3"/>
+    <property name="co.prj.os.4.token" value="PROJECTOSNAME4"/>
+    <property name="co.prj.os.arch" value="x86"/>
+    <property name="co.prj.os.arch.token" value="PROJECTOSARCH"/>
+    <property name="co.prj.os.arch.1" value="x86"/>
+    <property name="co.prj.os.arch.1.token" value="PROJECTOSARCH1"/>
+    <property name="co.prj.os.arch.2" value="unknown"/>
+    <property name="co.prj.os.arch.2.token" value="PROJECTOSARCH2"/>
+    <property name="co.prj.os.arch.3" value="amd64"/>
+    <property name="co.prj.os.arch.3.token" value="PROJECTOSARCH3"/>
+    <property name="co.prj.os.arch.4" value="unknown"/>
+    <property name="co.prj.os.arch.4.token" value="PROJECTOSARCH4"/>
+    <!-- #### EXTENSIONS INSTALL
+        ### os and arch target configuration (NOT IN THE MANIFEST  FOR THIS PROJECT)####/-->
+    <property name="parent.url" value="http://sf3jswing.sourceforge.net/api/"/>
+    <property name="parent.url.token" value="PROJECTEXTBASEURL"/>
+    <property name="parent.proj" value="sf3jswing-jigaxtended"/>
+    <property name="parent.proj.token" value="PROJECTEXTBASEPROJECTNAME"/> 
+    <property name="parent.proj.binary" value="net.sf.jiga.xtended"/>
+    <property name="parent.proj.binary.token" value="PROJECTEXTBASEPROJECTNAMEBINARY"/> 
+    <property name="parent.proj.version.spec" value=""/>
+    <property name="parent.proj.version.spec.token" value="PROJECTEXTBASEPROJECTVERSIONSPEC"/> 
+    <property name="parent.proj.version.impl" value=""/>
+    <property name="parent.proj.version.impl.token" value="PROJECTEXTBASEPROJECTVERSIONIMPL"/>
+    <!-- #### -->
+    <property name="co.prj.os.kernel.jar" value="${parent.proj}-${co.prj.os}-${co.prj.os.arch}-ext-kernel_signed.jar"/>
+    <property name="co.prj.os.kernel.jar.token" value="PROJECTOSKERNELJAR"/>
+    <property name="co.prj.os.jar.classpath" value=""/>
+    <property name="co.prj.os.jar.classpath.token" value="PROJECTJARCLASSPATH"/>
+    <property name="co.prj.os.app.run.prefix" value=""/>
+    <property name="co.prj.os.app.run.prefix.token" value="PROJECTAPPLICATIONRUNPREFIX"/>
+    <property name="co.prj.os.app.run.cmd" value="java"/>
+    <property name="co.prj.os.app.run.cmd.token" value="PROJECTAPPLICATIONRUNCMD"/>
+    <property name="co.prj.os.app.run.maxheap" value="200M"/>
+    <property name="co.prj.os.app.run.maxheap.token" value="PROJECTAPPLICATIONRUNMAXHEAP"/>
+    <property name="co.prj.os.app.run.minheap" value="64M"/>
+    <property name="co.prj.os.app.run.minheap.token" value="PROJECTAPPLICATIONRUNMINHEAP"/>
+    <!-- WRITE RUN ARGUMENTS AND CLASSPATHS VALUES ON ONE SINGLE LINE ! IMPORTANT NOTE about Applets : if you run a JFCApplet locally, you must manually set the jxa.localApplet property to enabled (-Djxa.localApplet=true), or all extensions will be downloaded from the remote defined extensions server./-->
+    <property name="co.prj.os.app.run.params" value="-Djxa.ecl.io=false -Djxa.ecl.first=true -Djxa.ecl.res=false -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled  -Dorg.lwjgl.opengl.Display.allowSoftwareOpenGL=false -Xss2m -XX:PermSize=32m -XX:MaxPermSize=300m -Xms${co.prj.os.app.run.minheap} -Xmx${co.prj.os.app.run.maxheap} -Dcom.sun.media.imageio.disableCodecLib=false -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote -Djava.security.policy=JavaSecurityPolicy  -Dsun.java2d.noddraw=false -Dsun.java2d.translaccel=false"/>
+    <property name="co.prj.os.app.run.params.token" value="PROJECTAPPLICATIONPARAMS"/>
+    <property name="co.prj.os.app.run.classpath" value="api/${co.prj.os.kernel.jar};api/${parent.proj}-${co.prj.os}-${co.prj.os.arch}-ext_signed.jar;${co.prj}-${co.prj.os}-${co.prj.os.arch}_signed.jar"/>
+    <property name="co.prj.os.app.run.classpath.token" value="PROJECTAPPLICATIONRUNCLASSPATH"/>
+    <property name="co.prj.os.app.run.main" value="net.sf.jiga.xtended.kernel.ei"/>
+    <property name="co.prj.os.app.run.main.token" value="PROJECTAPPLICATIONRUNMAIN"/>
+    <property name="co.prj.os.applet.width" value="600"/>
+    <property name="co.prj.os.applet.width.token" value="PROJECTAPPLETWIDTH"/>
+    <property name="co.prj.os.applet.height" value="500"/>
+    <property name="co.prj.os.applet.height.token" value="PROJECTAPPLETHEIGHT"/>
+    <property name="co.prj.os.app.run.args" value=" -app"/>
+    <property name="co.prj.os.app.run.args.token" value="PROJECTAPPLICATIONRUNARGS"/>
+    <property name="co.prj.os.applet.jnlphref" value="${co.prj.codebase}/${co.prj}.jnlp"/>
+    <property name="co.prj.os.applet.jnlphref.token" value="PROJECTAPPLETJNLPHREF"/>
+    <property name="co.prj.os.applet.classpath" value="${co.prj}-${co.prj.os}-${co.prj.os.arch}_signed.jar"/>
+    <property name="co.prj.os.applet.classpath.token" value="PROJECTAPPLETCLASSPATH"/>
+    <property name="co.prj.os.applet.main" value="net.sf.jiga.xtended.ui.AppletInstaller"/>
+    <property name="co.prj.os.applet.main.token" value="PROJECTAPPLETMAIN"/>
+    <property name="co.prj.os.applet.antapplet" value=""/>
+    <property name="co.prj.os.applet.antapplet.token" value="PROJECTAPPLETANTAPPLET"/>
+    <property name="co.prj.os.applet.additional.tags.token" value="PROJECTAPPLETADDITIONALTAGS"/>
+    <property name="co.prj.os.applet.args" value=" ${co.prj.os.app.run.params}"/>
+    <property name="co.prj.os.applet.args.token" value="PROJECTAPPLETARGS"/>
+    <property name="co.prj.os.appletviewer.args" value=" -J-Djxa.localApplet=true -J-Dorg.lwjgl.opengl.Display.allowSoftwareOpenGL=false
+                     -J-Dsun.java2d.noddraw=false
+                    -J-Dsun.java2d.translaccel=false
+                    -J-Djava.security.policy=JavaSecurityPolicy
+                    -J-Dcom.sun.media.imageio.disableCodecLib=false
+                   -J-Dcom.sun.management.jmxremote.local.only=false
+                   -J-Dcom.sun.management.jmxremote
+                   -J-XX:+UseConcMarkSweepGC -J-XX:+CMSClassUnloadingEnabled  -J-Xss2m -J-XX:PermSize=32m -J-XX:MaxPermSize=300m -J-Xms${co.prj.os.app.run.minheap} -J-Xmx${co.prj.os.app.run.maxheap}"/>
+    <property name="co.prj.os.appletviewer.args.token" value="PROJECTAPPLETVIEWERARGS"/>
+
+<!-- #### EXTENSIONS INSTALL #### -->
+    <!-- KERNEL -->
+    <property name="co.prj.os.ei.kernel.jar" value="${parent.proj}-${co.prj.os}-${co.prj.os.arch}-ext-kernel_signed.jar"/>
+    <property name="co.prj.os.ei.kernel.jar.url" value="${parent.url}/${co.prj.os.ei.kernel.jar}"/>
+    <property name="co.prj.os.ei.kernel.jar.url.token" value="PROJECTEXTKERNELJARURL"/>
+    <property name="co.prj.os.ei.kernel.version.spec" value="${parent.proj.version.spec}"/>
+    <property name="co.prj.os.ei.kernel.version.spec.token" value="PROJECTEXTKERNELVERSIONSPEC"/>
+    <property name="co.prj.os.ei.kernel.version.impl" value="${parent.proj.version.impl}"/>
+    <property name="co.prj.os.ei.kernel.version.impl.token" value="PROJECTEXTKERNELVERSIONIMPL"/>
+    <property name="co.prj.os.ei.kernel" value="${parent.proj.binary}.kernel"/>
+    <property name="co.prj.os.ei.kernel.token" value="PROJECTEXTKERNELNAME"/>
+    <property name="co.prj.os.ei.kernel.vendor.id" value="${parent.proj.binary}"/>
+    <property name="co.prj.os.ei.kernel.vendor.id.token" value="PROJECTEXTKERNELVENDORID"/>
+<!-- NATIVE -->
+    <property name="co.prj.os.ei.native.jar" value="${parent.proj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar"/>
+    <property name="co.prj.os.ei.native.jar.url" value="${parent.url}/${co.prj.os.ei.native.jar}"/>
+    <property name="co.prj.os.ei.native.jar.url.token" value="PROJECTEXTNATIVEJARURL"/>
+    <property name="co.prj.os.ei.native.version.spec" value="${parent.proj.version.spec}"/>
+    <property name="co.prj.os.ei.native.version.spec.token" value="PROJECTEXTNATIVEVERSIONSPEC"/>
+    <property name="co.prj.os.ei.native.version.impl" value="${parent.proj.version.impl}"/>
+    <property name="co.prj.os.ei.native.version.impl.token" value="PROJECTEXTNATIVEVERSIONIMPL"/>
+    <property name="co.prj.os.ei.native" value="${parent.proj.binary}.native"/>
+    <property name="co.prj.os.ei.native.token" value="PROJECTEXTNATIVENAME"/>
+    <property name="co.prj.os.ei.native.vendor.id" value="${parent.proj.binary}"/>
+    <property name="co.prj.os.ei.native.vendor.id.token" value="PROJECTEXTNATIVEVENDORID"/>
+<!-- LIB -->
+    <property name="co.prj.os.ei.lib.jar" value="${parent.proj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar"/>
+    <property name="co.prj.os.ei.lib.jar.url" value="${parent.url}/${co.prj.os.ei.lib.jar}"/>
+    <property name="co.prj.os.ei.lib.jar.url.token" value="PROJECTEXTLIBJARURL"/>
+    <property name="co.prj.os.ei.lib.version.spec" value="${parent.proj.version.spec}"/>
+    <property name="co.prj.os.ei.lib.version.spec.token" value="PROJECTEXTLIBVERSIONSPEC"/>
+    <property name="co.prj.os.ei.lib.version.impl" value="${parent.proj.version.impl}"/>
+    <property name="co.prj.os.ei.lib.version.impl.token" value="PROJECTEXTLIBVERSIONIMPL"/>
+    <property name="co.prj.os.ei.lib" value="${parent.proj.binary}.lib"/>
+    <property name="co.prj.os.ei.lib.token" value="PROJECTEXTLIBNAME"/>
+    <property name="co.prj.os.ei.lib.vendor.id" value="${parent.proj.binary}"/>
+    <property name="co.prj.os.ei.lib.vendor.id.token" value="PROJECTEXTLIBVENDORID"/>
+    <!-- BIN -->
+    <property name="co.prj.os.ei.bin.jar" value="${parent.proj}-${co.prj.os}-${co.prj.os.arch}-ext_signed.jar"/>
+    <property name="co.prj.os.ei.bin.jar.url" value="${parent.url}/${co.prj.os.ei.bin.jar}"/>
+    <property name="co.prj.os.ei.bin.jar.url.token" value="PROJECTEXTBINJARURL"/>
+    <property name="co.prj.os.ei.bin.version.spec" value="${parent.proj.version.spec}"/>
+    <property name="co.prj.os.ei.bin.version.spec.token" value="PROJECTEXTBINVERSIONSPEC"/>
+    <property name="co.prj.os.ei.bin.version.impl" value="${parent.proj.version.impl}"/>
+    <property name="co.prj.os.ei.bin.version.impl.token" value="PROJECTEXTBINVERSIONIMPL"/>
+    <property name="co.prj.os.ei.bin" value="${parent.proj.binary}.bin"/>
+    <property name="co.prj.os.ei.bin.token" value="PROJECTEXTBINNAME"/>
+    <property name="co.prj.os.ei.bin.vendor.id" value="${parent.proj.binary}"/>
+    <property name="co.prj.os.ei.bin.vendor.id.token" value="PROJECTEXTBINVENDORID"/>
+    <!-- PROPS -->
+    <property name="co.prj.os.ei.props.jar" value="${parent.proj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar"/>
+    <property name="co.prj.os.ei.props.jar.url" value="${parent.url}/${co.prj.os.ei.props.jar}"/>
+    <property name="co.prj.os.ei.props.jar.url.token" value="PROJECTEXTPROPSJARURL"/>
+    <property name="co.prj.os.ei.props.version.spec" value="${parent.proj.version.spec}"/>
+    <property name="co.prj.os.ei.props.version.spec.token" value="PROJECTEXTPROPSVERSIONSPEC"/>
+    <property name="co.prj.os.ei.props.version.impl" value="${parent.proj.version.impl}"/>
+    <property name="co.prj.os.ei.props.version.impl.token" value="PROJECTEXTPROPSVERSIONIMPL"/>
+    <property name="co.prj.os.ei.props" value="${parent.proj.binary}.props"/>
+    <property name="co.prj.os.ei.props.token" value="PROJECTEXTPROPSNAME"/>
+    <property name="co.prj.os.ei.props.vendor.id" value="${parent.proj.binary}"/>
+    <property name="co.prj.os.ei.props.vendor.id.token" value="PROJECTEXTPROPSVENDORID"/>
+    <!-- END EXTENSIONS /-->
+    
+    <!-- EXTENSIONS INSTALLER -->
+
+    <!-- recommended to be disabled. But it may be enabled if your operating systems uses writeable user Extensions paths (e.g. Mac OS X /Library/Java/Extensions/) /--> 
+    <property name="co.prj.os.ei.useSystemExtensionsPaths" value="false"/>
+    <property name="co.prj.os.ei.useSystemExtensionsPaths.token" value="PROJECTEXTUSESYSTEMEXTENSIONSPATHS"/>
+    <!--  specify the native libraries to install
+            syntax is : nativeName:resourcePathToLibraryFile{:load}
+            load is default to false which will not call System.load()
+            seperate with " " (one blank space) /-->
+    <property name="co.prj.os.ei.extNatives" value="clib_jiio:/clib_jiio.dll clib_jiio_sse2:/clib_jiio_sse2.dll clib_jiio_util:/clib_jiio_util.dll jinput-dx8_64:/jinput-dx8_64.dll jinput-dx8:/jinput-dx8.dll jinput-raw_64:/jinput-raw_64.dll jinput-raw:/jinput-raw.dll jinput-wintab:/jinput-wintab.dll lwjgl64:/lwjgl64.dll lwjgl:/lwjgl.dll mlib_jai:/mlib_jai.dll mlib_jai_mmx:/mlib_jai_mmx.dll mlib_jai_util:/mlib_jai_util.dll OpenAL64:/OpenAL64.dll OpenAL32:/OpenAL32.dll jdic:/jdic.dll tray:/tray.dll jmacm:/jmacm.dll jmam:/jmam.dll jmcvid:/jmcvid.dll jmdaud:/jmdaud.dll jmdaudc:/jmdaudc.dll jmddraw:/jmddraw.dll jmfjawt:/jmfjawt.dll jmg723:/jmg723.dll jmgdi:/jmgdi.dll jmgsm:/jmgsm.dll jmh261:/jmh261.dll jmh263enc:/jmh263enc.dll jmmci:/jmmci.dll jmmpa:/jmmpa.dll jmmpegv:/jmmpegv.dll jmutil:/jmutil.dll jmvcm:/jmvcm.dll jmvfw:/jmvfw.dll jmvh263:/jmvh263.dll jsound:/jsound.dll"/>
+    <property name="co.prj.os.ei.extNatives.token" value="PROJECTEXTNATIVES"/>
+    <!--  ONLY FOR APPLETS : here should be the extension JARS you want to install in ${java.home}/lib/ext
+            seperate jar resources filenames by " " (one blank space)
+            Please use full qualified class-loader resources paths ! /-->
+    <property name="co.prj.os.ei.extPathURL" value="${parent.url}"/>
+    <property name="co.prj.os.ei.extPathURL.token" value="PROJECTEXTPATHURL"/>
+    <!-- jars are w/o slashes, as of URL(URL context, String spec) constructors (otherwise spec will replace any contextual paths)/-->
+    <property name="co.prj.os.ei.extJars" value="${co.prj.os.ei.native.jar} ${co.prj.os.ei.props.jar} ${co.prj.os.ei.lib.jar} ${co.prj.os.ei.bin.jar}"/>
+    <property name="co.prj.os.ei.extJars.token" value="PROJECTEXTJARS"/>
+    <!-- Java SE installer /-->
+    <property name="co.prj.os.ei.extInstallerJar" value="${co.prj.os.ei.kernel.jar}"/>
+    <property name="co.prj.os.ei.extInstallerJar.token" value="PROJECTEXTINSTALLERJAR"/>
+    <!-- Optional Java Applet installer /-->
+    <property name="co.prj.os.ei.appletInstallerURL" value="${co.prj.os.ei.extPathURL}/${parent.proj}-${co.prj.os}-${co.prj.os.arch}-kernel.html"/>
+    <property name="co.prj.os.ei.appletInstallerURL.token" value="PROJECTEXTAPPLETINSTALLERURL"/>
+    <!-- name of the extension installer app name /-->
+    <property name="co.prj.os.ei.appName" value="Setup JXA.bat"/>
+    <property name="co.prj.os.ei.appName.token" value="PROJECTEXTAPPNAME"/>
+
+    <!-- END EXTENSIONS INSTALLER /-->
+
+    <import file="build-jars.xml" as="${co.prj.os}-${co.prj.os.arch}"/>
+    <target name="build-executable" depends="jar" description="build application executable">
+        <copy overwrite="true" file="${resources.os.all.dir}/run" tofile="${dist}/${co.prj.os.ei.appName}">
+            <filterset refid="filtertokens"/>
+        </copy>
+    </target>
+    <target name="post-jar" depends="build-executable" description="zip application installer executable">
+        <zip destfile="${dist}/setup.zip">
+            <fileset dir="${dist}">
+                <include name="${co.prj.os.ei.appName}"/>
+                <!--include name="${signed.jarfile}"/-->
+            </fileset>
+        </zip>
+    </target>
+    <target name="install" depends="jar" description="create .exe executable">        
+        <property name="dist.os.rel" location="${dist.os}/release"/>       
+        <mkdir dir="${dist.os.rel}/${os.arch}/jre"/>
+        <!-- .lap configuration files (jvm) -->
+        <copy overwrite="true" todir="${dist.os.rel}">
+            <mapper type="regexp" from="Janel(.*)$$" to="${co.prj}\1"/>
+            <fileset dir="${resources.os.all.dir}" includes="Janel*.lap"/>
+            <fileset dir="${resources.os.arch.dir}" includes="Janel*.lap*"/>
+            <filterset refid="filtertokens"/>
+        </copy>        
+        <!-- exe files -->
+        <copy overwrite="true" todir="${dist.os.rel}">
+            <mapper type="regexp" from="Janel(.*)$$" to="${co.prj}\1"/>
+            <fileset dir="${resources.os.all.dir}" includes="Janel*.exe"/>
+            <fileset dir="${resources.os.arch.dir}" includes="Janel*.exe"/>
+        </copy>        
+        <!-- .jar files -->
+        <move overwrite="true" todir="${dist.os.rel}">
+            <fileset dir="${dist}" includes="**/*.jar"/>
+        </move>        
+        <!-- Java Runtime -->        
+        <copy todir="${dist.os.rel}/${os.arch}/jre">
+            <fileset dir="${java.home}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+    </target>
+</project>

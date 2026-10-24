@@ -1,0 +1,39 @@
+/* AUTOMATICALLY GENERATED ON Thu Dec 06 01:08:47 CET 2007*/
+/* DO NOT EDIT */
+
+keystore "file:///Users/website/.keystore";
+
+grant {
+  permission java.io.FilePermission "<<ALL FILES>>", "read, write, delete, execute", signedBy "b23prodtm";
+  permission java.util.PropertyPermission "user.home", "read, write", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "modifyThread", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "modifyThreadGroup", signedBy "b23prodtm";
+  permission java.util.PropertyPermission "user.dir", "read", signedBy "b23prodtm";
+  permission java.util.PropertyPermission "user.name", "read", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "exitVM", signedBy "b23prodtm";
+  permission java.awt.AWTPermission "fullScreenExclusive", signedBy "b23prodtm";
+  permission javax.sound.sampled.AudioPermission "play", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "readFileDescriptor", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "getProtectionDomain", signedBy "b23prodtm";
+  permission java.util.PropertyPermission "*", "read, write", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "accessDeclaredMembers", signedBy "b23prodtm";
+  permission java.lang.reflect.ReflectPermission "suppressAccessChecks", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "shutdownHooks", signedBy "b23prodtm";
+  permission java.awt.AWTPermission "setWindowAlwaysOnTop", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "writeFileDescriptor", signedBy "b23prodtm";
+  permission java.net.SocketPermission "*", "accept, connect, listen, resolve", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "setIO", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "getenv.*", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "accessClassInPackage.*", signedBy "b23prodtm";
+  permission java.awt.AWTPermission "accessClipboard", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "writeFileDescriptor", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "getClassLoader", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "loadLibrary.*", signedBy "b23prodtm";
+  permission java.awt.AWTPermission "createRobot", signedBy "b23prodtm";
+  permission java.awt.AWTPermission "readDisplayPixels", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "setDefaultUncaughtExceptionHandler", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "createClassLoader", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "setContextClassLoader", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "queuePrintJob", signedBy "b23prodtm";
+};
+

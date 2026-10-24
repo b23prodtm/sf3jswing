@@ -1,0 +1,50 @@
+/* AUTOMATICALLY GENERATED ON Thu Dec 06 01:08:47 CET 2007*/
+/* DO NOT EDIT */
+
+keystore "file:///Users/website/.keystore";
+
+grant {
+  permission java.io.FilePermission "<<ALL FILES>>", "read, write, delete, execute", signedBy "b23prodtm";
+  permission java.util.PropertyPermission "user.home", "read, write", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "modifyThread", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "modifyThreadGroup", signedBy "b23prodtm";
+  permission java.util.PropertyPermission "user.dir", "read", signedBy "b23prodtm";
+  permission java.util.PropertyPermission "user.name", "read", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "exitVM", signedBy "b23prodtm";
+  permission java.awt.AWTPermission "fullScreenExclusive", signedBy "b23prodtm";
+  permission javax.sound.sampled.AudioPermission "play", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "readFileDescriptor", signedBy "b23prodtm"; 
+  permission java.lang.RuntimePermission "getProtectionDomain", signedBy "b23prodtm";
+  permission java.util.PropertyPermission "*", "read, write", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "accessDeclaredMembers", signedBy "b23prodtm";
+  permission java.lang.reflect.ReflectPermission "suppressAccessChecks", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "loadLibrary.tray", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "shutdownHooks", signedBy "b23prodtm";
+  permission java.awt.AWTPermission "setWindowAlwaysOnTop", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "loadLibrary.jdic", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "accessClassInPackage.sun.awt.image", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "loadLibrary.clib_jiio", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "loadLibrary.clib_jiio_sse2", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "loadLibrary.clib_jiio_util", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "loadLibrary.mlib_jai", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "loadLibrary.mlib_jai_mmx", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "loadLibrary.mlib_jai_util", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "writeFileDescriptor", signedBy "b23prodtm";
+  permission java.net.SocketPermission "*", "accept, connect, listen, resolve", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "setIO", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "getenv.*", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "accessClassInPackage.sun.security.action", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "accessClassInPackage.sun.awt.shell", signedBy "b23prodtm";
+  permission java.awt.AWTPermission "accessClipboard", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "loadLibrary.jinput-osx", signedBy "b23prodtm"; 
+  permission java.lang.RuntimePermission "loadLibrary.jinput-dx8", signedBy "b23prodtm";  
+  permission java.lang.RuntimePermission "loadLibrary.jinput-raw", signedBy "b23prodtm";  
+  permission java.lang.RuntimePermission "loadLibrary.jinput-wintab", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "loadLibrary.jawt", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "loadLibrary.lwjgl", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "loadLibrary.OpenAL32", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "loadLibrary.openal", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "writeFileDescriptor", signedBy "b23prodtm";
+  permission java.lang.RuntimePermission "accessClassInPackage.sun.applet", signedBy "b23prodtm";
+};
+

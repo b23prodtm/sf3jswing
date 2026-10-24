@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app name="sf3jswing-imcbrowser">
+    <jar name="sf3jswing-imcbrowser-Windows-x86_signed.jar"/> 
+    <jar name="sf3jswing-jigaxtended-Windows-x86-ext-kernel_signed.jar" 
+        main-class="net.sf.jiga.xtended.ui.JFCFrame"/>
+</app>

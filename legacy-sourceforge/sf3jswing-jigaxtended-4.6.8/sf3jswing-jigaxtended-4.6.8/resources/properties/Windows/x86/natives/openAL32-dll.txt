@@ -1,0 +1,4 @@
+OpenAL 32 issue
+
+since LWJGL modified the 2.0.1 release with a soft release of openAL,
+the dll is a SOFT openAL release.

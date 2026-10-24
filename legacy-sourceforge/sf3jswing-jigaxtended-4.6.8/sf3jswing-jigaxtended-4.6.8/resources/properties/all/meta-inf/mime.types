@@ -1,0 +1,19 @@
+# comments begin with a '#'
+# the format is <mime type> <space separated file extensions>
+# for example:
+# see net/sf/jiga/xtended/impl/ImcBrowser.properties for a full configuration of JXA reader/writer
+image/x-portable-graymap pgm
+image/jpeg jpg jpeg jls jfif
+image/x-bmp bmp
+image/x-portable-pixmap ppm
+image/x-portable-anymap pnm
+image/png png
+image/x-png png
+image/jp2 jp2
+image/jpeg2000 jp2
+image/tiff tif tiff
+image/vnd.wap.wbmp wbmp
+image/x-portable-bitmap pbm
+image/bmp bmp
+image/gif gif
+image/x-windows-bmp bmp

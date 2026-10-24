@@ -1,0 +1,12 @@
+Source: @ANTPROJECTNAME@
+Section: non-free/games
+Priority: optional
+Maintainer: @COMPANYNAME@ <@COMPANYEMAIL@>
+Build-Depends: debhelper (>= 5), ant, openjdk-7-jdk, sf3jswing-jxakernel
+
+Package: @ANTPROJECTNAME@
+Architecture: any
+Depends: ${shlibs:Depends}, default-jre, sf3jswing-jxakernel
+Description: @PROJECTNAME@
+ @PROJECTDESCRIPTIONDEBIAN@
+

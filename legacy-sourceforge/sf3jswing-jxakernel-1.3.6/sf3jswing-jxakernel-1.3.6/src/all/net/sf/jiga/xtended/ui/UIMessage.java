@@ -1,0 +1,1482 @@
+/*
+ * UIMessage.java
+ *
+ * Created on 22 f?vrier 2007, 02:19
+ *
+ * To change this template, choose Tools | Template Manager
+ * and open the template in the editor.
+ */
+package net.sf.jiga.xtended.ui;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import net.sf.jiga.xtended.kernel.BitStack;
+import net.sf.jiga.xtended.kernel.JXAenvUtils;
+import net.sf.jiga.xtended.kernel.JXAenvUtils.LVL;
+import net.sf.jiga.xtended.kernel.Resource;
+import net.sf.jiga.xtended.kernel.ThreadWorks;
+
+/**
+ * This class extends the JDialog component to bring UI info boxes to the user.
+ *
+ * @author www.b23prodtm.info
+ */
+public class UIMessage extends JDialog implements Resource {
+
+        /**
+         * for use with
+         * {@linkplain UIMessage#invokeSwingAndReturn(net.sf.jiga.xtended.ui.UIMessage.SwingStaticReturn)}
+         */
+        public static interface SwingStaticReturn<T> {
+
+                /**
+                 * must return a {@linkplain <T>} value or null
+                 */
+                public T run();
+        }
+
+        /**
+         * for use with
+         * {@linkplain UIMessage#invokeSwingAndReturnException(net.sf.jiga.xtended.ui.UIMessage.SwingStaticReturnException)}
+         */
+        public static interface SwingStaticReturnException<T> {
+
+                /**
+                 * must return a {@linkplain <T>} value or null
+                 */
+                public T run() throws Throwable;
+        }
+
+        /**
+         * shows up a confirm dialog from the JOptionPane class.
+         *
+         * @param options options are those from
+         * {@link JOptionPane JOptionPane class}
+         * @param parent the parent Component of the dialog Window
+         * @param message the message object to show
+         * @param title the title of the dialog Window
+         * @see JOptionPane#showConfirmDialog(Component, Object, String, int,
+         * int, Icon)
+         */
+        public static int showConfirmDialog(Component parent, Object message, String title, int options) {
+                if (parent == null) {
+                        parent = new JFrame(JXAenvUtils._defaultGC);
+                        ((JFrame) parent).setLocationRelativeTo(null);
+                }
+                return JOptionPane.showConfirmDialog(parent, message, title, options, JOptionPane.QUESTION_MESSAGE, _getIcon(QUESTION_TYPE, false));
+        }
+
+        /**
+         * shows up a selection dialog from the JOptionPane class
+         *
+         * @param parent the parent Component of the dialog Window
+         * @param message the message object to show
+         * @param title the title of the dialog Window
+         * @param selection the selection values to show (canNOT be used as
+         * Component or Icon)
+         * @param initial the initially selected value (canNOT be used as
+         * Component or Icon)
+         * @see JOptionPane#showInputDialog(Component, Object, String, int,
+         * Icon, Object[], Object)
+         * @return the selected object or null if the user cancelled the dialog
+         */
+        public static <T> T showSelectDialog(Component parent, Object message, String title, T[] selection, T initial) {
+                if (parent == null) {
+                        parent = new JFrame(JXAenvUtils._defaultGC);
+                        ((JFrame) parent).setLocationRelativeTo(null);
+                }
+                Object o = JOptionPane.showInputDialog(parent, message, title, JOptionPane.QUESTION_MESSAGE, _getIcon(QUESTION_TYPE, false), selection, initial);
+                if (o == null) {
+                        return null;
+                } else {
+                        return (T) o;
+                }
+        }
+        /**
+         * the question type
+         */
+        public final static int QUESTION_TYPE = 2;
+        /**
+         * the information type
+         */
+        public final static int INFO_TYPE = 0;
+        /**
+         * the error type
+         */
+        public final static int ERROR_TYPE = 1;
+        /**
+         * the delete type
+         */
+        public final static int DELETE_TYPE = 3;
+        /**
+         * the disabled type
+         */
+        public final static int DISABLED_TYPE = 4;
+        /**
+         * the enabled type
+         */
+        public final static int ENABLED_TYPE = 5;
+        /**
+         * the input type
+         */
+        public final static int INPUT_TYPE = 6;
+        /**
+         * the load type
+         */
+        public final static int LOAD_TYPE = 7;
+        /**
+         * the lock type
+         */
+        public final static int LOCK_TYPE = 8;
+        /**
+         * the refresh type
+         */
+        public final static int REFRESH_TYPE = 9;
+        /**
+         * the search type
+         */
+        public final static int SEARCH_TYPE = 10;
+        /**
+         * the sound off type
+         */
+        public final static int SOUNDOFF_TYPE = 11;
+        /**
+         * the sound on type
+         */
+        public final static int SOUNDON_TYPE = 12;
+        /**
+         * the store type
+         */
+        public final static int STORE_TYPE = 13;
+        /**
+         * the wait type
+         */
+        public final static int WAIT_TYPE = 14;
+        /**
+         * the opengl type
+         */
+        public final static int OPENGL_TYPE = 15;
+        /**
+         * the directx type
+         */
+        public final static int DIRECTX_TYPE = 16;
+        /**
+         * the player play type
+         */
+        public final static int PLAYER_PLAY_TYPE = 17;
+        /**
+         * the player stop type
+         */
+        public final static int PLAYER_STOP_TYPE = 18;
+        /**
+         * the player pause type
+         */
+        public final static int PLAYER_PAUSE_TYPE = 19;
+        /**
+         * the player fast-forwards type
+         */
+        public final static int PLAYER_FF_TYPE = 20;
+        /**
+         * the player fast-backwards type
+         */
+        public final static int PLAYER_FB_TYPE = 21;
+        /**
+         * the player next type
+         */
+        public final static int PLAYER_NEXT_TYPE = 22;
+        /**
+         * the player previous type
+         */
+        public final static int PLAYER_PREVIOUS_TYPE = 23;
+        /**
+         * the model document type
+         */
+        public final static int MODEL_TYPE = 24;
+        /**
+         * the custom template type
+         */
+        public final static int TEMPLATE_TYPE = 25;
+        /**
+         * the drop target type
+         */
+        public final static int DROPTARGET_TYPE = 26;
+        /**
+         * the multi-threading type
+         */
+        public final static int MULTITHREADING_TYPE = 27;
+        /**
+         * LWJGL API type
+         */
+        public final static int LWJGL_TYPE = 28;
+        /**
+         * exit type
+         */
+        public final static int EXIT_TYPE = 29;
+        /**
+         * picture type
+         */
+        public final static int PICTURE_TYPE = 30;
+        /**
+         * print type
+         */
+        public final static int PRINT_TYPE = 31;
+        /**
+         * back type
+         */
+        public final static int BACK_TYPE = 32;
+        /**
+         * next type
+         */
+        public final static int NEXT_TYPE = 33;
+        /**
+         * stat type
+         */
+        public final static int STAT_TYPE = 34;
+        /**
+         * stat round type
+         */
+        public final static int STAT_ROUND_TYPE = 35;
+        /**
+         * stat history type
+         */
+        public final static int STAT_HISTORY_TYPE = 36;
+        /**
+         * Mail type
+         */
+        public final static int MAIL_TYPE = 37;
+        /**
+         * Comment type
+         */
+        public final static int COMMENT_TYPE = 38;
+        /**
+         * Import type
+         */
+        public final static int IMPORT_TYPE = 39;
+        /**
+         * Export type
+         */
+        public final static int EXPORT_TYPE = 40;
+        /**
+         * Audio document type
+         */
+        public final static int AUDIO_TYPE = 41;
+        /**
+         * CD type
+         */
+        public final static int CD_TYPE = 42;
+        /**
+         * Document type
+         */
+        public final static int DOCUMENT_TYPE = 43;
+        /**
+         * Donate type
+         */
+        public final static int DONATE_TYPE = 44;
+        /**
+         * Webcam type
+         */
+        public final static int WEBCAM_TYPE = 45;
+        /**
+         * Web Browser type
+         */
+        public final static int WEB_TYPE = 46;
+        /**
+         * Terminal type
+         */
+        public final static int TERMINAL_TYPE = 47;
+        /**
+         * New Window type
+         */
+        public final static int NEW_WINDOW_TYPE = 48;
+        /**
+         * Plus Type
+         */
+        public final static int PLUS_TYPE = 49;
+        /**
+         * Minus Type
+         */
+        public final static int MINUS_TYPE = 50;
+        /**
+         * Abort task type
+         */
+        public final static int ABORT_TYPE = 51;
+
+        /**
+         * creates a new instance
+         *
+         * @param modal dis/enables the modal state of the dialog Window
+         * @param message the message Object to display
+         * @param parent the parent Frame instance for the dialog Window
+         * @see #UIMessage(boolean, Object, Frame, int)
+         */
+        public UIMessage(boolean modal, Object message, Frame parent) {
+                this(modal, message, parent, INFO_TYPE);
+        }
+
+        /**
+         * creates a new instance
+         *
+         * @param modal dis/enables the modal state of the dialog Window
+         * @param parent the parent Frame instance for the dialog Window
+         * @param show dis/enables the visibility of the dialog
+         * @see #UIMessage(boolean, Object, Frame, boolean, int)
+         */
+        public UIMessage(boolean modal, Object message, Frame parent, boolean show) {
+                this(modal, message, parent, show, INFO_TYPE);
+        }
+
+        /**
+         * creates a new instance
+         *
+         * @param modal dis/enables the modal state of the dialog Window
+         * @param message the message Object to show
+         * @param parent the parent Frame of this UIMessage
+         * @param type the type of the dialog
+         * @see #UIMessage(boolean, Object, Frame, boolean int)
+         */
+        public UIMessage(boolean modal, Object message, Frame parent, int type) {
+                this(modal, message, parent, true, type);
+        }
+
+        /**
+         * creates a new instance
+         *
+         * @param modal dis/enables the modal state if the dialog Window
+         * @param message the message Object to show
+         * @param parent the parent Frame of this UIMessage
+         * @param show whether to show the UIMessage or not
+         * @param type the type of the dialog
+         * @see JDialog#JDialog(Frame)
+         */
+        public UIMessage(boolean modal, Object message, Frame parent, boolean show, int type) {
+                super(parent, "Information Message", modal, parent == null ? JXAenvUtils._defaultGC : parent.getGraphicsConfiguration());
+                int pty = Thread.currentThread().getPriority();
+                Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+                GridBagConstraints c = new GridBagConstraints();
+                c.insets = new Insets(10, 10, 10, 10);
+                c.fill = c.BOTH;
+                c.weightx = 1.0;
+                c.weighty = 1.0;
+                JPanel pane = new JPanel(true);
+                getContentPane().setLayout(new GridBagLayout());
+                getContentPane().add(pane, c);
+                GridBagLayout g;
+                pane.setLayout(g = new GridBagLayout());
+                c.weightx = 0;
+                c.fill = c.NONE;
+                pane.add(new JLabel(_getIcon(type, false)), c);
+                c.weightx = 1.0;
+                if (message instanceof Component) {
+                        c.fill = c.BOTH;
+                        c.gridwidth = c.REMAINDER;
+                        pane.add((Component) message, c);
+                } else {
+                        LVL envType = type == ERROR_TYPE ? JXAenvUtils.LVL.USR_ERR : JXAenvUtils.LVL.USR_NOT;
+                        if (JXAenvUtils._debugSys) {
+                                System.out.println(JXAenvUtils.log("UIMessage : " + message, envType));
+                        }
+                        JTextArea msg = new JTextArea(message.toString());
+                        msg.setEditable(false);
+                        msg.setDragEnabled(true);
+                        msg.setWrapStyleWord(true);
+                        msg.setLineWrap(true);
+                        msg.setDoubleBuffered(true);
+                        JScrollPane sp;
+                        c.fill = c.BOTH;
+                        c.gridwidth = c.REMAINDER;
+                        pane.add(sp = new JScrollPane(msg), c);
+                        sp.setWheelScrollingEnabled(true);
+                        sp.setPreferredSize(new Dimension(150, 150));
+                }
+                final JButton ok = new JButton(new AbstractAction("OK") {
+                        public void actionPerformed(ActionEvent e) {
+                                UIMessage.this.dispose();
+                        }
+                });
+                c.gridwidth = 2;
+                c.fill = c.NONE;
+                c.weighty = 0;
+                pane.add(ok, c);
+                ok.setRequestFocusEnabled(true);
+                pack();
+                getToolkit().beep();
+                setLocationRelativeTo(parent);
+                setAlwaysOnTop(true);
+                setVisible(show);
+                repaint();
+                Thread.currentThread().setPriority(pty);
+        }
+
+        private static Object _getIconResource(int type, boolean small, boolean rsrcMode) {
+                String icon = "";
+                String s = (small) ? "_small" : "";
+                String spng = (small) ? "png-24" : "png-48";
+                switch (type) {
+                        case LWJGL_TYPE:
+                                icon = "images/lwjgl" + s + ".png";
+                                break;
+                        case MULTITHREADING_TYPE:
+                                icon = "images/" + spng + "/Run.png";
+                                break;
+                        case DROPTARGET_TYPE:
+                                icon = "images/" + spng + "/Add.png";
+                                break;
+                        case TEMPLATE_TYPE:
+                                icon = "images/sf364px-doc-tmp" + s + ".png";
+                                break;
+                        case MODEL_TYPE:
+                                icon = "images/sf364px-doc" + s + ".png";
+                                break;
+                        case PLAYER_NEXT_TYPE:
+                                icon = "images/" + spng + "/Play.png";
+                                break;
+                        case PLAYER_PREVIOUS_TYPE:
+                                icon = "images/" + spng + "/Play Back.png";
+                                break;
+                        case PLAYER_PLAY_TYPE:
+                                icon = "images/" + spng + "/Play Green Button.png";
+                                break;
+                        case PLAYER_STOP_TYPE:
+                                icon = "images/" + spng + "/Stop Green Button.png";
+                                break;
+                        case PLAYER_PAUSE_TYPE:
+                                icon = "images/" + spng + "/Pause Green Button.png";
+                                break;
+                        case PLAYER_FF_TYPE:
+                                icon = "images/" + spng + "/Play All.png";
+                                break;
+                        case PLAYER_FB_TYPE:
+                                icon = "images/" + spng + "/Rewind.png";
+                                break;
+                        case DIRECTX_TYPE:
+                                icon = "images/DirectX" + s + ".gif";
+                                break;
+                        case OPENGL_TYPE:
+                                icon = "images/opengl_animated" + s + ".gif";
+                                break;
+                        case INFO_TYPE:
+                                icon = "images/" + spng + "/Info.png";
+                                break;
+                        case ERROR_TYPE:
+                                icon = "images/" + spng + "/Warning.png";
+                                break;
+                        case QUESTION_TYPE:
+                                icon = "images/" + spng + "/Help Blue Button.png";
+                                break;
+                        case DELETE_TYPE:
+                                icon = "images/" + spng + "/Delete.png";
+                                break;
+                        case DISABLED_TYPE:
+                                icon = "images/" + spng + "/Green Ball.png";
+                                break;
+                        case ENABLED_TYPE:
+                                icon = "images/" + spng + "/Clear Green Button.png";
+                                break;
+                        case INPUT_TYPE:
+                                icon = "images/" + spng + "/Modify.png";
+                                break;
+                        case LOAD_TYPE:
+                                icon = "images/" + spng + "/Load.png";
+                                break;
+                        case LOCK_TYPE:
+                                icon = "images/dialog_lock" + s + ".gif";
+                                break;
+                        case REFRESH_TYPE:
+                                icon = "images/" + spng + "/History.png";
+                                break;
+                        case SEARCH_TYPE:
+                                icon = "images/" + spng + "/Search.png";
+                                break;
+                        case SOUNDOFF_TYPE:
+                                icon = "images/dialog_soundoff" + s + ".gif";
+                                break;
+                        case SOUNDON_TYPE:
+                                icon = "images/dialog_soundon" + s + ".gif";
+                                break;
+                        case STORE_TYPE:
+                                icon = "images/" + spng + "/Save.png";
+                                break;
+                        case WAIT_TYPE:
+                                icon = "images/" + spng + "/Internet History.png";
+                                break;
+                        case STAT_TYPE:
+                                icon = "images/" + spng + "/Bar Chart.png";
+                                break;
+                        case STAT_ROUND_TYPE:
+                                icon = "images/" + spng + "/Pie Chart.png";
+                                break;
+                        case STAT_HISTORY_TYPE:
+                                icon = "images/" + spng + "/Line Chart.png";
+                                break;
+                        case PICTURE_TYPE:
+                                icon = "images/" + spng + "/Picture Document.png";
+                                break;
+                        case PRINT_TYPE:
+                                icon = "images/" + spng + "/Print.png";
+                                break;
+                        case BACK_TYPE:
+                                icon = "images/" + spng + "/Back.png";
+                                break;
+                        case NEXT_TYPE:
+                                icon = "images/" + spng + "/Next.png";
+                                break;
+                        case EXIT_TYPE:
+                                icon = "images/" + spng + "/Exit.png";
+                                break;
+                        case MAIL_TYPE:
+                                icon = "images/" + spng + "/Email.png";
+                                break;
+                        case COMMENT_TYPE:
+                                icon = "images/" + spng + "/Comment.png";
+                                break;
+                        case IMPORT_TYPE:
+                                icon = "images/" + spng + "/Import Document.png";
+                                break;
+                        case EXPORT_TYPE:
+                                icon = "images/" + spng + "/Export To Document.png";
+                                break;
+                        case AUDIO_TYPE:
+                                icon = "images/" + spng + "/Audio Document.png";
+                                break;
+                        case CD_TYPE:
+                                icon = "images/" + spng + "/CD.png";
+                                break;
+                        case DOCUMENT_TYPE:
+                                icon = "images/" + spng + "/Document.png";
+                                break;
+                        case DONATE_TYPE:
+                                icon = "images/" + spng + "/Donate.png";
+                                break;
+                        case WEBCAM_TYPE:
+                                icon = "images/" + spng + "/iChat.png";
+                                break;
+                        case WEB_TYPE:
+                                icon = "images/" + spng + "/Web Browser.png";
+                                break;
+                        case NEW_WINDOW_TYPE:
+                                icon = "images/" + spng + "/Coherence.png";
+                                break;
+                        case TERMINAL_TYPE:
+                                icon = "images/" + spng + "/Terminal.png";
+                                break;
+                        case PLUS_TYPE:
+                                icon = "images/" + spng + "/Add_0.png";
+                                break;
+                        case MINUS_TYPE:
+                                icon = "images/" + spng + "/Remove.png";
+                                break;
+                        case ABORT_TYPE:
+                                icon = "images/" + spng + "/Cancel Red Button.png";
+                                break;
+                        default:
+                                icon = "images/" + spng + "/iChat Alt.png";
+                                break;
+                }
+                return rsrcMode ? UIMessage.class.getResource(icon) : new ImageIcon(icon);
+        }
+
+        /**
+         * * @param type the type of the Icon
+         * @param small dis/enables the small Icon type
+         * @return the corresponding (relative) path for the specified type and
+         * size
+         * @see #INFO_TYPE
+         */
+        public static URL _getIconResourceURL(int type, boolean small) {
+                return (URL) _getIconResource(type, small, true);
+        }
+
+        /**
+         * @param type the type of the Icon
+         * @param small dis/enables the small Icon type
+         * @return the corresponding (relative) path for the specified type and
+         * size
+         * @see #INFO_TYPE
+         */
+        public static String _getIconResourcePath(int type, boolean small) {
+                return (String) _getIconResource(type, small, true);
+        }
+
+        /**
+         * returns the corresponding Icon instance for the specified type
+         *
+         * @param type the type of the Icon
+         * @param small dis/enables the small Icon type
+         * @return the corresponding Icon instance for the specified type and
+         * size
+         * @see #INFO_TYPE
+         */
+        public static Icon _getIcon(int type, boolean small) {
+
+                return new ImageIcon(_getIconResourceURL(type, small));
+        }
+
+        /**
+         * returns the associated JDialog instance for the specified id
+         *
+         * @param id the id referencing the JDialog instance
+         * @return the associated JDialog instance
+         * @see #displayWaiting(String, Component)
+         */
+        public static JDialog _getDisplayFrame(long id) {
+                return display.get(id);
+        }
+
+        /**
+         *
+         */
+        public static void _makeUncloseable(final JDialog frame) {        
+                frame.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+                __makeUncloseable(frame);
+        }
+        public static void _makeUncloseable(final JFrame frame) {
+                frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                __makeUncloseable(frame);
+        }
+        private static void __makeUncloseable(final Window frame) {
+                frame.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e) {
+                                ThreadWorks.Swing.invokeLater(new Runnable() {
+                                        public void run() {
+                                                frame.setVisible(true);
+                                        }
+                                });
+                        }
+                });
+        }
+
+        /**
+         * allows a Swing context to be run with a returned value. it checks if
+         * the {@linkplain SwingUtilities#invokeAndWait(Runnable)} can be run
+         * (if not, it will run on the current EDT anyway) and returns the value
+         * after executing the {@linkplain SwingStaticReturn#run()} method
+         */
+        public static <T> T invokeSwingAndReturn(final SwingStaticReturn<T> r) throws InterruptedException, InvocationTargetException {
+                final Map<String, T> ret = new HashMap<String, T>((Map<String, T>) Collections.singletonMap("return", null));
+                Runnable rSw = new Runnable() {
+                        public void run() {
+                                ret.put("return", r.run());
+                        }
+                };
+                if (ThreadWorks.Swing.isEventDispatchThread()) {
+                        return r.run();
+                } else {
+                        ThreadWorks.Swing.invokeAndWait(rSw);
+                        return ret.get("return");
+                }
+        }
+
+        /**
+         * allows a Swing context to be run with a returned value. it checks if
+         * the {@linkplain ThreadWorks.Swing#invokeAndWait(Runnable)} can be run
+         * (if not, it will run on the current EDT anyway) and returns the value
+         * after executing the {@linkplain SwingStaticReturn#run()} method
+         */
+        public static <T> T invokeSwingAndReturnException(final SwingStaticReturnException<T> r) throws InterruptedException, InvocationTargetException {
+                final Map<String, Object> ret = new HashMap<String, Object>();
+                ret.put("return", null);
+                ret.put("throw", null);
+                Runnable rSw = new Runnable() {
+                        public void run() {
+                                try {
+                                        ret.put("return", r.run());
+                                } catch (Throwable ex1) {
+                                        ret.put("throw", ex1);
+                                }
+                        }
+                };
+                if (ThreadWorks.Swing.isEventDispatchThread()) {
+                        try {
+                                return r.run();
+                        } catch (Throwable ex) {
+                                throw new InvocationTargetException(ex);
+                        }
+                } else {
+                        ThreadWorks.Swing.invokeAndWait(rSw);
+                        if (ret.get("throw") instanceof Throwable) {
+                                throw new InvocationTargetException((Throwable) ret.get("throw"));
+                        }
+                        return (T) ret.get("return");
+                }
+        }
+
+        /**
+         * displays a frame with a waiting-styled JProgressBar
+         *
+         * @param message the message to show
+         * @param parent the parent component to use, or null
+         * @return JFrame instance
+         */
+        public static long displayWaiting(final String message, final Container parent) {
+                return displayWaiting(message, null, parent);
+        }
+
+        /**
+         * displays a frame with a waiting-styled JProgressBar
+         *
+         * @param message the message to show
+         * @param parent the parent component to use, or null
+         * @param label the label that may display an icon
+         * @return JFrame instance
+         */
+        public static long displayWaiting(final String message, final JComponent label, final Container parent) {
+                try {
+                        return invokeSwingAndReturn(new SwingStaticReturn<Long>() {
+                                public Long run() {
+                                        if (label != null) {
+                                                return _displayWaiting(message, label, parent);
+                                        } else {
+                                                return _displayWaiting(message, parent);
+                                        }
+                                }
+                        });
+                } catch (Exception ex) {
+                        if (JXAenvUtils._debugSys) {
+                                ex.printStackTrace();
+                        }
+                        return 0;
+                }
+        }
+
+        private static long _displayWaiting(String message, Container parent) {
+                return _displayWaiting(message, new JLabel(_getIcon(WAIT_TYPE, true)), parent);
+        }
+
+        private static long _displayWaiting(String message, JComponent label, Container parent) {
+                final JDialog display = _showLightPopupMessage(label, null, parent, UI_CENTER, false);
+                long id;
+                UIMessage.display.put(id = System.nanoTime(), display);
+                JProgressBar jpb = JXAenvUtils._JTimeProgressBar();
+                UIMessage.jpb.put(id, jpb);
+                jpb.setStringPainted(false);
+                jpb.setDoubleBuffered(true);
+                jpb.setIndeterminate(true);
+                _makeUncloseable(display);
+                display.setTitle("Please wait !");
+                display.setResizable(false);
+                display.setAlwaysOnTop(true);
+                display.getContentPane().setLayout(new GridBagLayout());
+                GridBagConstraints c = new GridBagConstraints();
+                c.insets = new Insets(5, 5, 5, 5);
+                c.gridwidth = c.REMAINDER;
+                c.fill = c.HORIZONTAL;
+                c.weightx = .5;
+                display.getContentPane().add(new JLabel(message), c);
+                c.gridwidth = 1;
+                display.getContentPane().add(label, c);
+                c.gridwidth = c.REMAINDER;
+                c.weightx = 1.0;
+                display.getContentPane().add(jpb, c);
+                display.pack();
+                display.setVisible(true);
+                display.update(display.getGraphics());
+                return id;
+        }
+
+        /**
+         * returns the associated JProgressBar instance for the specified id
+         *
+         * @param id the id referencing the JProgressBar instance
+         * @return the associated JProgressBar instance
+         * @see #newProgress(int, int, Component)
+         */
+        public static JProgressBar getProgressBar(long id) {
+                if (jpb.containsKey(id)) {
+                        return jpb.get(id);
+                } else {
+                        if (JXAenvUtils._debugSys) {
+                                System.err.println(JXAenvUtils.log("Progress bar id unknown " + id, JXAenvUtils.LVL.SYS_WRN));
+                        }
+                        return JXAenvUtils._JTimeProgressBar();
+                }
+        }
+        /**
+         * the JProgressBar's map
+         */
+        static Map<Long, JProgressBar> jpb = Collections.synchronizedMap(new Hashtable<Long, JProgressBar>());
+        /**
+         * the JDialog's map
+         */
+        static Map<Long, JDialog> display = Collections.synchronizedMap(new Hashtable<Long, JDialog>());
+
+        /**
+         * creates a new JProgressBar instance to share over UIMessage's
+         *
+         * @param current the current value to set up the JProgressBar instance
+         * @param total the maximum value to set up the JProgressBar instance
+         * @param parent the parent Component (ignored)
+         * @return the id referencing the JProgressBar instance
+         */
+        public static long newProgress(final int current, final int total, final Component parent) {
+                try {
+                        return invokeSwingAndReturn(new SwingStaticReturn<Long>() {
+                                public Long run() {
+                                        return _newProgress(current, total, parent);
+                                }
+                        });
+                } catch (Exception e) {
+                        if (JXAenvUtils._debugSys) {
+                                e.printStackTrace();
+                        }
+                        return 0;
+                }
+
+        }
+
+        private static long _newProgress(int current, int total, Component parent) {
+                final JProgressBar jpb = JXAenvUtils._JTimeProgressBar("                 %1$s                 ");
+                final long ct = System.nanoTime();
+                UIMessage.jpb.put(ct, jpb);
+                jpb.setMaximum(total);
+                /*
+                 * jpb.setStringPainted(true); bad looking at startup
+                 */
+                jpb.setValue(current);
+                jpb.setDoubleBuffered(true);
+                return ct;
+        }
+
+        /**
+         * shows up a progress display Frame (with an existing progress id)
+         *
+         * @param current the current value to set on
+         * @param total the maximum value of the progress bar
+         * @param parent the parent component for this box
+         * @param id the id to allow updates with
+         * {@link #updateProgress(long, int, int) updateProgress} or a new id
+         * @see #updateProgress(long, int, int)
+         */
+        public static long displayProgress(final String message, final long id, final int current, final int total, final Container parent) {
+                return displayProgress(message, null, id, current, total, parent);
+        }
+
+        /**
+         * shows up a progress display Frame (with an existing progress id)
+         *
+         * @param current the current value to set on
+         * @param total the maximum value of the progress bar
+         * @param parent the parent component for this box
+         * @param label the JLabel that may contain an icon
+         * @param id the id to allow updates with
+         * {@link #updateProgress(long, int, int) updateProgress} or a new id
+         * @see #updateProgress(long, int, int)
+         */
+        public static long displayProgress(final String message, final JComponent label, final long id, final int current, final int total, final Container parent) {
+                try {
+                        return invokeSwingAndReturn(new SwingStaticReturn<Long>() {
+                                public Long run() {
+                                        if (label != null) {
+                                                return _displayProgress(message, label, id, current, total, parent);
+                                        } else {
+                                                return _displayProgress(message, id, current, total, parent);
+                                        }
+                                }
+                        });
+                } catch (Exception e) {
+                        if (JXAenvUtils._debugSys) {
+                                e.printStackTrace();
+                        }
+                        return 0;
+                }
+        }
+
+        private static long _displayProgress(String message, long id, int current, int total, Container parent) {
+                return _displayProgress(message, new JLabel(_getIcon(WAIT_TYPE, true)), id, current, total, parent);
+        }
+
+        private static long _displayProgress(String message, JComponent label, long id, int current, int total, Container parent) {
+                final JDialog display;
+                final JProgressBar jpb;
+                long ct = id;
+                display = _showLightPopupMessage(label, null, parent, UI_BOTTOM_RIGHT, true);
+                UIMessage.display.put(ct, display);
+                if (UIMessage.jpb.containsKey(ct)) {
+                        jpb = UIMessage.getProgressBar(id);
+                } else {
+                        UIMessage.jpb.put(ct, jpb = JXAenvUtils._JTimeProgressBar());
+                }
+                jpb.setMaximum(total);
+                jpb.setStringPainted(true);
+                jpb.setDoubleBuffered(true);
+                jpb.setIndeterminate(false);
+                _makeUncloseable(display);
+                display.setTitle("Please wait !");
+                display.setResizable(false);
+                display.setAlwaysOnTop(true);
+                display.getContentPane().setLayout(new GridBagLayout());
+                GridBagConstraints c = new GridBagConstraints();
+                c.insets = new Insets(5, 5, 5, 5);
+                c.gridwidth = c.REMAINDER;
+                c.fill = c.HORIZONTAL;
+                c.weightx = .5;
+                if (message != null) {
+                        display.getContentPane().add(new JLabel(message), c);
+                }
+                c.gridwidth = 1;
+                display.getContentPane().add(label, c);
+                c.gridwidth = c.REMAINDER;
+                c.weightx = 1.0;
+                display.getContentPane().add(jpb, c);
+                display.pack();
+                display.setVisible(true);
+                display.update(display.getGraphics());
+                return ct;
+        }
+
+        /**
+         * shows up a new progress display Frame
+         *
+         * @param current the current value to set on
+         * @param total the maximum value of the progress bar
+         * @param parent the parent component for this box
+         * @return the id to allow updates with
+         * {@link #updateProgress(long, int, int) updateProgress}
+         * @see #updateProgress(long, int, int)
+         */
+        public static long displayProgress(int current, int total, Container parent) {
+                return displayProgress(null, System.nanoTime(), current, total, parent);
+        }
+
+        /**
+         * updates any previously created progressBars with new values
+         *
+         * @param id the id to get the progress status
+         * @param value the current value to set on progress
+         * @param total the maximum value of the progress
+         * @see #displayProgress(int, int, Component)
+         * @return the id to make further updates with
+         */
+        public static long updateProgress(long id, int value, int total) {
+                int pty = Thread.currentThread().getPriority();
+                Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+                final JProgressBar jpb;
+                assert (UIMessage.jpb.containsKey(id)) : "UIMessage : you must call int displayProgress() before updateProgress(int) (or maybe the progress bar has been killed by another one)!";
+                jpb = UIMessage.jpb.get(id);
+                if (jpb != null) {
+                        jpb.setIndeterminate(false);
+                        jpb.setMaximum(total);
+                        jpb.setValue(value);
+                        if (ThreadWorks.Swing.isEventDispatchThread()) {
+                                jpb.paintImmediately(jpb.getBounds());
+                        } else {
+                                jpb.repaint();
+                        }
+                }
+                return id;
+        }
+
+        /**
+         * hides the progress bar
+         *
+         * @param id the progress id to get status
+         * @return the progress id
+         */
+        public static long hideProgress(long id) {
+                return setProgressVisibility(id, false, false);
+        }
+
+        /**
+         * shows up the progress bar
+         *
+         * @param id the progress id to get status
+         * @return the progress id
+         */
+        public static long showProgress(long id) {
+                return setProgressVisibility(id, true, false);
+        }
+
+        /**
+         * define visibility
+         *
+         * @param dispose kills the window permanently
+         * @param id the progress id to get status
+         * @param visibility the frame visibility of the progress
+         * @return the progress id
+         * @see JFrame#setVisible(boolean)
+         */
+        private static long setProgressVisibility(final long id, final boolean visibility, final boolean dispose) {
+                try {
+                        return invokeSwingAndReturn(new SwingStaticReturn<Long>() {
+                                public Long run() {
+                                        return _setProgressVisibility(id, visibility, dispose);
+                                }
+                        });
+                } catch (Exception e) {
+                        if (JXAenvUtils._debugSys) {
+                                e.printStackTrace();
+                        }
+                        return 0;
+                }
+        }
+
+        private static long _setProgressVisibility(long id, boolean visibility, boolean dispose) {
+                final JDialog display;
+                final JProgressBar jpb;
+                if (id == 0) {
+                        return 0;
+                }
+                if (!(UIMessage.jpb.containsKey(id) || UIMessage.display.containsKey(id))) {
+                        System.err.println(JXAenvUtils.log("UIMessage : you must call int displayProgress() before setProgressVisibility(int) or maybe the progressBar has been killed by another one!", LVL.APP_WRN));
+                        return id;
+                }
+                display = UIMessage.display.get(id);
+                jpb = UIMessage.jpb.get(id);
+                if (jpb != null) {
+                        jpb.setVisible(visibility);
+                }
+                if (display != null) {
+                        display.setVisible(visibility);
+                        if (dispose) {
+                                display.dispose();
+                        } else {
+                                display.repaint();
+                        }
+                }
+                return id;
+        }
+
+        /**
+         * kills all progress windows
+         */
+        public static void killAllStaticWindows() {
+                Set<Long> set0 = UIMessage.display.keySet();
+                Set<Long> set1 = UIMessage.jpb.keySet();
+                synchronized (UIMessage.jpb) {
+                        for (Iterator<Long> jpb = set1.iterator(); jpb.hasNext();) {
+                                setProgressVisibility(jpb.next(), false, true);
+                                jpb.remove();
+                        }
+                }
+                synchronized (UIMessage.display) {
+                        for (Iterator<Long> display = set0.iterator(); display.hasNext();) {
+                                setProgressVisibility(display.next(), false, true);
+                                display.remove();
+                        }
+                }
+        }
+
+        /**
+         * modifies all static windows visibility
+         */
+        private static void setAllStaticWindowsVisibility(boolean b, boolean dispose) {
+                Set<Long> set0 = UIMessage.display.keySet();
+                Set<Long> set1 = UIMessage.jpb.keySet();
+                synchronized (UIMessage.jpb) {
+                        for (Iterator<Long> jpb = set1.iterator(); jpb.hasNext();) {
+                                setProgressVisibility(jpb.next(), b, dispose);
+                                if (dispose) {
+                                        jpb.remove();
+                                }
+                        }
+                }
+                synchronized (UIMessage.display) {
+                        for (Iterator<Long> display = set0.iterator(); display.hasNext();) {
+                                setProgressVisibility(display.next(), b, dispose);
+                                if (dispose) {
+                                        display.remove();
+                                }
+                        }
+                }
+        }
+
+        /**
+         * hides all static windows
+         */
+        public static void hideAllStaticWindows() {
+                setAllStaticWindowsVisibility(false, false);
+        }
+
+        /**
+         * shows up all static windows
+         */
+        public static void showAllStaticWindows() {
+                setAllStaticWindowsVisibility(true, false);
+        }
+
+        /**
+         * kills progress bars and windows identified by the specified id
+         *
+         * @param id the id of the progress or window to kill
+         */
+        public static void kill(long id) {
+                setProgressVisibility(id, false, true);
+                jpb.remove(id);
+                display.remove(id);
+        }
+
+        /**
+         * returns always false
+         *
+         * @return false
+         * @see #setMultiThreadingEnabled(boolean)
+         */
+        public boolean isMultiThreadingEnabled() {
+                return JXAenvUtils._multiThreading;
+        }
+
+        /**
+         * not implemented
+         */
+        public void setMultiThreadingEnabled(boolean b) {
+                JXAenvUtils._multiThreading = true;
+        }
+
+        /**
+         * not implemented
+         *
+         * @see #clearResource()
+         */
+        public Object loadResource() {
+                return null;
+        }
+
+        /**
+         * not implemented
+         *
+         * @see #loadResource()
+         */
+        public Object clearResource() {
+                return null;
+        }
+
+        /**
+         * returns always true
+         *
+         * @return true
+         * @see #loadResource()
+         */
+        public boolean isResourceLoaded() {
+                return true;
+        }
+        private final static BitStack _placement = new BitStack();
+        /**
+         *
+         */
+        protected final static int _BOTTOM_ = _placement._newBitRange();
+        /**
+         *
+         */
+        protected final static int _TOP_ = _placement._newBitRange();
+        /**
+         *
+         */
+        protected final static int _RIGHT_ = _placement._newBitRange();
+        /**
+         *
+         */
+        protected final static int _LEFT_ = _placement._newBitRange();
+        public final static int _BOTTOM_RIGHT = _BOTTOM_ | _RIGHT_, UI_BOTTOM_RIGHT = _BOTTOM_RIGHT;
+        public final static int _BOTTOM_LEFT = _BOTTOM_ | _LEFT_, UI__BOTTOM_LEFT = _BOTTOM_LEFT, UI_BOTTOM_LEFT = UI__BOTTOM_LEFT;
+        public final static int _TOP_RIGHT = _TOP_ | _RIGHT_, UI_TOP_RIGHT = _TOP_RIGHT;
+        public final static int _TOP_LEFT = _TOP_ | _LEFT_, UI_TOP_LEFT = _TOP_LEFT;
+        public final static int UI_CENTER = 0;
+
+        /**
+         * @param contents some contents
+         * @param actionButton an Action to add as a button the user can click on
+         * @param parent a parent component for placing the popup relative to it
+         * (a null means relative to the default screen device)
+         * @param popupLocation one of the corners (see below)
+         * @see #UI_BOTTOM_RIGHT
+         * @see #UI_TOP_RIGHT
+         * @see #UI_TOP_LEFT
+         * @see #UI_BOTTOM_LEFT
+         * @see #UI_CENTER
+         */
+        public static JDialog showLightPopupMessage(final JComponent contents, final Action actionButton, final Container parent, final int popupLocation) {
+                try {
+                        return invokeSwingAndReturn(new SwingStaticReturn<JDialog>() {
+                                public JDialog run() {
+                                        return _showLightPopupMessage(contents, actionButton, parent, popupLocation, false);
+                                }
+                        });
+                } catch (InterruptedException ex) {
+                        if (JXAenvUtils._debugSys) {
+                                ex.printStackTrace();
+                        }
+                        return null;
+                } catch (InvocationTargetException ex) {
+                        if (JXAenvUtils._debugSys) {
+                                ex.printStackTrace();
+                        }
+                        return null;
+                }
+        }
+
+        public static JDialog showLightModalPopupMessage(final JComponent contents, final Action actionButton, final Container parent, final int popupLocation) {
+                try {
+                        return invokeSwingAndReturn(new SwingStaticReturn<JDialog>() {
+                                public JDialog run() {
+                                        return _showLightPopupMessage(contents, actionButton, parent, popupLocation, true);
+                                }
+                        });
+                } catch (InterruptedException ex) {
+                        if (JXAenvUtils._debugSys) {
+                                ex.printStackTrace();
+                        }
+                        return null;
+                } catch (InvocationTargetException ex) {
+                        if (JXAenvUtils._debugSys) {
+                                ex.printStackTrace();
+                        }
+                        return null;
+                }
+        }
+
+        public static JDialog showPopupMessage(final JComponent contents, final Action actionButton, final Container parent, final int popupLocation) {
+                try {
+                        return invokeSwingAndReturn(new SwingStaticReturn<JDialog>() {
+                                public JDialog run() {
+                                        return _showPopupMessage(contents, actionButton, parent, popupLocation);
+                                }
+                        });
+                } catch (InterruptedException ex) {
+                        if (JXAenvUtils._debugSys) {
+                                ex.printStackTrace();
+                        }
+                        return null;
+                } catch (InvocationTargetException ex) {
+                        if (JXAenvUtils._debugSys) {
+                                ex.printStackTrace();
+                        }
+                        return null;
+                }
+        }
+
+        private static class DragPopup extends MouseAdapter implements MouseMotionListener {
+
+                JPanel panel;
+                int moveTabHeight;
+                JDialog d;
+
+                public DragPopup(JDialog d, JPanel panel, int moveTabHeight) {
+                        this.d = d;
+                        this.panel = panel;
+                        this.moveTabHeight = moveTabHeight;
+                }
+
+                MouseEvent dragEvent = null;
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                        super.mouseReleased(e);
+                        dragEvent = null;
+                }
+
+                @Override
+                public void mouseMoved(MouseEvent e) {
+                        dragEvent = null;
+                        if (e.getComponent().equals(panel)) {
+                                if (e.getY() < moveTabHeight) {
+                                        e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+                                } else {
+                                        e.getComponent().setCursor(Cursor.getDefaultCursor());
+                                }
+                        }
+                }
+                TransparentBackground dDragImage = new TransparentBackground(new BorderLayout(), true);
+
+                @Override
+                public void mouseDragged(MouseEvent e) {
+                        if (dragEvent != null) {
+                                d.setLocation(d.getLocation().x + (e.getX() - dragEvent.getX()), d.getLocation().y + (e.getY() - dragEvent.getY()));
+                        }
+                        dragEvent = e;
+                }
+        }
+
+        private static JDialog _showPopupMessage(JComponent contents, Action a, Container parent, int popupLocation) {
+                return _showPopupMessage(contents, a, parent, popupLocation, true, true);
+        }
+
+        private static JDialog _showLightPopupMessage(JComponent contents, Action a, Container parent, int popupLocation, boolean modal) {
+                return _showPopupMessage(contents, a, parent, popupLocation, modal, false);
+        }
+
+        private static JPanel _Popup_newPanel(JComponent contents, JButton button, JHoverIcon closeLab, int popupLocation) {
+                final JPanel panel = new JPanel(true);
+                panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                panel.setLayout(new GridBagLayout());
+                GridBagConstraints c = new GridBagConstraints();
+
+                c.insets = new Insets(5, 5, 5, 5);
+                c.gridwidth = c.REMAINDER;
+                c.fill = c.NONE;
+                c.weightx = .5;
+                c.anchor = (popupLocation & _RIGHT_) != 0 ? c.WEST : c.EAST;
+
+                if (closeLab != null) {
+                        panel.add(closeLab, c);
+                }
+                c.anchor = (popupLocation & _RIGHT_) != 0 ? c.EAST : c.WEST;
+                c.weightx = 1.;
+                c.weighty = 1.;
+                c.fill = c.BOTH;
+                if (button != null) {
+                        c.gridwidth = c.RELATIVE;
+                }
+                panel.add(contents, c);
+                if (button != null) {
+                        c.gridwidth = c.REMAINDER;
+                        c.fill = c.NONE;
+                        c.weightx = .5;
+                        panel.add(button, c);
+                }
+                return panel;
+        }
+
+        private static Point _Popup_compLocation(JPanel popupPanel, Container parent, int popupLocation) {
+                /*
+                 * perform size calculation
+                 */
+
+                JFrame jf = new JFrame(parent != null ? parent.getGraphicsConfiguration() : JXAenvUtils._defaultGC);
+                jf.setContentPane(popupPanel);
+                jf.setUndecorated(true);
+                jf.pack();
+                DisplayMode dm = jf.getGraphicsConfiguration().getDevice().getDisplayMode();
+                Dimension contentSize = jf.getSize();
+                jf.dispose();
+                /**
+                 * place the popup
+                 */
+                Rectangle displayBounds = new Rectangle(parent != null ? parent.getSize() : new Dimension(dm.getWidth(), dm.getHeight()));
+                /**
+                 * parent location if available
+                 */
+                Point loc = new Point(0, 0);
+
+                // on the right
+                if ((popupLocation & _RIGHT_) != 0) {
+                        loc.x += displayBounds.width - contentSize.width;
+                } else if ((popupLocation & _LEFT_) == 0) {// center
+                        loc.x += (int) displayBounds.getCenterX() - Math.round(contentSize.width / 2f);
+                } else {
+                }//left
+                // on bottom
+                if ((popupLocation & _BOTTOM_) != 0) {
+                        loc.y += displayBounds.height - contentSize.height;
+                } else if ((popupLocation & _TOP_) == 0) {
+                        loc.y += (int) displayBounds.getCenterY() - Math.round(contentSize.height / 2f);
+                }
+                return loc;
+        }
+
+        private static JDialog _showPopupMessage(JComponent contents, Action a, Container parent, int popupLocation, boolean modal, boolean decorated) {
+                JButton button = a != null ? new JButton(a) : null;
+
+                JHoverIcon closeLab = decorated ? null : newCloseSquareIcon();
+
+                JPanel panel = _Popup_newPanel(contents, button, closeLab, popupLocation);
+                Component cpeer = null;
+                if (parent != null) {
+                        cpeer = SwingUtilities.getRoot(parent);
+                }
+                Point loc = _Popup_compLocation(panel, parent, popupLocation);
+                final JDialog popup = new JDialog(cpeer instanceof Window ? (Window) cpeer : null);
+                popup.setUndecorated(!decorated);
+                popup.setModal(modal);
+                popup.setLocation(loc);
+                popup.setContentPane(panel);
+                popup.pack();
+
+                ActionListener close = new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                                popup.setVisible(false);
+                        }
+                };
+                if (!decorated) {
+                        DragPopup dragPopup = new DragPopup(popup, panel, closeLab.getHeight());
+                        if (cpeer != null) {
+                                cpeer.addMouseListener(dragPopup);
+                        }
+                        panel.addMouseListener(dragPopup);
+                        panel.addMouseMotionListener(dragPopup);
+
+                        closeLab.setOnclick(close);
+                }
+                if (a != null) {
+                        button.addActionListener(close);
+                }
+
+                popup.setVisible(true);
+                return popup;
+        }
+
+        public static class JHoverIcon extends JLabel {
+
+                ActionListener onClickAction = new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                        }
+                };
+
+                public JHoverIcon(final Icon icon, final Icon inv) {
+                        super(icon, SwingConstants.CENTER);
+                        addMouseListener(new MouseAdapter() {
+                                @Override
+                                public void mouseExited(MouseEvent e) {
+                                        super.mouseExited(e);
+                                        setIcon(icon);
+                                        paintImmediately(new Rectangle(getSize()));
+                                }
+
+                                @Override
+                                public void mouseEntered(MouseEvent e) {
+                                        super.mouseEntered(e);
+                                        setIcon(inv);
+                                        paintImmediately(new Rectangle(getSize()));
+                                }
+
+                                @Override
+                                public void mouseClicked(MouseEvent e) {
+                                        super.mouseClicked(e);
+                                        setIcon(icon);
+                                        paintImmediately(new Rectangle(getSize()));
+                                        onClickAction.actionPerformed(new ActionEvent(e.getSource(), e.getID(), e.paramString()));
+                                }
+                        });
+                }
+
+                public void setOnclick(ActionListener closePopup) {
+                        this.onClickAction = closePopup;
+                }
+        }
+
+        public static JHoverIcon newCloseSquareIcon() {
+                final ImageIcon icon = new ImageIcon(UIMessage.class.getResource("images/close-12.png"));
+                final ImageIcon inv = new ImageIcon(UIMessage.class.getResource("images/close-inv-12.png"));
+                return new JHoverIcon(icon, inv);
+        }
+}

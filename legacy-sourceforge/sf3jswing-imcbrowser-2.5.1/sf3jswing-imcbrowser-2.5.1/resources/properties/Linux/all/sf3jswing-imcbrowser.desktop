@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Image Multi-Converter And Browser
+Comment=Digital Photo Manager
+Type=Application
+Exec=@ANTPROJECTNAME@
+Icon=@ANTPROJECTNAME@
+Categories=Graphics;Photography;
+X-SuSE-translate=false
+MimeType=image/x-portable-graymap;image/x-portable-pixmap;image/x-portable-anymap;image/x-png;image/png;image/jp2;image/jpeg2000;image/jpg;image/jpeg;image/tif;image/tiff;image/gif;image/x-bmp;image/bmp;image/x-windws-bmp;image/vnd.wap.wbmp;image/x-portable-bitmap;
+

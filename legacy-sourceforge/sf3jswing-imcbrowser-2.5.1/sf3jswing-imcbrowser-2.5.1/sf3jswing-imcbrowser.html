@@ -1,0 +1,24 @@
+
+<HTML>
+    <HEAD>
+        <TITLE>@PROJECTNAME@ (@PROJECTOSNAME@ @PROJECTOSARCH@ release)</TITLE>
+        <style>div{color:white}
+            a:hover{background-color:white}</style></HEAD>
+    <BODY BGCOLOR="WHITE" COLOR="GREEN"><div align="right"><a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=163092&amp;type=3" width="125" height="37" border="0" alt="SourceForge.net Logo" /></a></div>
+        <APPLET codebase="@PROJECTCODEBASE@" archive="api/@PROJECTOSKERNELJAR@" code="@PROJECTAPPLETMAIN@" width=@PROJECTAPPLETWIDTH@ height=@PROJECTAPPLETHEIGHT@>
+            Your browser does not support Java, so nothing is displayed.<!-- VOID DOUBLE RESOURCE LOADING, NOT USED WITH EXTENSION MECHANISM param name="jnlp_href" value="@PROJECTAPPLETJNLPHREF@"/-->
+
+            <param name="keepremote" value="false"/><param name="jxa.debug" value="false"/>
+            <param name="jxa.debugSys" value="false"/>
+            <param name="jxa.debugOps" value="false"/>
+            <param name="jxa.debugRender" value="false"/>
+            <param name="jxa.debugVoid" value="false"/>
+            <param name="jxa.debugSPM" value="false"/>
+            <param name="jxa.debugECL" value="false"/>
+            <param name="antapplet" value="@PROJECTAPPLETANTAPPLET@"/>
+            <param name="applet.classpath" value="@PROJECTAPPLETCLASSPATH@"/>
+            <param name="antargs" value="@PROJECTAPPLETARGS@"/>
+            <PARAM name="java_arguments" value="@PROJECTAPPLETARGS@"/>
+            <param name="separate_jvm" value="true"/>
+        </APPLET></BODY>
+</HTML>

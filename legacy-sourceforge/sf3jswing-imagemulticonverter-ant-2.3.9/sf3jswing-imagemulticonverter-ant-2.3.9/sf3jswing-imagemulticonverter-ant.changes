@@ -1,0 +1,20 @@
+-------------------------------------------------------------------
+@PROJECTSTAMPTODAYRPM@ - @COMPANYEMAIL@
+
+- @PROJECTVERSIONIMPL@_@PROJECTVERSIONRELEASE@
+- ImagePluginFilter
+- Native LookAndFeel
+-------------------------------------------------------------------
+Sun Jul 21 20:44:50 CEST 2013 - b23prodtm@users.sourceforge.net
+
+- 2.3.8_00
+- Update to 4.6 specs
+- MediaTracker
+  + image reference holder issue (removeImage)
+- convert directories
+- App launch updated to fit JXA 4.4 spec
+-------------------------------------------------------------------
+Fri Jan 01 04:08:13 CET 2010 - b23prodtm@users.sourceforge.net
+
+- 2.3.4_03
+  + initial release

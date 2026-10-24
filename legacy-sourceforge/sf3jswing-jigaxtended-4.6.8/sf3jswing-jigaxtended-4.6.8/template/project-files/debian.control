@@ -1,0 +1,12 @@
+Source: @ANTPROJECTNAME@
+Section: non-free/graphics
+Priority: optional
+Maintainer: @COMPANYNAME@ <@COMPANYEMAIL@>
+Build-Depends: debhelper (>= 5), locales-all, ant, openjdk-7-jdk, sf3jswing-jigaxtended
+
+Package: @ANTPROJECTNAME@
+Architecture: any
+Depends: ${shlibs:Depends}, default-jre, default-plugin, sf3jswing-jigaxtended
+Description: @PROJECTNAME@
+ @PROJECTDESCRIPTIONDEBIAN@
+

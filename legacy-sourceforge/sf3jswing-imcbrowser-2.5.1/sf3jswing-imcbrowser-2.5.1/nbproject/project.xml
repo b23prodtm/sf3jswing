@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.ant.freeform</type>
+    <configuration>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
+            <name>sf3jswing-imcbrowser</name>
+        </general-data>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/2">
+            <!-- Do not use Project Properties customizer when editing this file manually. 
+ To prevent the customizer from showing, create nbproject/project.properties file and enter 
+auxiliary.show.customizer=false 
+property there. Adding 
+auxiliary.show.customizer.message=<message>
+ will show your customized message when someone attempts to open the customizer.  -->
+            <name>sf3jswing-imcbrowser</name>
+            <properties/>
+            <folders>
+                <source-folder>
+                    <label>sf3jswing-imcbrowser</label>
+                    <location>.</location>
+                    <encoding>ISO-8859-15</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>src\all</label>
+                    <type>java</type>
+                    <location>src/all</location>
+                    <encoding>ISO-8859-15</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>src\Windows</label>
+                    <type>java</type>
+                    <location>src/Windows</location>
+                    <encoding>ISO-8859-15</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>resources\properties</label>
+                    <type>java</type>
+                    <location>resources/properties</location>
+                    <encoding>ISO-8859-15</encoding>
+                </source-folder>
+            </folders>
+            <ide-actions>
+                <action name="build">
+                    <target>compile</target>
+                </action>
+                <action name="clean">
+                    <target>clean</target>
+                </action>
+                <action name="javadoc">
+                    <target>javadoc</target>
+                </action>
+                <action name="run">
+                    <target>run</target>
+                </action>
+                <action name="rebuild">
+                    <target>clean</target>
+                    <target>compile</target>
+                </action>
+                <action name="debug">
+                    <script>nbproject/ide-file-targets.xml</script>
+                    <target>debug-nb</target>
+                </action>
+            </ide-actions>
+            <export>
+                <type>folder</type>
+                <location>dist/Windows/applet</location>
+                <build-target>compile</build-target>
+            </export>
+            <view>
+                <items>
+                    <source-folder style="packages">
+                        <label>src\all</label>
+                        <location>src/all</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>src\Windows</label>
+                        <location>src/Windows</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>resources\properties</label>
+                        <location>resources/properties</location>
+                    </source-folder>
+                    <source-file>
+                        <location>build.xml</location>
+                    </source-file>
+                </items>
+                <context-menu>
+                    <ide-action name="build"/>
+                    <ide-action name="rebuild"/>
+                    <ide-action name="clean"/>
+                    <ide-action name="javadoc"/>
+                    <ide-action name="run"/>
+                    <ide-action name="debug"/>
+                </context-menu>
+            </view>
+            <subprojects/>
+        </general-data>
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/1">
+            <compilation-unit>
+                <package-root>src/all</package-root>
+                <package-root>src/Windows</package-root>
+                <package-root>resources/properties</package-root>
+                <classpath mode="compile">resources/Windows/x86/sf3jswing-jigaxtended-Windows-x86-ext-kernel_signed.jar;resources/Windows/x86/sf3jswing-jigaxtended-Windows-x86-ext-lib_signed.jar;resources/Windows/x86/sf3jswing-jigaxtended-Windows-x86-ext_signed.jar;resources/Windows/x86/esell-validation-Windows-x86-ext-lib_signed.jar;resources/Windows/x86/esell-validation-Windows-x86-ext_signed.jar;lib/all/restfb-1.10.1.jar</classpath>
+                <built-to>dist/Windows/applet</built-to>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+        </java-data>
+    </configuration>
+</project>

@@ -1,0 +1,9 @@
+Extension-Name: @PROJECTNAMEBIN@.props
+Trusted-Library: true
+Specification-Title: @PROJECTNAME@ PROPERTIES
+Specification-Version: @PROJECTVERSIONSPEC@
+Specification-Vendor: @COMPANYNAME@ @PROJECTYEARS@
+Implementation-Vendor-Id: @PROJECTNAMEBIN@
+Implementation-Title: @PROJECTOSNAME@ PROPERTIES (@PROJECTOSARCH@)
+Implementation-Version: @PROJECTVERSIONIMPL@_@PROJECTVERSIONRELEASE@
+Implementation-Vendor: @COMPANYNAME@ @PROJECTYEARS@

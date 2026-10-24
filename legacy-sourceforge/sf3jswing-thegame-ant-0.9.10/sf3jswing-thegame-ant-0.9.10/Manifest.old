@@ -1,0 +1,37 @@
+Main-Class: thegame.Sf3
+Class-Path: @PROJECTJARCLASSPATH@
+Manifest-Version: 1.3
+Trusted-Library: true
+Specification-Title: @PROJECTNAME@
+Specification-Version: @PROJECTVERSIONSPEC@
+Specification-Vendor: @COMPANYNAME@ @PROJECTYEARS@
+Implementation-Vendor-Id: @PROJECTNAMEBIN@
+Implementation-Title: @PROJECTOSNAME@ (@PROJECTOSARCH@)
+Implementation-Version: @PROJECTVERSIONIMPL@_@PROJECTVERSIONRELEASE@
+Implementation-Vendor: @COMPANYNAME@ @PROJECTYEARS@
+Extension-List: JXAnative JXAkernel JXAprops JXAlib JXAbin
+JXAkernel-Extension-Name: @PROJECTEXTKERNELNAME@
+JXAkernel-Specification-Version: @PROJECTEXTKERNELVERSIONSPEC@
+JXAkernel-Implementation-Version: @PROJECTEXTKERNELVERSIONIMPL@
+JXAkernel-Implementation-Vendor-Id: @PROJECTEXTKERNELVENDORID@
+JXAkernel-Implementation-URL: @PROJECTEXTKERNELJARURL@
+JXAnative-Extension-Name: @PROJECTEXTNATIVENAME@
+JXAnative-Specification-Version: @PROJECTEXTNATIVEVERSIONSPEC@
+JXAnative-Implementation-Version: @PROJECTEXTNATIVEVERSIONIMPL@
+JXAnative-Implementation-Vendor-Id: @PROJECTEXTNATIVEVENDORID@
+JXAnative-Implementation-URL: @PROJECTEXTNATIVEJARURL@
+JXAlib-Extension-Name: @PROJECTEXTLIBNAME@
+JXAlib-Specification-Version: @PROJECTEXTLIBVERSIONSPEC@
+JXAlib-Implementation-Version: @PROJECTEXTLIBVERSIONIMPL@
+JXAlib-Implementation-Vendor-Id: @PROJECTEXTLIBVENDORID@
+JXAlib-Implementation-URL: @PROJECTEXTLIBJARURL@
+JXAbin-Extension-Name: @PROJECTEXTBINNAME@
+JXAbin-Specification-Version: @PROJECTEXTBINVERSIONSPEC@
+JXAbin-Implementation-Version: @PROJECTEXTBINVERSIONIMPL@
+JXAbin-Implementation-Vendor-Id: @PROJECTEXTBINVENDORID@
+JXAbin-Implementation-URL: @PROJECTEXTBINJARURL@
+JXAprops-Extension-Name: @PROJECTEXTPROPSNAME@
+JXAprops-Specification-Version: @PROJECTEXTPROPSVERSIONSPEC@
+JXAprops-Implementation-Version: @PROJECTEXTPROPSVERSIONIMPL@
+JXAprops-Implementation-Vendor-Id: @PROJECTEXTPROPSVENDORID@
+JXAprops-Implementation-URL: @PROJECTEXTPROPSJARURL@

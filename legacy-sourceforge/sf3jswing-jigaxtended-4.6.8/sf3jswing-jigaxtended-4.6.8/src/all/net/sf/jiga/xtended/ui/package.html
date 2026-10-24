@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+    <head>
+        <title>sf3JSwing API : net.sf.jiga.xtended.ui package</title>
+    </head>
+    <body>        
+        <p>This package is part of the Swing interface in this API. You can use Steppable interface and InstructionsPane to begin one stepping-installation-like with the JSwing layout.
+        <p>Here is an example of an installer stepper with 4 steps to finish:<BR>
+        <style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.java-numeric-literals {color: #780000}
+.java-keywords {color: #000099; font-family: Monospaced; font-weight: bold}
+.java-block-comment {color: #737373}
+.java-layer-method {font-family: Monospaced; font-weight: bold}
+.line-number {background-color: #e9e8e2}
+.java-string-literal {color: #99006b}
+-->
+</style>
+<table width="100%"><tr><td align="center">InstallerStepperExample.java</td></tr></table>
+<pre>
+<span class="line-number">  1</span> <span class="java-keywords">import</span> net.sf.jiga.xtended.ui.FileChooserPane;
+
+<span class="line-number">  2</span> <span class="java-keywords">import</span> net.sf.jiga.xtended.ui.InstructionsPane;
+<span class="line-number">  3</span> <span class="java-keywords">import</span> net.sf.jiga.xtended.ui.StatusPane;
+<span class="line-number">  4</span> <span class="java-keywords">import</span> java.awt.BorderLayout;
+
+<span class="line-number">  5</span> <span class="java-keywords">import</span> java.awt.Container;
+<span class="line-number">  6</span> <span class="java-keywords">import</span> java.awt.event.ActionEvent;
+<span class="line-number">  7</span> <span class="java-keywords">import</span> java.awt.event.ActionListener;
+
+<span class="line-number">  8</span> <span class="java-keywords">import</span> java.util.HashMap;
+<span class="line-number">  9</span> <span class="java-keywords">import</span> java.util.Iterator;
+<span class="line-number"> 10</span> <span class="java-keywords">import</span> javax.imageio.ImageIO;
+
+<span class="line-number"> 11</span> <span class="java-keywords">import</span> javax.swing.AbstractAction;
+<span class="line-number"> 12</span> <span class="java-keywords">import</span> javax.swing.Action;
+<span class="line-number"> 13</span> <span class="java-keywords">import</span> javax.swing.JApplet;
+
+<span class="line-number"> 14</span> <span class="java-keywords">import</span> javax.swing.JButton;
+<span class="line-number"> 15</span> <span class="java-keywords">import</span> javax.swing.JCheckBox;
+<span class="line-number"> 16</span> <span class="java-keywords">import</span> javax.swing.JLabel;
+
+<span class="line-number"> 17</span> <span class="java-keywords">import</span> javax.swing.JOptionPane;
+<span class="line-number"> 18</span> <span class="java-keywords">import</span> javax.swing.JSpinner;
+<span class="line-number"> 19</span> <span class="java-keywords">import</span> javax.swing.JTextArea;
+
+<span class="line-number"> 20</span> <span class="java-keywords">import</span> javax.swing.SpinnerNumberModel;
+<span class="line-number"> 21</span> <span class="java-keywords">class</span> InstallerStepper <span class="java-keywords">extends</span> JApplet {
+<span class="line-number"> 22</span>     <span class="java-keywords">public</span> <span class="java-keywords">void</span> <span class="java-layer-method">init</span>() {
+
+<span class="line-number"> 23</span>         Container content = <span class="java-layer-method">getContentPane</span>();
+<span class="line-number"> 24</span>         <span class="java-keywords">final</span> InstructionsPane pane = <span class="java-keywords">new</span> <span class="java-layer-method">InstructionsPane</span>(<span class="java-keywords">this</span>, <span class="java-numeric-literals">0</span>, <span class="java-numeric-literals">5</span>);
+
+<span class="line-number"> 25</span>         toggleStep = <span class="java-keywords">new</span> <span class="java-layer-method">StatusPane</span>(pane);
+<span class="line-number"> 26</span>         content.<span class="java-layer-method">add</span>(pane, BorderLayout.CENTER);
+<span class="line-number"> 27</span>         content.<span class="java-layer-method">add</span>(toggleStep, BorderLayout.SOUTH);
+
+<span class="line-number"> 28</span>         
+<span class="line-number"> 29</span> <span class="java-block-comment">// add one new step in the panel store</span>
+<span class="line-number"> 30</span>         <span class="java-keywords">int</span> step = pane.<span class="java-layer-method">addStep</span>();
+<span class="line-number"> 31</span>         
+
+<span class="line-number"> 32</span> <span class="java-block-comment">// add one Text Area</span>
+<span class="line-number"> 33</span>         pane.<span class="java-layer-method">addStepComponent</span>(step, <span class="java-keywords">new</span> <span class="java-layer-method">JTextArea</span>(<span class="java-string-literal">&quot;Go to next step and select the images files you want to convert.&quot;</span>));
+
+<span class="line-number"> 34</span>         
+<span class="line-number"> 35</span> <span class="java-block-comment">// add another step in the panel store</span>
+<span class="line-number"> 36</span>         step = pane.<span class="java-layer-method">addStep</span>();
+<span class="line-number"> 37</span>         
+
+<span class="line-number"> 38</span> <span class="java-block-comment">// here is the file chooser panel as an InstructionSet</span>
+<span class="line-number"> 39</span>         <span class="java-keywords">final</span> FileChooserPane jfc = <span class="java-keywords">new</span> <span class="java-layer-method">FileChooserPane</span>(owner, <span class="java-string-literal">&quot;&quot;</span>);
+<span class="line-number"> 40</span>         jfc.<span class="java-layer-method">setModeOpen</span>(<span class="java-keywords">true</span>);
+
+<span class="line-number"> 41</span>         
+<span class="line-number"> 42</span> <span class="java-block-comment">// add the file chooser panel set to the InstructionsPane at the next available empty step</span>
+<span class="line-number"> 43</span>         pane.<span class="java-layer-method">addInstructionSet</span>(jfc);
+<span class="line-number"> 44</span>         
+
+<span class="line-number"> 45</span> <span class="java-block-comment">// here is how to add button with action</span>
+<span class="line-number"> 46</span>         pane.<span class="java-layer-method">addStepComponent</span>(step, sw_selectFormat = <span class="java-keywords">new</span> <span class="java-layer-method">JButton</span>(<span class="java-string-literal">&quot;Conversion format...&quot;</span>));
+
+<span class="line-number"> 47</span>         
+<span class="line-number"> 48</span> <span class="java-block-comment">// add one action listener to the button</span>
+<span class="line-number"> 49</span> <span class="java-block-comment">// you can access the class- , static- and final- local variables</span>
+<span class="line-number"> 50</span>         sw_selectFormat.<span class="java-layer-method">addActionListener</span>(<span class="java-keywords">new</span> <span class="java-layer-method">ActionListener</span>() { <span class="java-keywords">public</span> <span class="java-keywords">void</span> <span class="java-layer-method">actionPerformed</span>(ActionEvent e) {
+
+<span class="line-number"> 51</span>             selectedConversion = JOptionPane.<span class="java-layer-method">showInputDialog</span>(InstallerStepper.<span class="java-keywords">this</span>,
+<span class="line-number"> 52</span>                     <span class="java-string-literal">&quot;What conversion type do you want?&quot;</span>, <span class="java-string-literal">&quot;Convert...&quot;</span>,
+<span class="line-number"> 53</span>                     JOptionPane.QUESTION_MESSAGE,
+
+<span class="line-number"> 54</span>                     <span class="java-keywords">null</span>,
+<span class="line-number"> 55</span>                     ImageIO.<span class="java-layer-method">getWriterMIMETypes</span>(),
+<span class="line-number"> 56</span>                     <span class="java-layer-method">getSelectedConversion</span>()).<span class="java-layer-method">toString</span>();
+
+<span class="line-number"> 57</span>             sw_convert.<span class="java-layer-method">setText</span>(<span class="java-string-literal">&quot;Convert to &quot;</span> + <span class="java-layer-method">getSelectedConversion</span>());
+<span class="line-number"> 58</span>         }});
+<span class="line-number"> 59</span>         
+
+<span class="line-number"> 60</span> <span class="java-block-comment">// add one more step with 2 columns of components for the layout</span>
+<span class="line-number"> 61</span>         step = pane.<span class="java-layer-method">addStep</span>(<span class="java-numeric-literals">2</span>);
+<span class="line-number"> 62</span>         
+<span class="line-number"> 63</span> <span class="java-block-comment">// each added component is given with row column span as arguments</span>
+
+<span class="line-number"> 64</span>         pane.<span class="java-layer-method">addStepComponent</span>(step, <span class="java-keywords">new</span> <span class="java-layer-method">JLabel</span>(<span class="java-string-literal">&quot;This value will zoom the image to choosen scale (%):&quot;</span>), <span class="java-numeric-literals">1</span>, <span class="java-numeric-literals">2</span>);
+<span class="line-number"> 65</span>         pane.<span class="java-layer-method">addStepComponent</span>(step, sw_zoom = <span class="java-keywords">new</span> <span class="java-layer-method">JSpinner</span>(<span class="java-keywords">new</span> <span class="java-layer-method">SpinnerNumberModel</span>(<span class="java-numeric-literals">100</span>,<span class="java-numeric-literals">1</span>,<span class="java-numeric-literals">500</span>,<span class="java-numeric-literals">1</span>)), <span class="java-numeric-literals">1</span>, <span class="java-numeric-literals">2</span>);
+
+<span class="line-number"> 66</span>         
+<span class="line-number"> 67</span> <span class="java-block-comment">// (É)</span>
+<span class="line-number"> 68</span>         pane.<span class="java-layer-method">addStepComponent</span>(step, <span class="java-keywords">new</span> <span class="java-layer-method">JLabel</span>(<span class="java-string-literal">&quot;compression quality (JPEG only)&quot;</span>));
+
+<span class="line-number"> 69</span>         pane.<span class="java-layer-method">addStepComponent</span>(step, sw_compression_quality = <span class="java-keywords">new</span> <span class="java-layer-method">JSpinner</span>(<span class="java-keywords">new</span> <span class="java-layer-method">SpinnerNumberModel</span>((<span class="java-keywords">int</span>)(compression_quality*<span class="java-numeric-literals">100</span>), <span class="java-numeric-literals">0</span>, <span class="java-numeric-literals">100</span>, <span class="java-numeric-literals">10</span>)));
+
+<span class="line-number"> 70</span>         
+<span class="line-number"> 71</span> <span class="java-block-comment">// there are accessible final variables</span>
+<span class="line-number"> 72</span>         <span class="java-keywords">final</span> HashMap&lt;Integer, Action&gt; color_options = <span class="java-keywords">new</span> HashMap&lt;Integer, Action&gt;();
+
+<span class="line-number"> 73</span>         <span class="java-keywords">final</span> HashMap&lt;Integer, Boolean&gt; color_options_switch = <span class="java-keywords">new</span> HashMap&lt;Integer, Boolean&gt;();
+<span class="line-number"> 74</span>         sw_color_option = <span class="java-keywords">new</span> HashMap&lt;Integer, JCheckBox&gt;();
+
+<span class="line-number"> 75</span>         <span class="java-keywords">final</span> <span class="java-keywords">int</span> BLACKANDWHITE = <span class="java-numeric-literals">0</span>;
+<span class="line-number"> 76</span>         <span class="java-keywords">final</span> <span class="java-keywords">int</span> CANVASSCALEONLY = <span class="java-numeric-literals">1</span>;
+
+<span class="line-number"> 77</span>         
+<span class="line-number"> 78</span> <span class="java-block-comment">// you can define final actions that will act with buttons or checkboxes</span>
+<span class="line-number"> 79</span>         color_options.<span class="java-layer-method">put</span>(BLACKANDWHITE, <span class="java-keywords">new</span> <span class="java-layer-method">AbstractAction</span>(<span class="java-string-literal">&quot;black &amp; white&quot;</span>) { <span class="java-keywords">public</span> <span class="java-keywords">void</span> <span class="java-layer-method">actionPerformed</span>(ActionEvent e) {
+
+<span class="line-number"> 80</span>             blackAndWhiteEnabled = sw_color_option.<span class="java-layer-method">get</span>(BLACKANDWHITE).<span class="java-layer-method">isSelected</span>();
+<span class="line-number"> 81</span>         }});
+<span class="line-number"> 82</span>         color_options_switch.<span class="java-layer-method">put</span>(BLACKANDWHITE, blackAndWhiteEnabled);
+
+<span class="line-number"> 83</span>         
+<span class="line-number"> 84</span> <span class="java-block-comment">//(É)</span>
+<span class="line-number"> 85</span>         <span class="java-keywords">for</span>(Iterator&lt;Integer&gt; i = color_options.<span class="java-layer-method">keySet</span>().<span class="java-layer-method">iterator</span>(); i.<span class="java-layer-method">hasNext</span>(); ) {
+
+<span class="line-number"> 86</span>             <span class="java-keywords">int</span> aKey = i.<span class="java-layer-method">next</span>();
+<span class="line-number"> 87</span>             sw_color_option.<span class="java-layer-method">put</span>(aKey, <span class="java-keywords">new</span> <span class="java-layer-method">JCheckBox</span>(color_options.<span class="java-layer-method">get</span>(aKey)));
+
+<span class="line-number"> 88</span>             sw_color_option.<span class="java-layer-method">get</span>(aKey).<span class="java-layer-method">setSelected</span>(color_options_switch.<span class="java-layer-method">get</span>(aKey));
+<span class="line-number"> 89</span>             pane.<span class="java-layer-method">addStepComponent</span>(step, <span class="java-keywords">new</span> <span class="java-layer-method">JLabel</span>(color_options.<span class="java-layer-method">get</span>(aKey).<span class="java-layer-method">getValue</span>(Action.NAME).<span class="java-layer-method">toString</span>()));
+
+<span class="line-number"> 90</span>             pane.<span class="java-layer-method">addStepComponent</span>(step, sw_color_option.<span class="java-layer-method">get</span>(aKey));
+<span class="line-number"> 91</span>         }
+<span class="line-number"> 92</span>         sw_zoom.<span class="java-layer-method">setValue</span>(<span class="java-numeric-literals">100</span>);
+
+<span class="line-number"> 93</span>         
+<span class="line-number"> 94</span> <span class="java-block-comment">// (É)</span>
+<span class="line-number"> 95</span>         
+<span class="line-number"> 96</span> <span class="java-block-comment">// finally it is noticeable to validate the InstructionsPane before to use it,</span>
+<span class="line-number"> 97</span>         pane.<span class="java-layer-method">validate</span>();
+
+<span class="line-number"> 98</span>     }
+<span class="line-number"> 99</span> }
+<span class="line-number">100</span> 
+
+</pre><hr><img  src="doc-files/installer_pkg_UI.png" width="733" height="526" alt="installer_pkg_UI"/>
+        @author www.b23prodtm.info
+    </body>
+</html>

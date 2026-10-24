@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jnlp PUBLIC "-//Sun Microsystems, Inc.//DTD JNLP 1.5//EN" "http://www.netbeans.org/jnlp/DTD/jnlp.dtd">
+<jnlp codebase="@PROJECTCODEBASE@" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@.jnlp">
+    <information>
+        <title>@PROJECTNAME@</title>
+        <vendor>@COMPANYNAME@</vendor>
+        <homepage href="@PROJECTURL@"/>
+        <description>@PROJECTDESCRIPTION@</description>
+        <icon href="_icons/duke.gif"/>
+        <offline-allowed/>
+        <shortcut online="true">
+            <desktop/>
+            <menu submenu="@PROJECTNAME@"/>
+        </shortcut>
+    </information>
+    <security>
+        <all-permissions/>
+    </security>
+    <!--resources>
+        <extension href="api/sf3jswing-jigaxtended-ext.jnlp">
+            <ext-download ext-part="net.sf.jiga.xtended.kernel"/>
+            <ext-download ext-part="net.sf.jiga.xtended.native"/>
+            <ext-download ext-part="net.sf.jiga.xtended.lib"/>
+            <ext-download ext-part="net.sf.jiga.xtended.props"/>
+            <ext-download ext-part="net.sf.jiga.xtended.bin"/>
+        </extension>
+    </resources-->
+    <resources os="@PROJECTOSNAME@" arch="@PROJECTOSARCH1@">
+        <!-- UNRECOGNIZED IN COMPONENT-DESC j2se java-vm-args="@PROJECTAPPLICATIONPARAMS@" max-heap-size="@PROJECTAPPLICATIONRUNMAXHEAP@" initial-heap-size="@PROJECTAPPLICATIONRUNMAXHEAP@" href="http://java.sun.com/products/autodl/j2se" version="@JAVAVERSION@"///-->
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext-lib_signed.jar" main="false"/>
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext-props_signed.jar" main="false"/>
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext-native_signed.jar" main="false"/>
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@_signed.jar" main="false"/>
+        <jar download="eager" href="api/@PROJECTOSKERNELJAR@" main="true"/>
+    </resources>
+    <resources os="@PROJECTOSNAME@" arch="@PROJECTOSARCH2@">
+        <!-- UNRECOGNIZED IN COMPONENT-DESC j2se java-vm-args="@PROJECTAPPLICATIONPARAMS@" max-heap-size="@PROJECTAPPLICATIONRUNMAXHEAP@" initial-heap-size="@PROJECTAPPLICATIONRUNMAXHEAP@" href="http://java.sun.com/products/autodl/j2se" version="@JAVAVERSION@"///-->
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext-lib_signed.jar" main="false"/>
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext-props_signed.jar" main="false"/>
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext-native_signed.jar" main="false"/>
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@_signed.jar" main="false"/>
+        <jar download="eager" href="api/@PROJECTOSKERNELJAR@" main="true"/>
+    </resources>
+    <resources os="@PROJECTOSNAME@" arch="@PROJECTOSARCH3@">
+        <!-- UNRECOGNIZED IN COMPONENT-DESC j2se java-vm-args="@PROJECTAPPLICATIONPARAMS@" max-heap-size="@PROJECTAPPLICATIONRUNMAXHEAP@" initial-heap-size="@PROJECTAPPLICATIONRUNMAXHEAP@" href="http://java.sun.com/products/autodl/j2se" version="@JAVAVERSION@"///-->
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext-lib_signed.jar" main="false"/>
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext-props_signed.jar" main="false"/>
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext-native_signed.jar" main="false"/>
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@_signed.jar" main="false"/>
+        <jar download="eager" href="api/@PROJECTOSKERNELJAR@" main="true"/>
+    </resources>
+    <resources os="@PROJECTOSNAME@" arch="@PROJECTOSARCH4@">
+        <!-- UNRECOGNIZED IN COMPONENT-DESC j2se java-vm-args="@PROJECTAPPLICATIONPARAMS@" max-heap-size="@PROJECTAPPLICATIONRUNMAXHEAP@" initial-heap-size="@PROJECTAPPLICATIONRUNMAXHEAP@" href="http://java.sun.com/products/autodl/j2se" version="@JAVAVERSION@"///-->
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext-lib_signed.jar" main="false"/>
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext-props_signed.jar" main="false"/>
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext-native_signed.jar" main="false"/>
+        <jar download="eager" href="@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@_signed.jar" main="false"/>
+        <jar download="eager" href="api/@PROJECTOSKERNELJAR@" main="true"/>
+    </resources>
+    <component-desc/>
+</jnlp>

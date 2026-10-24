@@ -1,0 +1,10 @@
+Main-Class: net.sf.jiga.xtended.installer.ExtensionsInstaller
+Class-Path: properties/ JIGAXtended-Linux-i386-native_signed.jar
+Extension-Name: net.sf.jiga.xtended
+Specification-Title: Java JIGAXtended API
+Specification-Version: 3.1
+Specification-Vendor: b23:production 2006-2009 GNU/GPL
+Implementation-Vendor-Id: net.sf.jiga.xtended
+Implementation-Title: Linux (32 bits)
+Implementation-Version: 3.1.5_ex
+Implementation-Vendor: b23:production 2006-2009 GNU/GPL

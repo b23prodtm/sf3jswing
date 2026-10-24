@@ -1,0 +1,858 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project default="jar" basedir=".">    
+    <import file="template/build-extended-template.xml"/>
+    <!-- caution ! do not modify the username or your Java Policy Permission File will be broken ! //-->
+
+    <property name="username" value="b23prodtm"/>
+    <!-- redirect to your keystore, where you store your Java Code signing certificate public keys !-->
+    <property name="keystore" location="../.keystore"/>
+    <property name="keystore-type" value="jks"/>
+    <property name="storepass" value="password"/>
+    <!-- end caution ! //-->
+
+    <!-- NOTICE : you can adapt the following properties to fit your company datas //-->
+
+    <property name="company" value="b23:production GNU/GPL"/>
+    <property name="company.token" value="COMPANYNAME"/>
+    <property name="company.country.id" value="CH"/>
+    <property name="company.country.id.token" value="COMPANYCOUNTRYID"/>
+    <property name="company.url" value="http://www.b23prodtm.info"/>
+    <property name="company.url.token" value="COMPANYURL"/>
+    <property name="company.email" value="b23prodtm@users.sourceforge.net"/>
+    <property name="company.email.token" value="COMPANYEMAIL"/>
+    <property name="co.prj.token" value="ANTPROJECTNAME"/><property name="co.prj.name" value="SF3JSWING JIGAXtended API"/><property name="co.prj.name.token" value="PROJECTNAME"/>
+    <property name="co.prj.bin" value="net.sf.jiga.xtended"/>
+    <property name="co.prj.bin.token" value="PROJECTNAMEBIN"/>
+    <property name="co.prj.description" value="This API is an AWT/Swing overlay and lightweight gaming framework (including LWJGL, b23prodtm git)."/>
+    <property name="co.prj.description.token" value="PROJECTDESCRIPTION"/>
+    <!-- DEBIAN DESCRIPTION HAVE SPECIFIC SYNTAX CONSTRAINTS /-->
+    <property name="co.prj.description.debian" value=" This API is an AWT/Swing overlay and lightweight gaming framework (including LWJGL, b23prodtm git)."/>
+    <property name="co.prj.description.debian.token" value="PROJECTDESCRIPTIONDEBIAN"/>
+    <property name="co.prj.url" value="http://www.sourceforge.net/projects/sf3jswing"/>
+    <property name="co.prj.url.token" value="PROJECTURL"/>
+    <property name="co.prj.years" value="2006 - 2014"/>
+    <property name="co.prj.years.token" value="PROJECTYEARS"/>
+    <property name="co.prj.license" value="Apache-2.0"/>
+    <property name="co.prj.license.token" value="PROJECTLICENSE"/>
+    <property name="co.prj.version.impl" value="4.6.8"/>
+    <property name="co.prj.version.impl.token" value="PROJECTVERSIONIMPL"/>
+    <property name="co.prj.version.spec" value="4.6"/>
+    <property name="co.prj.version.spec.token" value="PROJECTVERSIONSPEC"/>
+    <property name="co.prj.version.release" value="01"/>
+    <property name="co.prj.version.release.token" value="PROJECTVERSIONRELEASE"/>
+    <property name="co.prj.screen.one.url" value=""/>
+    <property name="co.prj.screen.one.url.token" value="PROJECTSCREENONEURL"/>
+    <property name="co.prj.screen.small.one.url" value=""/>
+    <property name="co.prj.screen.small.one.url.token" value="PROJECTSCREENSMALLONEURL"/>
+    <property name="co.prj.screen.two.url" value=""/>
+    <property name="co.prj.screen.two.url.token" value="PROJECTSCREENTWOURL"/>
+    <property name="co.prj.screen.small.two.url" value=""/>
+    <property name="co.prj.screen.small.two.url.token" value="PROJECTSCREENSMALLTWOURL"/>
+    <tstamp>
+        <format property="TODAY_UK" pattern="EEE, dd MMM yyyy HH:mm:ss Z" locale="en,UK"/>
+        <format property="TODAY_UK-RPM" pattern="EEE MMM dd HH:mm:ss z yyyy" locale="en,UK"/>
+    </tstamp>
+    <property name="co.prj.stamp.today" value="${TODAY_UK}"/>
+    <property name="co.prj.stamp.today.token" value="PROJECTSTAMPTODAY"/>
+    <property name="co.prj.stamp.today.rpm" value="${TODAY_UK-RPM}"/>
+    <property name="co.prj.stamp.today.rpm.token" value="PROJECTSTAMPTODAYRPM"/>  
+    <!-- LIST HERE PROJECT NAMES THAT NEED TO BE UPDATED (UPDATE-TEMPLATE TASK)-->
+    <property name="co.prj.template-project.list" value="sf3jswing-jxatest-unit,sf3jswing-imagemulticonverter-ant,../sf3jswing-imcbrowser,../es-sdk-jdk-binding,sf3jswing-animsbrowser-ant,sf3jswing-thegame-ant"/>
+    <!-- ADDING EXTRA PROPERTIES WITH TOKENS THAT WILL FILTER THE MANIFEST, HTML, ... FILES
+    AS @TOKENNAME@ IN EVERY FILE THAT GETS FILTERED WITH THIS SET /-->
+    <filterset id="filtertokens">
+        <filter token="${co.prj.token}" value="${co.prj}"/>
+        <filter token="JAVAVERSION" value="${ant.java.version}"/>
+        <filter token="ANTOSNAME" value="${os.name}"/>
+        <filter token="ANTOSARCH" value="${os.arch}"/>
+        <filter token="${company.url.token}" value="${company.url}"/>
+        <filter token="${company.token}" value="${company}"/>
+        <filter token="${company.email.token}" value="${company.email}"/>
+        <filter token="${company.country.id.token}" value="${company.country.id}"/>
+        <filter token="${co.prj.url.token}" value="${co.prj.url}"/>
+        <filter token="${co.prj.codebase.token}" value="${co.prj.codebase}"/>
+        <filter token="${co.prj.os.token}" value="${co.prj.os}"/>
+        <filter token="${co.prj.os.1.token}" value="${co.prj.os.1}"/>
+        <filter token="${co.prj.os.2.token}" value="${co.prj.os.2}"/>
+        <filter token="${co.prj.os.3.token}" value="${co.prj.os.3}"/>
+        <filter token="${co.prj.os.4.token}" value="${co.prj.os.4}"/>
+        <filter token="${co.prj.os.arch.token}" value="${co.prj.os.arch}"/>
+        <filter token="${co.prj.os.arch.1.token}" value="${co.prj.os.arch.1}"/>
+        <filter token="${co.prj.os.arch.2.token}" value="${co.prj.os.arch.2}"/>
+        <filter token="${co.prj.os.arch.3.token}" value="${co.prj.os.arch.3}"/>
+        <filter token="${co.prj.os.arch.4.token}" value="${co.prj.os.arch.4}"/>
+        <filter token="${co.prj.os.kernel.jar.token}" value="${co.prj.os.kernel.jar}"/>
+        <filter token="${co.prj.os.jar.classpath.token}" value="${co.prj.os.jar.classpath}"/>
+        <filter token="${co.prj.os.applet.jnlphref.token}" value="${co.prj.os.applet.jnlphref}"/>
+        <filter token="${co.prj.os.applet.args.token}" value="${co.prj.os.applet.args}"/>
+        <filter token="${co.prj.os.applet.main.token}" value="${co.prj.os.applet.main}"/>
+        <filter token="${co.prj.os.applet.classpath.token}" value="${co.prj.os.applet.classpath}"/>
+        <filter token="${co.prj.os.applet.width.token}" value="${co.prj.os.applet.width}"/>
+        <filter token="${co.prj.os.applet.height.token}" value="${co.prj.os.applet.height}"/>
+        <filter token="${co.prj.os.applet.jnlphref.token}" value="${co.prj.os.applet.jnlphref}"/>
+        <filter token="${co.prj.os.applet.antapplet.token}" value="${co.prj.os.applet.antapplet}"/>
+        <filter token="${co.prj.os.appletviewer.args.token}" value="${co.prj.os.appletviewer.args}"/>
+        <filter token="${co.prj.os.app.run.args.token}" value="${co.prj.os.app.run.args}"/>
+        <filter token="${co.prj.os.app.run.params.token}" value="${co.prj.os.app.run.params}"/>
+        <filter token="${co.prj.os.app.run.prefix.token}" value="${co.prj.os.app.run.prefix}"/>
+        <filter token="${co.prj.os.app.run.cmd.token}" value="${co.prj.os.app.run.cmd}"/>
+        <filter token="${co.prj.os.app.run.minheap.token}" value="${co.prj.os.app.run.minheap}"/>
+        <filter token="${co.prj.os.app.run.maxheap.token}" value="${co.prj.os.app.run.maxheap}"/>
+        <filter token="${co.prj.os.app.run.main.token}" value="${co.prj.os.app.run.main}"/>
+        <filter token="${co.prj.os.app.run.classpath.token}" value="${co.prj.os.app.run.classpath}"/>
+        <filter token="${co.prj.license.token}" value="${co.prj.license}"/>
+        <filter token="${co.prj.years.token}" value="${co.prj.years}"/>
+        <filter token="${co.prj.name.token}" value="${co.prj.name}"/>
+        <filter token="${co.prj.bin.token}" value="${co.prj.bin}"/>
+        <filter token="${co.prj.description.token}" value="${co.prj.description}"/>
+        <filter token="${co.prj.description.debian.token}" value="${co.prj.description.debian}"/>
+        <filter token="${co.prj.version.spec.token}" value="${co.prj.version.spec}"/>
+        <filter token="${co.prj.version.impl.token}" value="${co.prj.version.impl}"/>
+        <filter token="${co.prj.version.release.token}" value="${co.prj.version.release}"/>
+        <!-- ### ext ###-->
+        <filter token="${parent.url.token}" value="${parent.url}"/>
+        <filter token="${parent.prj.token}" value="${parent.prj}"/>
+        <filter token="${parent.prj.binary.token}" value="${parent.prj.binary}"/>
+        <filter token="${parent.prj.version.spec.token}" value="${parent.prj.version.spec}"/>
+        <filter token="${parent.prj.version.impl.token}" value="${parent.prj.version.impl}"/>
+    <!-- #### -->
+    <!-- KERNEL -->
+        <filter token="${co.prj.os.ei.kernel.jar.url.token}" value="${co.prj.os.ei.kernel.jar.url}"/>
+        <filter token="${co.prj.os.ei.kernel.version.spec.token}" value="${co.prj.os.ei.kernel.version.spec}"/>
+        <filter token="${co.prj.os.ei.kernel.version.impl.token}" value="${co.prj.os.ei.kernel.version.impl}"/>
+        <filter token="${co.prj.os.ei.kernel.token}" value="${co.prj.os.ei.kernel}"/>
+        <filter token="${co.prj.os.ei.kernel.vendor.id.token}" value="${co.prj.os.ei.kernel.vendor.id}"/>
+<!-- NATIVE -->
+        <filter token="${co.prj.os.ei.native.jar.url.token}" value="${co.prj.os.ei.native.jar.url}"/>
+        <filter token="${co.prj.os.ei.native.version.spec.token}" value="${co.prj.os.ei.native.version.spec}"/>
+        <filter token="${co.prj.os.ei.native.version.impl.token}" value="${co.prj.os.ei.native.version.impl}"/>
+        <filter token="${co.prj.os.ei.native.token}" value="${co.prj.os.ei.native}"/>
+        <filter token="${co.prj.os.ei.native.vendor.id.token}" value="${co.prj.os.ei.native.vendor.id}"/>
+<!-- LIB -->
+        <filter token="${co.prj.os.ei.lib.jar.url.token}" value="${co.prj.os.ei.lib.jar.url}"/>
+        <filter token="${co.prj.os.ei.lib.version.spec.token}" value="${co.prj.os.ei.lib.version.spec}"/>
+        <filter token="${co.prj.os.ei.lib.version.impl.token}" value="${co.prj.os.ei.lib.version.impl}"/>
+        <filter token="${co.prj.os.ei.lib.token}" value="${co.prj.os.ei.lib}"/>
+        <filter token="${co.prj.os.ei.lib.vendor.id.token}" value="${co.prj.os.ei.lib.vendor.id}"/>
+    <!-- BIN -->
+        <filter token="${co.prj.os.ei.bin.jar.url.token}" value="${co.prj.os.ei.bin.jar.url}"/>
+        <filter token="${co.prj.os.ei.bin.version.spec.token}" value="${co.prj.os.ei.bin.version.spec}"/>
+        <filter token="${co.prj.os.ei.bin.version.impl.token}" value="${co.prj.os.ei.bin.version.impl}"/>
+        <filter token="${co.prj.os.ei.bin.token}" value="${co.prj.os.ei.bin}"/>
+        <filter token="${co.prj.os.ei.bin.vendor.id.token}" value="${co.prj.os.ei.bin.vendor.id}"/>
+    <!-- PROPS -->
+        <filter token="${co.prj.os.ei.props.jar.url.token}" value="${co.prj.os.ei.props.jar.url}"/>
+        <filter token="${co.prj.os.ei.props.version.spec.token}" value="${co.prj.os.ei.props.version.spec}"/>
+        <filter token="${co.prj.os.ei.props.version.impl.token}" value="${co.prj.os.ei.props.version.impl}"/>
+        <filter token="${co.prj.os.ei.props.token}" value="${co.prj.os.ei.props}"/>
+        <!-- EXTENSIONS INSTALLER -->
+        <filter token="${co.prj.os.ei.props.vendor.id.token}" value="${co.prj.os.ei.props.vendor.id}"/>
+        <filter token="${co.prj.os.ei.useSystemExtensionsPaths.token}" value="${co.prj.os.ei.useSystemExtensionsPaths}"/>
+        <filter token="${co.prj.os.ei.extNatives.token}" value="${co.prj.os.ei.extNatives}"/>
+        <filter token="${co.prj.os.ei.extPathURL.token}" value="${co.prj.os.ei.extPathURL}"/>
+        <filter token="${co.prj.os.ei.extJars.token}" value="${co.prj.os.ei.extJars}"/>
+        <filter token="${co.prj.os.ei.extInstallerJar.token}" value="${co.prj.os.ei.extInstallerJar}"/>
+        <filter token="${co.prj.os.ei.appletInstallerURL.token}" value="${co.prj.os.ei.appletInstallerURL}"/>
+        <filter token="${co.prj.os.ei.appName.token}" value="${co.prj.os.ei.appName}"/>
+    <!-- END EXTENSIONS /-->
+        <filter token="${co.prj.stamp.today.token}" value="${co.prj.stamp.today}"/>
+        <filter token="${co.prj.stamp.today.rpm.token}" value="${co.prj.stamp.today.rpm}"/>
+        <filter token="${co.prj.screen.one.url.token}" value="${co.prj.screen.one.url}"/>
+        <filter token="${co.prj.screen.small.one.url.token}" value="${co.prj.screen.small.one.url}"/>
+        <filter token="${co.prj.screen.two.url.token}" value="${co.prj.screen.two.url}"/>
+        <filter token="${co.prj.screen.small.two.url.token}" value="${co.prj.screen.small.two.url}"/>
+    </filterset>
+
+    <!-- end NOTICE //-->
+
+    <property name="src" location="src"/>
+
+    <property name="src.all" location="${src}/all"/>
+
+    <property name="src.os" location="${src}/${co.prj.os}"/>
+
+    <property name="bin" location="bin"/>
+    
+    <property name="lib" location="lib"/>
+    
+    <property name="lib.all" location="${lib}/all"/>
+    
+    <property name="lib.os" location="${lib}/${co.prj.os}"/>
+    
+    <property name="lib.os.all" location="${lib.os}/all"/>
+    
+    <property name="lib.os.arch" location="${lib.os}/${co.prj.os.arch}"/>
+    
+    <property name="dist-root" location="dist"/>
+    
+    <property name="dist.os" location="${dist-root}/${co.prj.os}"/>
+    
+    <property name="dist" location="${dist.os}/applet"/>
+    
+    <property name="dist.unsigned" location="${dist.os}/unsigned"/>
+    
+    <property name="dist.extension" location="${dist.os}/extension"/>
+    
+    <property name="resources.dir" location="resources"/>
+    
+    <property name="resources.all.dir" location="${resources.dir}/all"/>
+    
+    <property name="resources.os.dir" location="${resources.dir}/${co.prj.os}"/>
+    
+    <property name="resources.os.all.dir" location="${resources.os.dir}/all"/>
+    
+    <property name="resources.os.arch.dir" location="${resources.os.dir}/${co.prj.os.arch}"/>
+    
+    <property name="resources.props.dir" location="${resources.dir}/properties"/>
+    
+    <property name="resources.props.all.dir" location="${resources.props.dir}/all"/>
+    
+    <property name="resources.props.os.dir" location="${resources.props.dir}/${co.prj.os}"/>
+    
+    <property name="resources.props.os.all.dir" location="${resources.props.os.dir}/all"/>
+    
+    <property name="resources.props.os.arch.dir" location="${resources.props.os.dir}/${co.prj.os.arch}"/>
+    
+    <property name="nativeLib.os.all.dir" location="${resources.props.os.all.dir}/natives"/>
+    
+    <property name="nativeLib.os.arch.dir" location="${resources.props.os.arch.dir}/natives"/>
+    
+    
+    
+    <!-- Our products.  Signed and unsigned JAR, and html -->    <!-- DEFINE the extension-kernel executable bundle to use the DO-jar-extension target    It will be merged in the extension-kernel.jarfile    A new Manifest file replaces the bundle kernel with versioning information-->
+    <property name="extension-bundle.jarfile" value="lib-sf3jswing-jxakernel-${co.prj.os}-${co.prj.os.arch}.jar"/>
+    <property name="Manifest-extension-kernel.file" value=".Manifest-ext-kernel-${co.prj.os}-${co.prj.os.arch}"/>
+
+    <property name="policy.file" value="JavaSecurityPolicy"/>
+    
+    <property name="Manifest.file" value=".Manifest-${co.prj.os}-${co.prj.os.arch}"/>
+    
+    <property name="Manifest-extension-native.file" value=".Manifest-ext-native-${co.prj.os}-${co.prj.os.arch}"/>
+
+    <property name="Manifest-extension-lib.file" value=".Manifest-ext-lib-${co.prj.os}-${co.prj.os.arch}"/>
+
+    <property name="Manifest-extension-props.file" value=".Manifest-ext-props-${co.prj.os}-${co.prj.os.arch}"/>
+    
+    <property name="jarfile" value="${co.prj}-${co.prj.os}-${co.prj.os.arch}.jar"/>
+    
+    <property name="signed.jarfile" value="${co.prj}-${co.prj.os}-${co.prj.os.arch}_signed.jar"/>
+    
+    <property name="extension-jarfile" value="${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext.jar"/>
+
+    <property name="extension-signed.jarfile" value="${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext_signed.jar"/>
+
+    <property name="extension-lib-jarfile" value="${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib.jar"/>
+
+    <property name="extension-lib-signed.jarfile" value="${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar"/>
+
+    <property name="extension-props-jarfile" value="${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props.jar"/>
+    
+    <property name="extension-props-signed.jarfile" value="${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar"/>
+    
+    <property name="extension-native-jarfile" value="${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native.jar"/>
+    
+    <property name="extension-native-signed.jarfile" value="${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar"/>
+    <property name="extension-kernel-jarfile" value="${parent.prj}-${co.prj.os}-${co.prj.os.arch}-ext-kernel.jar"/>
+    <property name="extension-kernel-signed.jarfile" value="${parent.prj}-${co.prj.os}-${co.prj.os.arch}-ext-kernel_signed.jar"/>
+    
+    <property name="html.file" value="${co.prj}-${co.prj.os}-${co.prj.os.arch}.html"/>
+    
+    <property name="run.file" value=".run-${co.prj}-${co.prj.os}-${co.prj.os.arch}"/>
+
+    <property name="jnlp.all.file" value="${co.prj}.jnlp"/>
+    <property name="jnlp.file" value="${co.prj}-${co.prj.os}-${co.prj.os.arch}.jnlp"/>
+    <property name="jnlp-extension.all.file" value="${co.prj}-ext.jnlp"/>
+    <property name="jnlp-extension.file" value="${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext.jnlp"/>
+    
+    
+    <property name="compile.debug" value="true"/>
+    
+    
+    <!-- TARBALL files to include in the tarball -->
+    <property name="tar" value="${co.prj}-${co.prj.version.impl}"/>
+    <property name="tar.dir" location="${dist-root}/tarball"/>
+    <fileset id="linux-package-build-files" dir="${basedir}">
+        <include name="debian.*"/>
+        <include name="*.spec"/>
+        <include name="*.dsc"/>
+        <include name="*.changes"/>
+    </fileset>
+    <tarfileset id="tar.files" dir="${basedir}" prefix="${tar}/">
+        <exclude name="**/*#*"/>
+        <exclude name="**/.*"/>
+        <exclude name="bin/**"/>
+        <exclude name="dist/**"/>
+        <exclude name="lib/**/lib-sf3jswing*.jar"/>
+        <exclude name="**/*~"/>
+        <exclude name="resources/**/sf3jswing*.jar"/>
+    </tarfileset>
+    
+    <!-- All JARs in the lib directory are merged into the final JAR file.  See the "jar" target
+	     if you don't want to do that. -->
+
+        
+    <fileset id="extension-bundle.jars" dir="${lib}">
+        <include name="**/${extension-bundle.jarfile}"/>
+    </fileset>
+    
+    <fileset id="lib.all.jars" dir="${lib.all}">
+        
+        <include name="**/*.jar"/>
+        <exclude name="**/${extension-bundle.jarfile}"/>
+        
+    </fileset>
+    
+    <fileset id="lib.os.all.jars" dir="${lib.os.all}">
+        
+        <include name="**/*.jar"/>
+        <exclude name="**/${extension-bundle.jarfile}"/>
+        
+    </fileset>
+    
+    <fileset id="lib.os.arch.jars" dir="${lib.os.arch}">
+        
+        <include name="**/*.jar"/>
+        <exclude name="**/${extension-bundle.jarfile}"/>
+        
+    </fileset>
+    
+    <!-- This fileset defines the final products that get copied or FTP'ed to the deployment location. -->
+
+    <fileset id="installed.files" dir="${dist.unsigned}">
+        <include name="**/*"/>
+
+    </fileset>
+    
+    <fileset id="resources.all.jars" dir="${resources.all.dir}">
+        
+        <include name="**/*.jar"/>
+        
+    </fileset>
+    
+    <fileset id="resources.os.all.jars" dir="${resources.os.all.dir}">
+        
+        <include name="**/*.jar"/>
+        
+    </fileset>
+    
+    <fileset id="resources.os.arch.jars" dir="${resources.os.arch.dir}">
+        
+        <include name="**/*.jar"/>
+        
+    </fileset>
+    
+    <fileset id="resources.props.all.files" dir="${resources.props.all.dir}">
+        
+        <include name="**/*.*"/>
+        
+    </fileset>
+    
+    <fileset id="resources.props.os.all.files" dir="${resources.props.os.all.dir}">
+        
+        <include name="**/*.*"/>
+        
+        <exclude name="natives/**"/>
+        
+    </fileset>
+    
+    <fileset id="resources.props.os.arch.files" dir="${resources.props.os.arch.dir}">
+        <exclude name="net/sf/jiga/xtended/kernel/extension.properties"/>
+        
+        <include name="**/*.*"/>
+        <exclude name="natives/**"/>
+        
+    </fileset>
+    
+    <fileset id="nativeLib.os.all.files" dir="${nativeLib.os.all.dir}">
+        
+         <include name="**/*.*"/>
+        
+    </fileset>
+    
+    <fileset id="nativeLib.os.arch.files" dir="${nativeLib.os.arch.dir}">
+        
+         <include name="**/*.*"/>
+        
+    </fileset>
+    
+        
+    <dirset id="src.all.dirs" dir="${src.all}">
+        
+        <exclude name="**/.*"/>
+
+    </dirset>
+
+    <dirset id="src.os.dirs" dir="${src.os}">
+
+        <exclude name="**/.*"/>
+
+    </dirset>
+    <patternset id="license.files">
+        <include name="NOTICE"/>
+        <include name="LICENSE"/>
+    </patternset>  
+    <target name="filterLicenseFiles" description="annotates LICENSE files with proper company and dates">
+        <copy overwrite="true" todir=".">
+            <fileset dir="${resources.all.dir}">
+                <patternset refid="license.files"/>
+            </fileset>
+            <filterset refid="filtertokens"/>
+        </copy>
+    </target>
+    
+    <path id="src.path">
+        <dirset refid="src.all.dirs"/>
+        <dirset refid="src.os.dirs"/>
+    </path>
+
+    <path id="lib.path">
+        
+        <fileset refid="lib.all.jars"/>
+        
+        <fileset refid="lib.os.all.jars"/>
+        
+        <fileset refid="lib.os.arch.jars"/>
+        
+        <fileset refid="resources.all.jars"/>
+        
+        <fileset refid="resources.os.all.jars"/>
+        
+        <fileset refid="resources.os.arch.jars"/>
+        <fileset refid="extension-bundle.jars"/>
+        
+        
+    </path>
+
+    <target name="compile" description="Compile code">
+
+        <mkdir dir="${src.all}"/>
+
+        <mkdir dir="${src.os}"/>
+
+        <mkdir dir="${bin}"/>
+
+        <mkdir dir="${lib.all}"/>
+
+        <mkdir dir="${lib.os.all}"/>
+
+        <mkdir dir="${lib.os.arch}"/>
+
+        <mkdir dir="${resources.all.dir}"/>
+
+        <mkdir dir="${resources.os.all.dir}"/>
+
+        <mkdir dir="${resources.os.arch.dir}"/>
+
+        <javac nowarn="on"
+               proceed="true"
+               destdir="${bin}"
+               source="1.5" target="1.5"
+               includeAntRuntime="no"
+               classpathref="lib.path"
+               debug="${compile.debug}"
+               deprecation="true"
+               fork="false" failonerror="true"><!--compilerarg value="-d32"//-->
+            <src>
+                <path refid="src.path"/>
+            </src>
+            <!--compilerarg value="-Xlint:unchecked"></compilerarg//-->
+
+        </javac>
+
+    </target>
+
+    <target name="build-jar" depends="compile, filterLicenseFiles" description="Build jar">
+        
+        <mkdir dir="${dist}"/>
+        <!--mkdir dir="${dist}/api"/-->
+        
+        <mkdir dir="${dist.unsigned}"/>
+        <!--mkdir dir="${dist.unsigned}/api"/-->
+        
+        <mkdir dir="${resources.props.all.dir}"/>
+        
+        <mkdir dir="${resources.props.os.all.dir}"/>
+        
+        <mkdir dir="${resources.props.os.arch.dir}"/>
+        
+        <mkdir dir="${nativeLib.os.all.dir}"/>
+        
+        <mkdir dir="${nativeLib.os.arch.dir}"/>
+        
+        <!-- ******* resources files to ${dist} directory ***** -->
+        
+        <copy overwrite="true" todir="${dist}/api">
+            
+            <!--fileset refid="resources.all.jars"/>
+            
+            <fileset refid="resources.os.all.jars"//-->
+            
+            <fileset refid="resources.os.arch.jars"/>
+            <!--mapper description="copy all base project api files to dist/...api/" type="glob" from="${parent.prj}*" to="${parent.prj}*"/-->
+        </copy>
+        <copy overwrite="true" todir="${dist}">
+            <fileset refid="resources.all.jars"/>
+            <fileset refid="resources.os.all.jars"/>
+            <!--fileset refid="resources.os.arch.jars"//-->            
+            <!--mapper description="copy other .jar to dist" type="regexp" from="^[^(${parent.prj})](.*)" to="\0"//-->
+            
+        </copy>
+        
+        <copy overwrite="true" file="Manifest" tofile="${Manifest.file}">
+            <filterset refid="filtertokens"/>
+        </copy>
+    
+        <jar jarfile="${dist.unsigned}/${jarfile}"
+             basedir="${bin}"
+             manifest="${Manifest.file}"
+             update="true"
+             compress="true">
+            <metainf dir=".">
+                <patternset refid="license.files"/>
+            </metainf>
+        </jar>
+
+        <copy overwrite="true" file="Manifest-ext-lib" tofile="${Manifest-extension-lib.file}">
+            <filterset refid="filtertokens"/>
+        </copy>
+
+        <jar jarfile="${dist.unsigned}/${extension-lib-jarfile}"
+             manifest="${Manifest-extension-lib.file}"
+             update="true"
+             compress="true">
+            <metainf dir=".">
+                <patternset refid="license.files"/>
+            </metainf>
+
+            <!-- Merge libraries into final jar file -->
+
+            <zipgroupfileset refid="lib.all.jars"/>
+
+            <zipgroupfileset refid="lib.os.all.jars"/>
+
+            <zipgroupfileset refid="lib.os.arch.jars"/>
+
+        </jar>
+        <copy overwrite="true" file="Manifest-ext-props" tofile="${Manifest-extension-props.file}">
+            <filterset refid="filtertokens"/>
+        </copy>
+
+        <jar jarfile="${dist.unsigned}/${extension-props-jarfile}"
+             
+             manifest="${Manifest-extension-props.file}"
+             
+             update="true"
+             
+             compress="true">
+            <metainf dir=".">
+                <patternset refid="license.files"/>
+            </metainf>
+            
+            <!-- ****** zip resources ******  -->
+
+            <fileset refid="resources.props.all.files"/>
+            
+            <fileset refid="resources.props.os.all.files"/>
+            
+            <fileset refid="resources.props.os.arch.files"/>
+            
+        </jar>
+
+        <copy overwrite="true" file="Manifest-ext-native" tofile="${Manifest-extension-native.file}">
+            <filterset refid="filtertokens"/>
+        </copy>
+
+        <jar jarfile="${dist.unsigned}/${extension-native-jarfile}"
+             
+             manifest="${Manifest-extension-native.file}"
+             
+             update="true"
+             
+             compress="true">
+            <metainf dir=".">
+                <patternset refid="license.files"/>
+            </metainf>
+            
+            <!-- Merge libraries into final jar file -->
+
+            <fileset refid="nativeLib.os.all.files"/>
+            
+            <fileset refid="nativeLib.os.arch.files"/>
+            
+        </jar>
+        
+        <copy overwrite="true" file="${resources.all.dir}/extension.properties" tofile="${resources.props.os.arch.dir}/net/sf/jiga/xtended/kernel/extension.properties">
+            <filterset refid="filtertokens"/>
+        </copy>
+        <copy overwrite="true" file="${lib.all}/lib-Manifest-ext-kernel" tofile="${Manifest-extension-kernel.file}">
+            <filterset refid="filtertokens"/>
+        </copy>
+        <jar jarfile="${dist.unsigned}/${extension-kernel-jarfile}" manifest="${Manifest-extension-kernel.file}" filesetmanifest="merge"
+             
+             update="true"
+             
+             compress="true">
+            <fileset dir="${resources.props.os.arch.dir}" includes="net/sf/jiga/xtended/kernel/extension.properties"/>
+            <zipfileset src="${lib.os.arch}/${extension-bundle.jarfile}" excludes="net/sf/jiga/xtended/kernel/extension.properties"></zipfileset>
+        </jar>
+    </target>
+    
+    <target name="build-jar-extension" depends="build-jar" description="Build extension jars">
+        
+        <mkdir dir="${dist.extension}"/>
+        
+        <copy overwrite="true" file="${resources.props.all.dir}/ext.jnlp" tofile="${dist.extension}/${jnlp-extension.file}">
+            <filterset refid="filtertokens"/>
+        </copy>
+        <copy overwrite="true" file="${resources.props.all.dir}/ext-all.jnlp" tofile="${dist.extension}/${jnlp-extension.all.file}">
+            <filterset refid="filtertokens"/>
+        </copy>
+        <copy overwrite="true" todir="${dist.extension}">
+            
+            <fileset refid="resources.all.jars"/>
+            
+            <fileset refid="resources.os.all.jars"/>
+            
+            <fileset refid="resources.os.arch.jars"/>
+            <mapper type="glob" from="${parent.prj}*" to="${parent.prj}*"/>
+        </copy>
+        <copy overwrite="true" todir="${dist}">
+            <fileset refid="resources.all.jars"/>
+            <fileset refid="resources.os.all.jars"/>
+            <fileset refid="resources.os.arch.jars"/>
+            <mapper type="regexp" from="^[^(${parent.prj})](.*)" to="\0"/>
+            
+        </copy>
+        
+    </target>
+    
+    
+    
+    <!-- See if we already have a private key for this user in ~/.keystore.  -->
+
+    <!-- Note: This tests for an output string of "does not exist", this
+             assumes the locale is set to English and will not work for Spanish
+    or other languages. -->
+
+    <target name="checkforkey" depends="build-jar" description="Generate private key">
+        
+        <exec executable="/usr/bin/keytool" os="Mac OS X">
+            
+            <redirector outputproperty="keytool.findalias.out"/>
+            
+            <arg value="-list"/>
+            
+            <arg value="-alias"/>
+            
+            <arg value="${username}"/>
+            
+            <arg value="-storepass"/>
+            
+            <arg value="${storepass}"/>
+            <arg value="-storetype"/>
+            <arg value="${keystore-type}"/>
+            <arg value="-keystore"/>
+            <arg value="${keystore}"/>
+            
+        </exec>
+        
+        <exec executable="${java.home}/../bin/keytool.exe" os="Windows">
+            
+            <redirector outputproperty="keytool.findalias.out"/>
+            
+            <arg value="-list"/>
+            
+            <arg value="-alias"/>
+            
+            <arg value="${username}"/>
+            
+            <arg value="-storepass"/>
+            
+            <arg value="${storepass}"/>
+            <arg value="-storetype"/>
+            <arg value="${keystore-type}"/>
+            <arg value="-keystore"/>
+            <arg value="${keystore}"/>
+            
+        </exec>
+        
+        <exec executable="keytool" os="Linux">
+            
+            <redirector outputproperty="keytool.findalias.out"/>
+            
+            <arg value="-list"/>
+            
+            <arg value="-alias"/>
+            
+            <arg value="${username}"/>
+            
+            <arg value="-storepass"/>
+            
+            <arg value="${storepass}"/>
+            <arg value="-storetype"/>
+            <arg value="${keystore-type}"/>
+            <arg value="-keystore"/>
+            <arg value="${keystore}"/>
+            
+        </exec>
+        
+        <condition property="createPrivateKey">
+            <or>
+                <contains string="${keytool.findalias.out}" substring="introuvable"/>
+                <contains string="${keytool.findalias.out}" substring="n'existe pas"/>
+                <contains string="${keytool.findalias.out}" substring="does not exist"/>
+            </or>
+        </condition>
+        
+    </target>
+    
+    
+    
+    <!-- If createPrivateKey is set we need to call genkey.  -->
+
+    <target name="genkey" depends="checkforkey" if="createPrivateKey">
+        
+        <genkey validity="3650" alias="${username}" storepass="${storepass}" keystore="${keystore}" storetype="${keystore-type}">
+            
+            <dname>
+                
+                <param name="CN" value="${username}"/>
+                
+                <param name="OU" value="${co.prj}"/>
+                
+                <param name="O"  value="${company}"/>
+                
+                <param name="C"  value="${company.country.id}"/>
+                
+            </dname>
+            
+        </genkey>
+        
+    </target>
+    
+    
+    
+    <!-- Sign the JAR with the key generated above. -->
+
+    <target name="jar" depends="genkey" description="Sign JAR file">
+        
+        <!--mkdir dir="${dist}/api"/-->
+        <signjar jar="${dist.unsigned}/${jarfile}"
+                 
+                 alias="${username}"
+                 
+                 storepass="${storepass}"
+                 
+                 keystore="${keystore}" storetype="${keystore-type}"
+                 
+                 signedjar="${dist}/${signed.jarfile}"/>
+        
+        <signjar jar="${dist.unsigned}/${extension-lib-jarfile}"
+                 alias="${username}"
+                 storepass="${storepass}"
+                 keystore="${keystore}" storetype="${keystore-type}"
+                 signedjar="${dist}/${extension-lib-signed.jarfile}"/>
+        <signjar jar="${dist.unsigned}/${extension-props-jarfile}"
+                 alias="${username}"
+                 storepass="${storepass}"
+                 keystore="${keystore}" storetype="${keystore-type}"
+                 signedjar="${dist}/${extension-props-signed.jarfile}"/>
+        <signjar jar="${dist.unsigned}/${extension-native-jarfile}"
+                 
+                 alias="${username}"
+                 
+                 storepass="${storepass}"
+                 
+                 keystore="${keystore}" storetype="${keystore-type}"
+                 
+                 signedjar="${dist}/${extension-native-signed.jarfile}"/>
+        <signjar jar="${dist.unsigned}/${extension-kernel-jarfile}" alias="${username}" storepass="${storepass}" keystore="${keystore}" storetype="${keystore-type}" signedjar="${dist}/${extension-kernel-signed.jarfile}"/>
+        
+        
+        
+    </target>
+    
+    <target name="DO-jar-extension" depends="clean, jar, build-jar-extension" description="Sign JAR file">
+        <copy todir="${dist.extension}" file="${dist}/${extension-lib-signed.jarfile}"/>
+        <copy todir="${dist.extension}" file="${dist}/${extension-props-signed.jarfile}"/>
+        <copy todir="${dist.extension}" file="${dist}/${extension-native-signed.jarfile}"/>
+        <!--mkdir dir="${dist.extension}/api"/-->
+        <copy todir="${dist.extension}" file="${dist}/${extension-kernel-signed.jarfile}"/>
+        <copy tofile="${dist.extension}/${extension-signed.jarfile}" file="${dist}/${signed.jarfile}"/>
+        <checksum algorithm="MD5">
+            <fileset dir="${dist.extension}">
+                <exclude name="**/*.MD5"/>
+            </fileset>
+        </checksum>
+    </target>
+    <target name="clean" description="Remove build and dist directories">
+        
+        <delete dir="${bin}"/>
+        
+        <delete dir="${dist.os}"/>
+        
+    </target>
+    
+    <target name="DO-clean-root" depends="clean" description="Remove all build and dist directories">
+        <delete dir="${dist-root}"/>
+    </target>
+    
+    <target name="javadoc" description="Generate javadoc">
+        <delete dir="${dist-root}/doc"/>        
+        <javadoc verbose="false" failonerror="false" docencoding="UTF-8" windowtitle="JavaDoc : ${co.prj}" classpathref="lib.path"
+                 
+                 use="true" author="true" private="false"
+                 additionalparam=""
+                 
+                 sourcepathref="src.path"
+                 
+                 destdir="${dist-root}/doc"
+                 
+        >
+            
+            <link href="http://sf3jswing.sourceforge.net/doc-kernel/"/>
+            <arg line="-tag default:cmf:'Default init. value :'"/>
+            
+            <arg line="-tag discussion:a:'Discussion topic :'"/>
+            
+            <doctitle><![CDATA[${company}/<a target='_blank' href='${co.prj.url}'>${co.prj} (${co.prj.version.spec})</a>]]>
+
+            </doctitle>
+            
+            <bottom><![CDATA[
+            <i>rev. ${co.prj.version.impl} - Copyright &#169; ${co.prj.years} <a target='_blank' href='${company.url}'>${company}</a>
+
+            All rights reserved under the ${co.prj.license} terms and conditions. <b>Free your project !</b></i>
+            <br>This software includes the LightWeight Java Gaming Library API - <a target='_blank' href='http://www.lwjgl.org'>LWJGL.org</a>.
+            <hr><center><a target='_blank'href='http://sourceforge.net'><img src='http://sflogo.sourceforge.net/sflogo.php?group_id=173003&amp;type=4' width='125' height='37' border='0' alt='SourceForge.net Logo'/></a></center>]]>
+
+            </bottom>
+            
+        </javadoc>
+        
+    </target>
+    
+    <target name="DO-src-pack" depends="filterLicenseFiles" description="Build source tar.gz">
+        <mkdir dir="${tar.dir}"/>
+        <copy overwrite="true" todir="${tar.dir}">
+            <filterset refid="filtertokens"/>
+            <fileset refid="linux-package-build-files"/>        
+            <fileset dir="${resources.all.dir}">
+                <patternset refid="license.files"/>
+            </fileset>
+            <filterset refid="filtertokens"/>
+        </copy>
+        <tar longfile="gnu"
+             compression="gzip"
+             destfile="${tar.dir}/${tar}.tar.gz">
+            <tarfileset refid="tar.files"/>
+        </tar>
+    </target>
+    <target name="DO-gen-native-headers" depends="build-jar"  description="Generate native (C++) header files in src/co.prj.os/native">
+        <exec os="Mac OS X" dir="${bin}" executable="/usr/bin/javah">
+            <arg line="-d '../src/${co.prj.os}/native' ${co.prj.os.gen.native.headers}"/>               
+        </exec>
+    </target>
+</project>
+

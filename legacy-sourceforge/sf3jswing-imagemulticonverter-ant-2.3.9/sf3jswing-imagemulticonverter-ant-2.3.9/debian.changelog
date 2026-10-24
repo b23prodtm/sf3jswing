@@ -1,0 +1,22 @@
+@ANTPROJECTNAME@ (@PROJECTVERSIONIMPL@-@PROJECTVERSIONRELEASE@) stable; urgency=low
+
+  * ImagePluginFilter
+  * Native LookAndFeel
+
+ -- @COMPANYNAME@ <@COMPANYEMAIL@>  @PROJECTSTAMPTODAY@
+
+sf3jswing-imagemulticonverter-ant (2.3.8-00) stable; urgency=low
+
+  * Update to 4.6 specs
+  * MediaTracker
+    image reference holder issue (removeImage) 
+  * Convert directories
+  * App launch updated to fit JXA 4.4 spec
+
+ -- b23:production GNU/GPL <b23prodtm@users.sourceforge.net>  Sun, 21 Jul 2013 20:44:50 +0200
+
+sf3jswing-imagemulticonverter-ant (2.3.4-03) stable; urgency=low
+
+  * Initial Release
+
+ -- b23:production GNU/GPL <b23prodtm@users.sourceforge.net>  Fri, 01 Jan 2010 04:08:13 +0100

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.ant.freeform</type>
+    <configuration>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
+            <name>sf3jswing-jxatest-unit</name>
+        </general-data>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/2">
+            <!-- Do not use Project Properties customizer when editing this file manually. -->
+            <name>sf3jswing-jxatest-unit</name>
+            <properties/>
+            <folders>
+                <source-folder>
+                    <label>sf3jswing-jxatest-unit</label>
+                    <location>.</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>src\all</label>
+                    <type>java</type>
+                    <location>src/all</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+            </folders>
+            <ide-actions>
+                <action name="build">
+                    <script>nbproject/nbjdk.xml</script>
+                    <target>compile</target>
+                </action>
+                <action name="clean">
+                    <script>nbproject/nbjdk.xml</script>
+                    <target>clean</target>
+                </action>
+                <action name="javadoc">
+                    <script>nbproject/nbjdk.xml</script>
+                    <target>javadoc</target>
+                </action>
+                <action name="run">
+                    <script>nbproject/nbjdk.xml</script>
+                    <target>run-test</target>
+                </action>
+                <action name="rebuild">
+                    <script>nbproject/nbjdk.xml</script>
+                    <target>clean</target>
+                    <target>compile</target>
+                </action>
+                <action name="debug">
+                    <script>nbproject/ide-file-targets.xml</script>
+                    <target>debug-nb</target>
+                </action>
+            </ide-actions>
+            <export>
+                <type>jar</type>
+                <location>dist/Windows/applet/sf3jswing-jxatest-unit-Windows-x86-ext-lib_signed.jar</location>
+                <script>nbproject/nbjdk.xml</script>
+                <build-target>compile</build-target>
+            </export>
+            <export>
+                <type>jar</type>
+                <location>dist/Windows/applet/sf3jswing-jxatest-unit-Windows-x86-ext-native_signed.jar</location>
+                <script>nbproject/nbjdk.xml</script>
+                <build-target>compile</build-target>
+            </export>
+            <export>
+                <type>jar</type>
+                <location>dist/Windows/applet/sf3jswing-jxatest-unit-Windows-x86-ext-props_signed.jar</location>
+                <script>nbproject/nbjdk.xml</script>
+                <build-target>compile</build-target>
+            </export>
+            <export>
+                <type>jar</type>
+                <location>dist/Windows/applet/sf3jswing-jxatest-unit-Windows-x86_signed.jar</location>
+                <script>nbproject/nbjdk.xml</script>
+                <build-target>compile</build-target>
+            </export>
+            <export>
+                <type>jar</type>
+                <location>dist/Windows/applet/api/sf3jswing-jigaxtended-Windows-x86-ext-kernel_signed.jar</location>
+                <script>nbproject/nbjdk.xml</script>
+                <build-target>compile</build-target>
+            </export>
+            <export>
+                <type>jar</type>
+                <location>dist/Windows/applet/api/sf3jswing-jigaxtended-Windows-x86-ext-lib_signed.jar</location>
+                <script>nbproject/nbjdk.xml</script>
+                <build-target>compile</build-target>
+            </export>
+            <export>
+                <type>jar</type>
+                <location>dist/Windows/applet/api/sf3jswing-jigaxtended-Windows-x86-ext-native_signed.jar</location>
+                <script>nbproject/nbjdk.xml</script>
+                <build-target>compile</build-target>
+            </export>
+            <export>
+                <type>jar</type>
+                <location>dist/Windows/applet/api/sf3jswing-jigaxtended-Windows-x86-ext-props_signed.jar</location>
+                <script>nbproject/nbjdk.xml</script>
+                <build-target>compile</build-target>
+            </export>
+            <export>
+                <type>jar</type>
+                <location>dist/Windows/applet/api/sf3jswing-jigaxtended-Windows-x86-ext_signed.jar</location>
+                <script>nbproject/nbjdk.xml</script>
+                <build-target>compile</build-target>
+            </export>
+            <view>
+                <items>
+                    <source-folder style="packages">
+                        <label>src\all</label>
+                        <location>src/all</location>
+                    </source-folder>
+                    <source-file>
+                        <location>build.xml</location>
+                    </source-file>
+                </items>
+                <context-menu>
+                    <ide-action name="build"/>
+                    <ide-action name="rebuild"/>
+                    <ide-action name="clean"/>
+                    <ide-action name="javadoc"/>
+                    <ide-action name="run"/>
+                    <ide-action name="debug"/>
+                    <action>
+                        <label>DO-src-pack</label>
+                        <target>DO-src-pack</target>
+                    </action>
+                </context-menu>
+            </view>
+            <subprojects/>
+        </general-data>
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/1">
+            <compilation-unit>
+                <package-root>src/all</package-root>
+                <classpath mode="compile">resources/Mac/ppc/sf3jswing-jigaxtended-Mac-ppc-ext-lib_signed.jar:resources/Mac/ppc/sf3jswing-jigaxtended-Mac-ppc-ext_signed.jar:lib/Mac/ppc/lib-sf3jswing-jxakernel-Mac-ppc.jar:lib/Windows/x86/lib-sf3jswing-jxakernel-Windows-x86.jar:resources/Windows/x86/sf3jswing-jigaxtended-Windows-x86-ext-lib_signed.jar:resources/Windows/x86/sf3jswing-jigaxtended-Windows-x86-ext_signed.jar</classpath>
+                <built-to>dist/Windows/applet/sf3jswing-jxatest-unit-Windows-x86-ext-lib_signed.jar</built-to>
+                <built-to>dist/Windows/applet/sf3jswing-jxatest-unit-Windows-x86-ext-native_signed.jar</built-to>
+                <built-to>dist/Windows/applet/sf3jswing-jxatest-unit-Windows-x86-ext-props_signed.jar</built-to>
+                <built-to>dist/Windows/applet/sf3jswing-jxatest-unit-Windows-x86_signed.jar</built-to>
+                <built-to>dist/Windows/applet/api/sf3jswing-jigaxtended-Windows-x86-ext-kernel_signed.jar</built-to>
+                <built-to>dist/Windows/applet/api/sf3jswing-jigaxtended-Windows-x86-ext-lib_signed.jar</built-to>
+                <built-to>dist/Windows/applet/api/sf3jswing-jigaxtended-Windows-x86-ext-native_signed.jar</built-to>
+                <built-to>dist/Windows/applet/api/sf3jswing-jigaxtended-Windows-x86-ext-props_signed.jar</built-to>
+                <built-to>dist/Windows/applet/api/sf3jswing-jigaxtended-Windows-x86-ext_signed.jar</built-to>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+        </java-data>
+    </configuration>
+</project>
