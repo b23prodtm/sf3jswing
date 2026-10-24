@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.*;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
-import javax.media.jai.PerspectiveTransform;
+import org.eclipse.imagen.PerspectiveTransform;
 import javax.swing.*;
 import net.sf.jiga.xtended.impl.*;
 import net.sf.jiga.xtended.impl.game.*;
@@ -1908,7 +1908,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
     }
 
     /**
-     * Ecrit le nom en bas a gauche de l'écran.
+     * Ecrit le nom en bas a gauche de l'ï¿½cran.
      */
     boolean GLdrawName(RenderingScene context, Color couleur, String name) {
         int font = 3;

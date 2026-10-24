@@ -11,7 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
-import javax.media.jai.PerspectiveTransform;
+import org.eclipse.imagen.PerspectiveTransform;
 import net.sf.jiga.xtended.impl.game.RenderingScene;
 import net.sf.jiga.xtended.kernel.DebugMap;
 import net.sf.jiga.xtended.kernel.Debugger;

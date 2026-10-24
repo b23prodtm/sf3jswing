@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
-import javax.media.jai.GraphicsJAI;
+import org.eclipse.imagen.GraphicsJAI;
 import javax.swing.*;
 import net.sf.jiga.xtended.JXAException;
 import net.sf.jiga.xtended.impl.*;

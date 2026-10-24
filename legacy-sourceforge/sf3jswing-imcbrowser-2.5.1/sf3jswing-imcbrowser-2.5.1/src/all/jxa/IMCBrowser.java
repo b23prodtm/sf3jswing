@@ -123,9 +123,9 @@ import javax.media.Manager;
 import javax.media.control.FormatControl;
 import javax.media.control.FrameGrabbingControl;
 import javax.media.format.VideoFormat;
-import javax.media.jai.JAI;
-import javax.media.jai.LookupTableJAI;
-import javax.media.jai.RenderedOp;
+import org.eclipse.imagen.ImageN;
+import org.eclipse.imagen.LookupTableImageN;
+import org.eclipse.imagen.RenderedOp;
 import javax.media.util.BufferToImage;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -2741,7 +2741,7 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
         }
         SampleModel model = img.getSampleModel();
         /* Setup a standard window-level lookup table. each band has 256 values indexed from 0 to 255*/
-        LookupTableJAI table = null;
+        LookupTableImageN table = null;
         byte[][] tableData = new byte[model.getNumBands()][256];
         for (int i = 0; i < 256; i++) {
             for (int band = 0; band < tableData.length; band++) {
@@ -2757,9 +2757,9 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
         }
         /* Create a LookupTableJAI object to be used with the
          "lookup" operator.hi*/
-        table = new LookupTableJAI(tableData);
+        table = new LookupTableImageN(tableData);
         /* Create an operator to lookup image1.*/
-        return JAI.create("lookup", img, table);
+        return ImageN.create("lookup", img, table);
     }
 
     /**
@@ -2796,7 +2796,7 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
         pb.add(lowValue);
         pb.add(highValue);
         /* Perform the histogram operation. image is kept untouched.*/
-        RenderedOp image2 = JAI.create("histogram", pb, Sprite._getRenderingHints());
+        RenderedOp image2 = ImageN.create("histogram", pb, Sprite._getRenderingHints());
 
         /* Retrieve the histogram.*
          hist = (Histogram) histImage.getProperty("histogram");*/
@@ -2842,7 +2842,7 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
         ParameterBlock pb = new ParameterBlock();
         pb.addSource(img);
         pb.add(CDFnorm);
-        RenderedOp image2 = JAI.create("matchcdf", pb, Sprite._getRenderingHints());
+        RenderedOp image2 = ImageN.create("matchcdf", pb, Sprite._getRenderingHints());
         edit_clearBuffer(img);
         return image2;
     }
@@ -2873,7 +2873,7 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
         ParameterBlock pb = new ParameterBlock();
         pb.addSource(img);
         pb.add(CDFeq);
-        RenderedOp image2 = JAI.create("matchcdf", pb, Sprite._getRenderingHints());
+        RenderedOp image2 = ImageN.create("matchcdf", pb, Sprite._getRenderingHints());
         edit_clearBuffer(img);
         return image2;
     }
