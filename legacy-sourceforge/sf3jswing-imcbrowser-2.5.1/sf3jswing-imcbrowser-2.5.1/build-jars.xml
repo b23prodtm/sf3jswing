@@ -461,7 +461,6 @@
 
         <javac failonerror="true"
                nowarn="on"
-               proceed="true"
                destdir="${bin}"
                source="17" target="17"
                includeAntRuntime="no"

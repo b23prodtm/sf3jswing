@@ -478,9 +478,8 @@ This utility uses the Java Advanced Imaging codecs to make any conversion from t
 
         <mkdir dir="${resources.os.arch.dir}"/>
 
-        <javac nowarn="on"
+        <javac failonerror="true" nowarn="on"
 
-               proceed="true"
 
                destdir="${bin}"
 

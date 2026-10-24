@@ -393,8 +393,7 @@
         <mkdir dir="${resources.all.dir}"/>
         <mkdir dir="${resources.os.all.dir}"/>
         <mkdir dir="${resources.os.arch.dir}"/>
-        <javac nowarn="on"
-               proceed="true"
+        <javac failonerror="true" nowarn="on"
                destdir="${bin}"
                source="17" target="17"
                includeAntRuntime="no"

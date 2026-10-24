@@ -447,7 +447,6 @@
         <mkdir dir="${resources.os.arch.dir}"/>
 
         <javac nowarn="on"
-               proceed="true"
                destdir="${bin}"
                source="17" target="17"
                includeAntRuntime="no"
