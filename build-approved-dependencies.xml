@@ -7,6 +7,8 @@
     <property name="jlayer.version" value="1.0.1"/>
     <property name="jaxb.version" value="2.1.9"/>
     <property name="activation.version" value="1.2.0"/>
+    <property name="jakarta.activation.version" value="2.1.3"/>
+    <property name="angus.activation.version" value="2.0.2"/>
     <property name="openjfx.version" value="17.0.21"/>
     <property name="lwjgl.version" value="2.9.3-jxa"/>
     <property name="lwjgl.release.url"
@@ -219,6 +221,15 @@
         <resolve-central-jar artifact="javax.activation" group-path="com/sun/activation"
                              version="${activation.version}" destination="${lib.all}"
                              sha256="993302b16cd7056f21e779cc577d175a810bb4900ef73cd8fbf2b50f928ba9ce"/>
+    </target>
+
+    <target name="resolve-jakarta-activation">
+        <resolve-central-jar artifact="jakarta.activation-api" group-path="jakarta/activation"
+                             version="${jakarta.activation.version}" destination="${lib.all}"
+                             sha256="01b176d718a169263e78290691fc479977186bcc6b333487325084d6586f4627"/>
+        <resolve-central-jar artifact="angus-activation" group-path="org/eclipse/angus"
+                             version="${angus.activation.version}" destination="${lib.all}"
+                             sha256="6dd3bcffc22bce83b07376a0e2e094e4964a3195d4118fb43e380ef35436cc1e"/>
     </target>
 
     <target name="resolve-openjfx">

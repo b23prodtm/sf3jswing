@@ -441,7 +441,7 @@
     </path>
 
     <target name="compile"
-            depends="resolve-imagen,resolve-fmj,resolve-swingx,resolve-lwjgl,resolve-lwjgl-natives,resolve-jinput,resolve-jlayer,resolve-connectorj,resolve-jaxb,resolve-openjfx"
+            depends="resolve-imagen,resolve-fmj,resolve-swingx,resolve-lwjgl,resolve-lwjgl-natives,resolve-jinput,resolve-jlayer,resolve-connectorj,resolve-jaxb,resolve-openjfx,resolve-jakarta-activation"
             description="Compile code">
 
         <mkdir dir="${src.all}"/>

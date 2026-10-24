@@ -43,11 +43,19 @@ and SHA-256 checked before compilation:
 | LWJGL `v.2.9.3-jxa` release jars and OS native ZIPs | Framework, game, and IMC Browser | BSD-3-Clause |
 | `net.java.jinput:jinput:2.0.10` and `natives-all` | Framework/game controllers | BSD |
 | `javazoom:jlayer:1.0.1` | Historical MP3 decoder dependency | LGPL |
+| `jakarta.activation:jakarta.activation-api:2.1.3` and `org.eclipse.angus:angus-activation:2.0.2` | Framework MIME registry | EDL-1.0 |
 | OpenJFX `17.0.21` (`base`, `graphics`, `controls`, `swing`, `web`, `media`) | IMC Browser JavaFX bridge | GPL-2.0 with Classpath Exception |
 | JAXB API `2.1`, `com.sun.xml.bind:jaxb-impl:2.1.9`, `com.sun.activation:javax.activation:1.2.0` | IMC Browser XML runtime | CDDL/GPL-2.0 with Classpath Exception |
 
 The FMJ artifact contains the JMF-compatible classes used by the browser.
 Actual camera capture and device-specific runtime behavior are not verified.
+Jigaxtended retains generic ImageIO TIFF reader/writer support where an
+ImageIO provider supplies it, but no longer applies the historical JAI-specific
+TIFF metadata/EXIF adjustments. The legacy JDIC tray backend is removed; the
+standard AWT `SystemTray` backend remains and falls back to an in-window notice
+when the desktop tray is unavailable.
+Framework model/image loading uses the kernel's blocking `ThreadWorks` API,
+which does not expose a timeout.
 The game now loads Connector/J 9.7.0 through `com.mysql.cj.jdbc.Driver`;
 database connectivity to the historical remote endpoint has not been tested.
 The game reads its SQL user/password from `SF3JSWING_SQL_USER_RW`,
