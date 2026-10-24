@@ -454,7 +454,7 @@
         <javac nowarn="on"
                proceed="true"
                destdir="${bin}"
-               source="1.5" target="1.5"
+               source="17" target="17"
                includeAntRuntime="no"
                classpathref="lib.path"
                debug="${compile.debug}"
@@ -950,4 +950,3 @@
         </exec>
     </target>
 </project>
-

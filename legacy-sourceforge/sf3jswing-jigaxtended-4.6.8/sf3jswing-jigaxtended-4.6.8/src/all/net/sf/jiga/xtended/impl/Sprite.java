@@ -2477,7 +2477,7 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
                                         tilePtx.concatenate(AffineTransform.getTranslateInstance(srcROIB.getX(), srcROIB.getY()).createInverse());
                                         pb.add(new WarpPerspective(tilePtx));
                                         pb.add(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-                                        RenderedOp warpOp = JAI.create("warp", pb);
+                                        RenderedOp warpOp = ImageN.create("warp", pb);
                                         RenderedImage warped = (RenderedImage) warpOp.createInstance();
                                         srcBuffer.flush();
                                         GraphicsJAI jai = GraphicsJAI.createGraphicsJAI(g, renderableImpl.io.obs);
@@ -2525,7 +2525,7 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
                                 basePtx.concatenate(baseTx.createInverse());
                                 pb.add(new WarpPerspective(basePtx));
                                 pb.add(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-                                RenderedOp warpOp = JAI.create("warp", pb);
+                                RenderedOp warpOp = ImageN.create("warp", pb);
                                 RenderedImage warped = (RenderedImage) warpOp.createInstance();
                                 GraphicsJAI jai = GraphicsJAI.createGraphicsJAI(g, renderableImpl.io.obs);
                                 jai.drawRenderedImage(warped, new AffineTransform());

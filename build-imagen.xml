@@ -1,0 +1,16 @@
+<project>
+    <property name="imagen.version" value="0.9.3"/>
+    <property name="imagen.jar" location="${lib.all}/imagen-legacy-all-${imagen.version}.jar"/>
+    <property name="imagen.url" value="https://repo.maven.apache.org/maven2/org/eclipse/imagen/imagen-legacy-all/${imagen.version}/imagen-legacy-all-${imagen.version}.jar"/>
+    <property name="imagen.sha256" value="0115fa272628555025ebfda0c1b33f1d040474faa57265f19dac428589bd3c16"/>
+
+    <target name="resolve-imagen">
+        <mkdir dir="${lib.all}"/>
+        <get src="${imagen.url}" dest="${imagen.jar}" skipexisting="true"/>
+        <checksum file="${imagen.jar}" algorithm="SHA-256" property="imagen.actual.sha256"/>
+        <condition property="imagen.checksum.valid">
+            <equals arg1="${imagen.sha256}" arg2="${imagen.actual.sha256}"/>
+        </condition>
+        <fail unless="imagen.checksum.valid" message="ImageN ${imagen.version} SHA-256 verification failed."/>
+    </target>
+</project>

@@ -182,6 +182,8 @@
 
     <property name="lib.all" location="${lib}/all"/>
 
+    <import file="../../../build-imagen.xml"/>
+
     <property name="lib.os" location="${lib}/${company.project.os.name}"/>
 
     <property name="lib.os.all" location="${lib.os}/all"/>
@@ -436,7 +438,7 @@
 
     </path>
 
-    <target name="compile" description="Compile code">
+    <target name="compile" depends="resolve-imagen" description="Compile code">
 
         <mkdir dir="${src.all}"/>
 
@@ -462,7 +464,7 @@
 
                destdir="${bin}"
 
-               source="1.5" target="1.5"
+               source="17" target="17"
 
                includeAntRuntime="no"
 
@@ -1058,4 +1060,3 @@
         <CBRelease file="${tar.dir}/${tar.name}.tar.gz"/>
     </target>
 </project>
-
