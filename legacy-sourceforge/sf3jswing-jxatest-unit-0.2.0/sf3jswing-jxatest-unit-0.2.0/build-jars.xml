@@ -185,6 +185,8 @@
 
     <property name="lib.all" location="${lib}/all"/>
 
+    <import file="../../../build-imagen.xml"/>
+
     <property name="lib.os" location="${lib}/${co.prj.os}"/>
 
     <property name="lib.os.all" location="${lib.os}/all"/>
@@ -431,7 +433,7 @@
 
     </path>
 
-    <target name="compile" description="Compile code">
+    <target name="compile" depends="resolve-imagen" description="Compile code">
 
         <mkdir dir="${src.all}"/>
 

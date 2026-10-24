@@ -60,6 +60,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.ByteLookupTable;
+import java.awt.image.LookupOp;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.awt.image.renderable.ParameterBlock;
@@ -124,7 +126,6 @@ import javax.media.control.FormatControl;
 import javax.media.control.FrameGrabbingControl;
 import javax.media.format.VideoFormat;
 import org.eclipse.imagen.ImageN;
-import org.eclipse.imagen.LookupTableImageN;
 import org.eclipse.imagen.RenderedOp;
 import javax.media.util.BufferToImage;
 import javax.swing.AbstractAction;
@@ -2320,7 +2321,7 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
                             sp.runValidate();
                             BufferedImage image = sp.toBuffered();
                             edit_buffer(image);
-                            RenderedOp image2 = doLookupTable(image, rescale, offset);
+                            RenderedImage image2 = doLookupTable(image, rescale, offset);
                             edit_buffer(image2);
                             edit_copyImageOnCanvas(image2, sp);
                             edit_clearBuffer(image);
@@ -2734,14 +2735,13 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
         };
     }
 
-    private RenderedOp doLookupTable(RenderedImage img, float rescale, int offset) {
+    private RenderedImage doLookupTable(BufferedImage img, float rescale, int offset) {
         if (img == null) {
             log("noimage", LVL.SYS_ERR);
             return null;
         }
         SampleModel model = img.getSampleModel();
         /* Setup a standard window-level lookup table. each band has 256 values indexed from 0 to 255*/
-        LookupTableImageN table = null;
         byte[][] tableData = new byte[model.getNumBands()][256];
         for (int i = 0; i < 256; i++) {
             for (int band = 0; band < tableData.length; band++) {
@@ -2757,9 +2757,7 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
         }
         /* Create a LookupTableJAI object to be used with the
          "lookup" operator.hi*/
-        table = new LookupTableImageN(tableData);
-        /* Create an operator to lookup image1.*/
-        return ImageN.create("lookup", img, table);
+        return new LookupOp(new ByteLookupTable(0, tableData), null).filter(img, null);
     }
 
     /**

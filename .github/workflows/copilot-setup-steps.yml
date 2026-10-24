@@ -19,11 +19,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: JDK 8 (Temurin)
+      - name: JDK 17 (Temurin)
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "8"
+          java-version: "17"
 
       - name: Ant, Xvfb et bibliothèques X11 pour le build LWJGL
         run: |

@@ -36,7 +36,7 @@ Les sources Bitbucket n'existent plus : la phase 0 reconstruit le dépôt à par
 **Contenu attendu** (chaque affirmation avec un chemin de fichier) :
 1. Carte des modules et des dépendances (internes et externes, avec versions).
 2. Points d'entrée (`main`, Applet) et manière de lancer chaque outil.
-3. Build : commandes Ant exactes, cibles, prérequis, natives par OS/architecture, et ce qui échoue aujourd'hui sous JDK 8 sur Ubuntu.
+3. Build : commandes Ant exactes, cibles, prérequis, natives par OS/architecture, et ce qui échoue aujourd'hui sous JDK 17 sur Ubuntu.
 4. Lignes de code par module (`cloc`), tests existants (`jxatest-unit`), nombre de TODO/FIXME.
 5. Inventaire de l'existant, avec état (complet / partiel / ébauche) pour : réseau et multijoueur, manettes (JInput/DirectInput), IA, contrôle des personnages animés (états, transitions).
 6. Dette de déterminisme : usages de `System.currentTimeMillis/nanoTime`, `Math.random`/`Random`, `float`/`double` dans la simulation, threads partagés, boucle de rendu couplée à la logique.
@@ -49,11 +49,12 @@ Les sources Bitbucket n'existent plus : la phase 0 reconstruit le dépôt à par
 
 ## Phase 1 — Build reproductible, CI et jar de test
 
-**Objectif** : compiler et lancer le projet sous OpenJDK 8 sur Linux, Windows et macOS, et publier une version de test.
+**Objectif** : compiler et lancer le projet sous OpenJDK 17 sur Linux, Windows et macOS, et publier une version de test.
 
 **À faire**
 - Conserver Ant. Ajouter un `pom.xml` parent consommant `net.sf.sf3jswing:*` depuis Maven Central et le fork LWJGL (release GitHub `v.2.9.3-jxa`). Documenter ce qui ne peut pas venir de Maven.
-- Workflow `.github/workflows/build.yml` : matrice 3 OS, JDK 8 (Temurin), artefacts jar + zip portable par OS, scan de secrets.
+- Workflow `.github/workflows/build.yml` : matrice 3 OS, JDK 17 (Temurin), artefacts jar + zip portable par OS, scan de secrets.
+- ImageN `org.eclipse.imagen:imagen-legacy-all:0.9.3` (Apache-2.0) remplace JAI pour les opérations prises en charge.
 - Smoke test headless : démarrage du noyau, chargement d'un personnage d'exemple, 600 frames de combat sans exception.
 - Release de pré-publication `test-0.9.x` : jars + zip + notes, combinant éléments Maven, sources du dépôt et archives SourceForge « legacy ».
 - `docs/BUILD.md` : comparaison du jar compilé avec l'archive SourceForge (classes différentes).
