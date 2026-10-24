@@ -43,10 +43,14 @@ and SHA-256 checked before compilation:
 
 The FMJ artifact contains the JMF-compatible classes used by the browser.
 Actual camera capture and device-specific runtime behavior are not verified.
-Connector/J 9.7.0 retains the legacy `com.mysql.jdbc.Driver` class alias used by
-the game; database connectivity to the historical remote endpoint has not been
-tested. The game package includes Connector/J and Protobuf in the platform
-classpath. These third-party licenses are distinct from the repository's
+The game now loads Connector/J 9.7.0 through `com.mysql.cj.jdbc.Driver`;
+database connectivity to the historical remote endpoint has not been tested.
+The game reads its SQL user/password from `SF3JSWING_SQL_USER_RW`,
+`SF3JSWING_SQL_PASSWORD_RW`, `SF3JSWING_SQL_USER_RO`, and
+`SF3JSWING_SQL_PASSWORD_RO` environment variables; no credentials are
+hard-coded. The game package includes Connector/J and Protobuf in the platform
+classpath.
+These third-party licenses are distinct from the repository's
 LGPL-3.0-or-later license; retain each upstream license and attribution when
 redistributing the dependencies.
 
