@@ -30,16 +30,32 @@ ImageN 0.9.3 is a pre-release milestone. Its `lookup` operation is not
 registered in this release, so the image browser uses Java's standard
 `LookupOp`; perspective warping and histogram operations use ImageN.
 
-This dependency resolution does not replace the other historical libraries
-omitted from the source archives. Java 17 Ant compile attempts may still stop
-on missing dependencies: kernel and
-LWJGL classes for Jigaxtended, the compiled framework for the game, and the
-framework/JMF/JavaFX and other historical APIs for the IMC browser. FMJ is
-available on Maven Central but is LGPL-2.1-or-later; SwingX 0.9.5 is available
-on Maven Central but its license and Java 17 runtime behavior need review
-before adoption. JAXB 2.1.9 is also published there, but its Java 17 runtime
-compatibility is unverified. The
-descriptors now fail the build on compiler errors rather than reporting a
+The approved framework, IMC browser, and game dependencies are resolved from
+Maven Central by `build-approved-dependencies.xml`; each artifact is pinned
+and SHA-256 checked before compilation:
+
+| Artifact | Used by | License |
+|---|---|---|
+| `org.swinglabs:swingx:0.9.5` | Framework and IMC browser widgets | LGPL-2.1-or-later |
+| `org.jitsi:fmj:1.0.2-jitsi` | IMC browser's JMF-compatible capture APIs | LGPL-2.1-or-later |
+| `com.mysql:mysql-connector-j:9.7.0` | Game database connector | GPL-2.0 with Universal FOSS Exception 1.0 |
+| `com.google.protobuf:protobuf-java:4.31.1` | Connector/J runtime dependency | BSD-3-Clause |
+
+The FMJ artifact contains the JMF-compatible classes used by the browser.
+Actual camera capture and device-specific runtime behavior are not verified.
+Connector/J 9.7.0 retains the legacy `com.mysql.jdbc.Driver` class alias used by
+the game; database connectivity to the historical remote endpoint has not been
+tested. The game package includes Connector/J and Protobuf in the platform
+classpath. These third-party licenses are distinct from the repository's
+LGPL-3.0-or-later license; retain each upstream license and attribution when
+redistributing the dependencies.
+
+This does not resolve every historical dependency omitted from the source
+archives. Java 17 Ant builds may still stop on LWJGL and kernel classes for
+Jigaxtended, the compiled framework for the game, and JavaFX/OpenJFX, JAXB,
+Google Data API, RestFB, and other APIs for the IMC browser. JAXB 2.1.9 is
+published on Maven Central, but its Java 17 runtime compatibility is
+unverified. The descriptors fail on compiler errors rather than reporting a
 misleading success. Use `ant build-jar` for an unsigned jar; the default `jar`
 target invokes the historical signing configuration.
 

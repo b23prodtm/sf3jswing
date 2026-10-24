@@ -38,7 +38,7 @@
     <!-- #### -->
     <property name="company.project.os.kernel.jar" value="${company.project.os.extensionsInstaller.base.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-kernel_signed.jar"/>
     <property name="company.project.os.kernel.jar.token" value="PROJECTOSKERNELJAR"/>
-    <property name="company.project.os.jar.classpath" value="mysql-connector-java-3.0.17-ga-bin.jar ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-lib_signed.jar ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-props_signed.jar ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-native_signed.jar"/>
+    <property name="company.project.os.jar.classpath" value="mysql-connector-j-9.7.0.jar protobuf-java-4.31.1.jar ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-lib_signed.jar ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-props_signed.jar ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-native_signed.jar"/>
     <property name="company.project.os.jar.classpath.token" value="PROJECTJARCLASSPATH"/>
     <property name="company.project.os.application.run.prefix" value=""/>
     <property name="company.project.os.application.run.prefix.token" value="PROJECTAPPLICATIONRUNPREFIX"/>
@@ -63,7 +63,7 @@
     <property name="company.project.os.application.run.args.token" value="PROJECTAPPLICATIONRUNARGS"/>
     <property name="company.project.os.applet.jnlphref" value="${company.project.codebase}/${ant.project.name}.jnlp"/>
     <property name="company.project.os.applet.jnlphref.token" value="PROJECTAPPLETJNLPHREF"/>
-    <property name="company.project.os.applet.classpath" value="mysql-connector-java-3.0.17-ga-bin.jar, ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}_signed.jar, ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-lib_signed.jar, ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-props_signed.jar, ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-native_signed.jar"/>
+    <property name="company.project.os.applet.classpath" value="mysql-connector-j-9.7.0.jar, protobuf-java-4.31.1.jar, ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}_signed.jar, ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-lib_signed.jar, ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-props_signed.jar, ${ant.project.name}-${company.project.os.name}-${company.project.os.arch}-ext-native_signed.jar"/>
     <property name="company.project.os.applet.classpath.token" value="PROJECTAPPLETCLASSPATH"/>
     <property name="company.project.os.applet.main" value="net.sf.jiga.xtended.ui.JFCApplet"/>
     <property name="company.project.os.applet.main.token" value="PROJECTAPPLETMAIN"/>

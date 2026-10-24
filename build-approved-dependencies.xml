@@ -1,0 +1,47 @@
+<project>
+    <property name="fmj.version" value="1.0.2-jitsi"/>
+    <property name="swingx.version" value="0.9.5"/>
+    <property name="mysql.connector.version" value="9.7.0"/>
+    <property name="protobuf.version" value="4.31.1"/>
+
+    <macrodef name="resolve-central-jar">
+        <attribute name="artifact"/>
+        <attribute name="group-path"/>
+        <attribute name="version"/>
+        <attribute name="destination"/>
+        <attribute name="sha256"/>
+        <sequential>
+            <mkdir dir="@{destination}"/>
+            <get src="https://repo.maven.apache.org/maven2/@{group-path}/@{artifact}/@{version}/@{artifact}-@{version}.jar"
+                 dest="@{destination}/@{artifact}-@{version}.jar" skipexisting="true"/>
+            <checksum file="@{destination}/@{artifact}-@{version}.jar"
+                      algorithm="SHA-256" property="@{artifact}.actual.sha256"/>
+            <condition property="@{artifact}.checksum.valid">
+                <equals arg1="@{sha256}" arg2="${@{artifact}.actual.sha256}"/>
+            </condition>
+            <fail unless="@{artifact}.checksum.valid"
+                  message="@{artifact} @{version} SHA-256 verification failed."/>
+        </sequential>
+    </macrodef>
+
+    <target name="resolve-fmj">
+        <resolve-central-jar artifact="fmj" group-path="org/jitsi"
+                             version="${fmj.version}" destination="${lib.all}"
+                             sha256="c4be9304cc65b1ccae2a985eee66052ccedeb2a8030c70bf90dc857d43bdce97"/>
+    </target>
+
+    <target name="resolve-swingx">
+        <resolve-central-jar artifact="swingx" group-path="org/swinglabs"
+                             version="${swingx.version}" destination="${lib.all}"
+                             sha256="4ba498b4e40ab332cdacee652e642bc2cbc69979e1ccabeec746fa4f68a5b8d1"/>
+    </target>
+
+    <target name="resolve-connectorj">
+        <resolve-central-jar artifact="mysql-connector-j" group-path="com/mysql"
+                             version="${mysql.connector.version}" destination="${resources.all.dir}"
+                             sha256="0353648eaa1c91e0f4020c959abf756bc866ffd583df22ae6b6f6e0cbd43eb44"/>
+        <resolve-central-jar artifact="protobuf-java" group-path="com/google/protobuf"
+                             version="${protobuf.version}" destination="${resources.all.dir}"
+                             sha256="d60dfe7c68a0d38a248cca96924f289dc7e1966a887ee7cae397701af08575ae"/>
+    </target>
+</project>

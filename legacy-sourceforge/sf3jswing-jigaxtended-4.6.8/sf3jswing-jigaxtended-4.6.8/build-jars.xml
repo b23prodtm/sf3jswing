@@ -179,6 +179,7 @@
     <property name="lib.all" location="${lib}/all"/>
 
     <import file="../../../build-imagen.xml"/>
+    <import file="../../../build-approved-dependencies.xml"/>
     
     <property name="lib.os" location="${lib}/${co.prj.os}"/>
     
@@ -426,7 +427,7 @@
         
     </path>
 
-    <target name="compile" depends="resolve-imagen" description="Compile code">
+    <target name="compile" depends="resolve-imagen,resolve-swingx" description="Compile code">
 
         <mkdir dir="${src.all}"/>
 
