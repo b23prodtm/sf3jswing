@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
-import javax.media.jai.PerspectiveTransform;
+import org.eclipse.imagen.PerspectiveTransform;
 import net.sf.jiga.xtended.impl.Sprite;
 import net.sf.jiga.xtended.impl.game.RenderingScene;
 import net.sf.jiga.xtended.impl.game.gl.geom.GLGeom;
@@ -375,7 +375,7 @@ public abstract class GLFX implements Debugger {
             mapRender.put("fx", fx | gfx.FX_2ND_PASS.bit());
             try {
                 /**
-                 * PASS °2
+                 * PASS ï¿½2
                  */
                 _GLpushRender("__GLRender2DFX", this, new Object[]{mapRender.get("gld"), mapRender.get("keepBinding"), mapRender.get("sp"), mapRender.get("z"), mapRender.get("fx"), mapRender.get("fx_loc"), mapRender.get("fx_color"), mapRender.get("transform"), mapRender.get("scale"), mapRender.get("rotate"), mapRender.get("translate")}, new Class[]{RenderingSceneGL.class, boolean.class, GL2DObject.class, double.class, int.class, Point.class, Color.class, int.class, DoubleBuffer.class, DoubleBuffer.class, DoubleBuffer.class});
             } catch (Exception ex) {
@@ -389,7 +389,7 @@ public abstract class GLFX implements Debugger {
          */
         try {
             /**
-             * PASS °3 or Unique PASS if fx == NONE (but it is done later unless
+             * PASS ï¿½3 or Unique PASS if fx == NONE (but it is done later unless
              * it is in a begin-endRenderBlock.)
              */
             mapRender.put("keepBinding", keepBinding);
@@ -397,7 +397,7 @@ public abstract class GLFX implements Debugger {
             _GLpushRender("__GLRender2DFX", this, new Object[]{mapRender.get("gld"), mapRender.get("keepBinding"), mapRender.get("sp"), mapRender.get("z"), mapRender.get("fx"), mapRender.get("fx_loc"), mapRender.get("fx_color"), mapRender.get("transform"), mapRender.get("scale"), mapRender.get("rotate"), mapRender.get("translate")}, new Class[]{RenderingSceneGL.class, boolean.class, GL2DObject.class, double.class, int.class, Point.class, Color.class, int.class, DoubleBuffer.class, DoubleBuffer.class, DoubleBuffer.class});
             if (fx != gfx.FX_NONE) {
                 /**
-                 * PASS °1 Do 1st pass NOW, force keep binding of textures if
+                 * PASS ï¿½1 Do 1st pass NOW, force keep binding of textures if
                  * any
                  */
                 mapRender.put("keepBinding", keepBinding);

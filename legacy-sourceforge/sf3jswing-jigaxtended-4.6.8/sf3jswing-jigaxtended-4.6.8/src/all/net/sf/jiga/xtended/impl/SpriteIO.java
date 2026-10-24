@@ -60,11 +60,11 @@ import javax.imageio.stream.FileCacheImageInputStream;
 import javax.imageio.stream.FileCacheImageOutputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
-import javax.media.jai.Interpolation;
-import javax.media.jai.JAI;
-import javax.media.jai.PerspectiveTransform;
-import javax.media.jai.RenderedOp;
-import javax.media.jai.WarpPerspective;
+import org.eclipse.imagen.ImageN;
+import org.eclipse.imagen.Interpolation;
+import org.eclipse.imagen.PerspectiveTransform;
+import org.eclipse.imagen.RenderedOp;
+import org.eclipse.imagen.WarpPerspective;
 import net.sf.jiga.xtended.JXAException;
 import net.sf.jiga.xtended.impl.game.gl.GLFX;
 import net.sf.jiga.xtended.impl.system.BufferIO;
@@ -834,7 +834,7 @@ public class SpriteIO implements Debugger {
              */
             pb.add(new WarpPerspective((PerspectiveTransform) baseTransform));
             pb.add(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-            RenderedOp warpOp = JAI.create("warp", pb);
+            RenderedOp warpOp = ImageN.create("warp", pb);
             dataDst = (RenderedImage) warpOp.createInstance();
         } else {
             if (baseTransform == null) {

@@ -7,7 +7,7 @@ package net.sf.jiga.xtended.impl.game;
 import java.awt.*;
 import java.nio.FloatBuffer;
 import java.util.*;
-import javax.media.jai.GraphicsJAI;
+import org.eclipse.imagen.GraphicsJAI;
 import net.sf.jiga.xtended.JXAException;
 import net.sf.jiga.xtended.impl.GUIConsoleOutput;
 import net.sf.jiga.xtended.impl.game.TextLayout.POS;

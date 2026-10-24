@@ -29,7 +29,7 @@ import javax.imageio.*;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.FileCacheImageInputStream;
 import javax.imageio.stream.ImageInputStream;
-import javax.media.jai.*;
+import org.eclipse.imagen.*;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import net.sf.jiga.xtended.JXAException;
@@ -1931,7 +1931,7 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
                 if (DebugMap._getInstance().isDebugLevelEnabled(gfx.DBUG)) {
                     DebugMap._getInstance().tickPrintln(System.out, "Sprite " + toString() + " warped to : " + basePtx, false);
                 }
-                RenderedOp warpOp = JAI.create("warp", pb);
+                RenderedOp warpOp = ImageN.create("warp", pb);
                 RenderedImage warped = (RenderedImage) warpOp.createInstance();
                 GraphicsJAI jai = GraphicsJAI.createGraphicsJAI(g2, obs);
                 jai.drawRenderedImage(warped, new AffineTransform());
@@ -1970,7 +1970,7 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
                             if (DebugMap._getInstance().isDebugLevelEnabled(gfx.DBUG)) {
                                 DebugMap._getInstance().tickPrintln(System.out, "Sprite " + toString() + " warped to : " + basePtx, false);
                             }
-                            RenderedOp warpOp = JAI.create("warp", pb);
+                            RenderedOp warpOp = ImageN.create("warp", pb);
                             RenderedImage warped = (RenderedImage) warpOp.createInstance();
                             b.flush();
                             GraphicsJAI jai = GraphicsJAI.createGraphicsJAI(g2, obs);
@@ -3650,7 +3650,7 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
      *
      * @param b dis/enables VRAM for this Sprite instance.
      * @see #setBufferedImageEnabled(boolean)
-     * @deprecated not recommended to enable : 1° unstable ; 2° bufferedImage's
+     * @deprecated not recommended to enable : 1ï¿½ unstable ; 2ï¿½ bufferedImage's
      * already use accelerated capabilities
      */
     @Override
