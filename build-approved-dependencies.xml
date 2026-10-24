@@ -3,6 +3,29 @@
     <property name="swingx.version" value="0.9.5"/>
     <property name="mysql.connector.version" value="9.7.0"/>
     <property name="protobuf.version" value="4.31.1"/>
+    <property name="jinput.version" value="2.0.10"/>
+    <property name="jlayer.version" value="1.0.1"/>
+    <property name="jaxb.version" value="2.1.9"/>
+    <property name="activation.version" value="1.1.1"/>
+    <property name="openjfx.version" value="17.0.21"/>
+    <property name="lwjgl.version" value="2.9.3-jxa"/>
+    <property name="lwjgl.release.url"
+              value="https://github.com/b23prodtm/lwjgl/releases/download/v.2.9.3-jxa"/>
+    <property name="dependency.cache.dir"
+              location="${java.io.tmpdir}/sf3jswing-dependencies/${co.prj}"/>
+
+    <condition property="lwjgl.platform.linux">
+        <and>
+            <os family="unix"/>
+            <not><os family="mac"/></not>
+        </and>
+    </condition>
+    <condition property="lwjgl.platform.mac">
+        <os family="mac"/>
+    </condition>
+    <condition property="lwjgl.platform.windows">
+        <os family="windows"/>
+    </condition>
 
     <macrodef name="resolve-central-jar">
         <attribute name="artifact"/>
@@ -21,6 +44,69 @@
             </condition>
             <fail unless="@{artifact}.checksum.valid"
                   message="@{artifact} @{version} SHA-256 verification failed."/>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="resolve-classified-central-jar">
+        <attribute name="artifact"/>
+        <attribute name="group-path"/>
+        <attribute name="version"/>
+        <attribute name="classifier"/>
+        <attribute name="destination"/>
+        <attribute name="sha256"/>
+        <sequential>
+            <mkdir dir="@{destination}"/>
+            <get src="https://repo.maven.apache.org/maven2/@{group-path}/@{artifact}/@{version}/@{artifact}-@{version}-@{classifier}.jar"
+                 dest="@{destination}/@{artifact}-@{version}-@{classifier}.jar" skipexisting="true"/>
+            <checksum file="@{destination}/@{artifact}-@{version}-@{classifier}.jar"
+                      algorithm="SHA-256" property="@{artifact}.@{classifier}.actual.sha256"/>
+            <condition property="@{artifact}.@{classifier}.checksum.valid">
+                <equals arg1="@{sha256}" arg2="${@{artifact}.@{classifier}.actual.sha256}"/>
+            </condition>
+            <fail unless="@{artifact}.@{classifier}.checksum.valid"
+                  message="@{artifact} @{version} (@{classifier}) SHA-256 verification failed."/>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="resolve-lwjgl-native">
+        <attribute name="platform"/>
+        <attribute name="archive"/>
+        <attribute name="sha256"/>
+        <attribute name="folder"/>
+        <attribute name="lwjgl-file"/>
+        <attribute name="openal-file"/>
+        <sequential>
+            <mkdir dir="${dependency.cache.dir}"/>
+            <get src="${lwjgl.release.url}/@{archive}"
+                 dest="${dependency.cache.dir}/@{archive}" skipexisting="true"/>
+            <checksum file="${dependency.cache.dir}/@{archive}" algorithm="SHA-256"
+                      property="lwjgl.native.@{platform}.actual.sha256"/>
+            <condition property="lwjgl.native.@{platform}.checksum.valid">
+                <equals arg1="@{sha256}" arg2="${lwjgl.native.@{platform}.actual.sha256}"/>
+            </condition>
+            <fail unless="lwjgl.native.@{platform}.checksum.valid"
+                  message="LWJGL @{platform} native archive SHA-256 verification failed."/>
+            <delete dir="${dependency.cache.dir}/@{platform}-native"/>
+            <unzip src="${dependency.cache.dir}/@{archive}"
+                   dest="${dependency.cache.dir}/@{platform}-native"/>
+            <mkdir dir="${resources.os.arch.dir}"/>
+            <copy file="${dependency.cache.dir}/@{platform}-native/@{folder}/@{lwjgl-file}"
+                  todir="${resources.os.arch.dir}"/>
+            <copy file="${dependency.cache.dir}/@{platform}-native/@{folder}/@{openal-file}"
+                  todir="${resources.os.arch.dir}"/>
+            <delete file="${dependency.cache.dir}/@{archive}"/>
+            <delete dir="${dependency.cache.dir}/@{platform}-native"/>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="resolve-openjfx-module">
+        <attribute name="module"/>
+        <attribute name="sha256"/>
+        <sequential>
+            <resolve-classified-central-jar
+                    artifact="javafx-@{module}" group-path="org/openjfx"
+                    version="${openjfx.version}" classifier="${openjfx.platform}"
+                    destination="${lib.all}" sha256="@{sha256}"/>
         </sequential>
     </macrodef>
 
@@ -43,5 +129,157 @@
         <resolve-central-jar artifact="protobuf-java" group-path="com/google/protobuf"
                              version="${protobuf.version}" destination="${resources.all.dir}"
                              sha256="d60dfe7c68a0d38a248cca96924f289dc7e1966a887ee7cae397701af08575ae"/>
+    </target>
+
+    <target name="resolve-lwjgl">
+        <mkdir dir="${dependency.cache.dir}"/>
+        <get src="${lwjgl.release.url}/lwjgl-jars.zip"
+             dest="${dependency.cache.dir}/lwjgl-jars.zip" skipexisting="true"/>
+        <checksum file="${dependency.cache.dir}/lwjgl-jars.zip" algorithm="SHA-256"
+                  property="lwjgl.jars.actual.sha256"/>
+        <condition property="lwjgl.jars.checksum.valid">
+            <equals arg1="69de312f3997f55d0bb949c9dbd649f62d5a630d5de2dcac350bc87179d0ec9d"
+                    arg2="${lwjgl.jars.actual.sha256}"/>
+        </condition>
+        <fail unless="lwjgl.jars.checksum.valid"
+              message="LWJGL ${lwjgl.version} Java archive SHA-256 verification failed."/>
+        <unzip src="${dependency.cache.dir}/lwjgl-jars.zip" dest="${lib.all}" overwrite="true">
+            <patternset>
+                <include name="lwjgl.jar"/>
+                <include name="lwjgl_util.jar"/>
+                <include name="AppleJavaExtensions.jar"/>
+            </patternset>
+        </unzip>
+        <delete file="${dependency.cache.dir}/lwjgl-jars.zip"/>
+    </target>
+
+    <target name="resolve-lwjgl-natives-linux" if="lwjgl.platform.linux">
+        <resolve-lwjgl-native platform="linux" archive="lwjgl-linux.zip"
+                              sha256="b79b244a3c396d31af564c28ee1865e2af3f0a2b8971b309501aa4281f2cae7d"
+                              folder="linux" lwjgl-file="liblwjgl64.so"
+                              openal-file="libopenal64.so"/>
+    </target>
+
+    <target name="resolve-lwjgl-natives-mac" if="lwjgl.platform.mac">
+        <resolve-lwjgl-native platform="macosx" archive="lwjgl-macosx.zip"
+                              sha256="15014763fdb2b9a21105089274f56b07c3a1aead8a92b9b88b7e42de87c54922"
+                              folder="macosx" lwjgl-file="liblwjgl.dylib"
+                              openal-file="openal.dylib"/>
+    </target>
+
+    <target name="resolve-lwjgl-natives-windows" if="lwjgl.platform.windows">
+        <resolve-lwjgl-native platform="windows" archive="lwjgl-windows.zip"
+                              sha256="78743c9009fef244dc9847d614105768cc4c94a5d1c095fc0d560846a3654ee"
+                              folder="windows" lwjgl-file="lwjgl64.dll"
+                              openal-file="OpenAL64.dll"/>
+    </target>
+
+    <target name="resolve-lwjgl-natives"
+            depends="resolve-lwjgl-natives-linux,resolve-lwjgl-natives-mac,resolve-lwjgl-natives-windows">
+        <fail unless="lwjgl.platform.linux" message="Unsupported LWJGL native platform: ${os.name}"/>
+    </target>
+
+    <target name="resolve-jinput">
+        <resolve-central-jar artifact="jinput" group-path="net/java/jinput"
+                             version="${jinput.version}" destination="${lib.all}"
+                             sha256="84386ea57160c17558a162761b4ca651f036933d0aabbc4892b0d3aaf6d92193"/>
+        <resolve-classified-central-jar
+                artifact="jinput" group-path="net/java/jinput"
+                version="${jinput.version}" classifier="natives-all"
+                destination="${lib.all}"
+                sha256="8ab7bbb4345c36a5e667a4b435a0cc506bb1e3857dba9bda799210603a12d66a"/>
+    </target>
+
+    <target name="resolve-jlayer">
+        <resolve-central-jar artifact="jlayer" group-path="javazoom"
+                             version="${jlayer.version}" destination="${lib.all}"
+                             sha256="850508c837454a1b06017c32a36876fae516de1e89a829f725fee1e6dcc52000"/>
+    </target>
+
+    <target name="resolve-jaxb">
+        <resolve-central-jar artifact="jaxb-api" group-path="javax/xml/bind"
+                             version="2.1" destination="${lib.all}"
+                             sha256="2e9dc899a785544e8a8262047cd370636f734ee0246e36263ee0295c3f3aed94"/>
+        <resolve-central-jar artifact="jaxb-impl" group-path="com/sun/xml/bind"
+                             version="${jaxb.version}" destination="${lib.all}"
+                             sha256="4d94e8529c5700166889458c15500a38778d12e2c9799adbc5bf856a9268a18f"/>
+        <resolve-central-jar artifact="activation" group-path="javax/activation"
+                             version="${activation.version}" destination="${lib.all}"
+                             sha256="ae475120e9fcd99b4b00b38329bd61cdc5eb754eee03fe66c01f50e137724f99"/>
+    </target>
+
+    <target name="resolve-openjfx">
+        <condition property="openjfx.platform" value="linux">
+            <and><os family="unix"/><not><os family="mac"/></not></and>
+        </condition>
+        <condition property="openjfx.platform" value="mac">
+            <os family="mac"/>
+        </condition>
+        <condition property="openjfx.platform" value="win">
+            <os family="windows"/>
+        </condition>
+        <fail unless="openjfx.platform" message="Unsupported OpenJFX platform: ${os.name}"/>
+
+        <condition property="openjfx.base.sha256" value="ee2ce8ec814a55fe6987d8804adb235c7adbc6ce4dd4a16340f8c1d810a6980a">
+            <equals arg1="${openjfx.platform}" arg2="linux"/>
+        </condition>
+        <condition property="openjfx.base.sha256" value="a6682fe7be48b399ad5bcda3fa9ca6d64cd33c2fb68641ab170b4c1a588fe674">
+            <equals arg1="${openjfx.platform}" arg2="mac"/>
+        </condition>
+        <condition property="openjfx.base.sha256" value="4faa6d4f2a3bbc7649596eedc7d2db179cec3fa876de30f12005442fcba12adf">
+            <equals arg1="${openjfx.platform}" arg2="win"/>
+        </condition>
+        <condition property="openjfx.graphics.sha256" value="0ef557253bb7388dff57161b04645e0630e88d30d2e392acc785394fd79804fa">
+            <equals arg1="${openjfx.platform}" arg2="linux"/>
+        </condition>
+        <condition property="openjfx.graphics.sha256" value="a760bf34ac5069275a986104f7c6602ce0b4b6aa6b8b3d276d68936cc199dbe6">
+            <equals arg1="${openjfx.platform}" arg2="mac"/>
+        </condition>
+        <condition property="openjfx.graphics.sha256" value="126f5f80ff6f64eb81fcb97e1594351e81ca836eaa0e4942ca10e44579adef22">
+            <equals arg1="${openjfx.platform}" arg2="win"/>
+        </condition>
+        <condition property="openjfx.controls.sha256" value="5f7b64b2094883be308886862b04fa012a1f27b23499ff977387ebcc292866c4">
+            <equals arg1="${openjfx.platform}" arg2="linux"/>
+        </condition>
+        <condition property="openjfx.controls.sha256" value="07ae5e21892ba11e3fa9845cf496a602f8d948a4d101fe1fbe9eb72c8c52e198">
+            <equals arg1="${openjfx.platform}" arg2="mac"/>
+        </condition>
+        <condition property="openjfx.controls.sha256" value="ab429fb4a1ecf53e73ff7793b135c5c22f59fb1c47b57f32a0ed0d5bbe035ed6">
+            <equals arg1="${openjfx.platform}" arg2="win"/>
+        </condition>
+        <condition property="openjfx.swing.sha256" value="fc7525652c447e281778d3dbb4479361a4908b9c4a1cdec71c84a839a7824a84">
+            <equals arg1="${openjfx.platform}" arg2="linux"/>
+        </condition>
+        <condition property="openjfx.swing.sha256" value="2a92dfcee0c457c795920fb93a4d5e9df34dfa11aaf012ab8ef4860b93da9259">
+            <equals arg1="${openjfx.platform}" arg2="mac"/>
+        </condition>
+        <condition property="openjfx.swing.sha256" value="20172604cceb4ae76a294284efc4ff76411ba5ea5be5d98964b6bf89e093c087">
+            <equals arg1="${openjfx.platform}" arg2="win"/>
+        </condition>
+        <condition property="openjfx.web.sha256" value="004965400a3a0e0cad312dfc5083f80b5f0759bfbd1ccc31f4c681689c204ede">
+            <equals arg1="${openjfx.platform}" arg2="linux"/>
+        </condition>
+        <condition property="openjfx.web.sha256" value="bb16cba8a75a5374d0015a11d37994ab9f7e43a5f232ebf16db21e2c9aa6b3e9">
+            <equals arg1="${openjfx.platform}" arg2="mac"/>
+        </condition>
+        <condition property="openjfx.web.sha256" value="e1d1793da17162d4e5651d6bfd1d23f0b48526bbe7bdc4d614c53e53deaae594">
+            <equals arg1="${openjfx.platform}" arg2="win"/>
+        </condition>
+        <condition property="openjfx.media.sha256" value="e49166031a2f670d3281efe56478fef09046fc8a3becd601c4011b6ebcc58466">
+            <equals arg1="${openjfx.platform}" arg2="linux"/>
+        </condition>
+        <condition property="openjfx.media.sha256" value="2cb75825cd1c7be0ec560a6716f35810c5aeb950bebacdadfafa2e06d9820aa4">
+            <equals arg1="${openjfx.platform}" arg2="mac"/>
+        </condition>
+        <condition property="openjfx.media.sha256" value="9ae722f0b7908e06ca6335b84b586111af542306ec394d2b976cedad812068f1">
+            <equals arg1="${openjfx.platform}" arg2="win"/>
+        </condition>
+
+        <resolve-openjfx-module module="base" sha256="${openjfx.base.sha256}"/>
+        <resolve-openjfx-module module="graphics" sha256="${openjfx.graphics.sha256}"/>
+        <resolve-openjfx-module module="controls" sha256="${openjfx.controls.sha256}"/>
+        <resolve-openjfx-module module="swing" sha256="${openjfx.swing.sha256}"/>
+        <resolve-openjfx-module module="web" sha256="${openjfx.web.sha256}"/>
+        <resolve-openjfx-module module="media" sha256="${openjfx.media.sha256}"/>
     </target>
 </project>
