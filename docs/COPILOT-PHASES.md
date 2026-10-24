@@ -99,7 +99,7 @@ Les sources Bitbucket n'existent plus : la phase 0 reconstruit le dépôt à par
 **À faire**
 - Interface `InputDevice` (axes, boutons, hat, déconnexion à chaud) et `InputMapper` configurable par fichier.
 - Backends : clavier, JInput existant (DirectInput), XInput (Windows). Linux et macOS via JInput.
-- **Avant d'implémenter XInput** : proposer dans la PR 2 bibliothèques (licence compatible Apache 2.0, maintenance, natives) et attendre la décision.
+- **Avant d'implémenter XInput** : proposer dans la PR 2 bibliothèques (licence compatible LGPL-3.0-or-later, maintenance, natives) et attendre la décision.
 - Périphérique simulé pour les tests ; interface de remappage minimale.
 
 **Acceptation** : tests avec périphérique simulé ; `docs/INPUT.md` avec checklist de test manuel sur manette physique (non testable par l'agent).

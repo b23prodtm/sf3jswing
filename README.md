@@ -27,4 +27,8 @@ Les contributions sont bienvenues ! N'hésitez pas à soumettre des pull request
 
 ## Licence
 
-*(À spécifier)*
+Project-owned code is licensed under the GNU Lesser General Public License,
+version 3 or (at your option) any later version. See [`LICENSE`](LICENSE).
+Preserve separate third-party copyright and license notices. SourceForge
+archive copies retain their original Apache-2.0 license files and notices;
+those grants remain in effect for the material they cover.

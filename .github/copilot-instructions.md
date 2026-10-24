@@ -2,7 +2,7 @@
 
 ## Contexte
 
-sf3jswing est un framework et moteur de jeu de combat 2D 1v1 en Java (licence Apache 2.0, statut alpha, environ 90-95 % terminé). Mainteneur : b23prodtm. Les sources Bitbucket n'existent plus : ce dépôt est reconstruit à partir des archives SourceForge (2009-2015) et, si besoin, des artefacts Maven Central `net.sf.sf3jswing:*`. L'historique git d'origine est perdu (voir `docs/PROVENANCE.md`). Objectif : finaliser le projet sans en changer la structure.
+sf3jswing est un framework et moteur de jeu de combat 2D 1v1 en Java (licence LGPL-3.0-or-later, statut alpha, environ 90-95 % terminé). Mainteneur : b23prodtm. Les sources Bitbucket n'existent plus : ce dépôt est reconstruit à partir des archives SourceForge (2009-2015) et, si besoin, des artefacts Maven Central `net.sf.sf3jswing:*`. L'historique git d'origine est perdu (voir `docs/PROVENANCE.md`). Objectif : finaliser le projet sans en changer la structure.
 
 Modules connus d'après les builds SourceForge (`docs/AUDIT.md` fait foi une fois produit) :
 `sf3jswing-jxakernel` (noyau), `sf3jswing-jigaxtended` (projets Ant), `sf3jswing-jxatest-unit`, `sf3jswing-imagemulticonverter-ant`, `sf3jswing-imcbrowser`, `sf3jswing-animsbrowser-ant`, `sf3jswing-thegame-ant`.
@@ -12,7 +12,7 @@ Dépendances connues : LWJGL 2.x (fork `b23prodtm/lwjgl`, tag `v.2.9.3-jxa`), JI
 ## Règles non négociables
 
 1. **Java 17** : le code et les builds ciblent Java 17 (`-source 17 -target 17`). Ne pas réintroduire de dépendance ou d'API Java 8-only.
-2. **Licence Apache 2.0** : conserver en-têtes et NOTICE. Toute nouvelle dépendance doit être compatible Apache 2.0 ; indiquer sa licence dans la PR.
+2. **Licence LGPL-3.0-or-later** : conserver les avis de droits d'auteur et notices des composants tiers. Vérifier la compatibilité des nouvelles dépendances avec LGPL-3.0-or-later et indiquer leur licence dans la PR.
 3. **Structure d'origine** : ne pas renommer packages, modules ni formats de fichiers (personnages, niveaux, sprites). Les formats restent rétrocompatibles, vérifiés en chargeant les exemples d'origine.
 4. **Ant reste le build de référence** tant qu'un build Maven ne produit pas des jars équivalents (comparer leur contenu). Ne supprimer aucun `build.xml`.
 5. **Livrables** : jar exécutable (`java -jar`), zip portable avec lanceurs (`.sh`, `.bat`, `.command`), installable avec OpenJDK + Ant/Maven. Aucun outil propriétaire.

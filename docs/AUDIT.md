@@ -25,7 +25,7 @@ La mesure ci-dessous est le nombre brut de lignes de chaque fichier `*.java` dan
 
 Les noms de bibliothèques ci-dessus viennent des archives et des descripteurs; leurs binaires ne sont pas suivis dans le dépôt actuel. Sources principales : `build.xml`, `build-jars.xml`, `build-Linux-amd64.xml` et `lib/` dans chaque module. Les références de dépendances/version du framework sont dans `sf3jswing-jigaxtended-4.6.8/build-jars.xml`; le parent/version du jeu est dans `sf3jswing-thegame-ant-0.9.10/build-Linux-amd64.xml`. La liste de modules prévue figure dans `docs/COPILOT-PHASES.md`.
 
-Les descripteurs de build identifient la licence Apache dans leurs métadonnées et les archives contiennent des fichiers `LICENSE`/`NOTICE`. La section Licence du `README.md` racine reste à compléter; conserver les notices d’origine lors de la normalisation de l’arborescence.
+Les archives SourceForge conservées contiennent des fichiers `LICENSE`/`NOTICE` et des métadonnées Apache-2.0. Le projet déclare désormais LGPL-3.0-or-later dans `LICENSE`; les fichiers et avis historiques, ainsi que les notices des composants tiers, restent conservés. Lors de toute redistribution, vérifier la portée des licences et garder leurs avis respectifs.
 
 ## 3. Points d’entrée et lancement
 
