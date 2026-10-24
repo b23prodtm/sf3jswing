@@ -40,6 +40,11 @@ and SHA-256 checked before compilation:
 | `org.jitsi:fmj:1.0.2-jitsi` | IMC browser's JMF-compatible capture APIs | LGPL-2.1-or-later |
 | `com.mysql:mysql-connector-j:9.7.0` | Game database connector | GPL-2.0 with Universal FOSS Exception 1.0 |
 | `com.google.protobuf:protobuf-java:4.31.1` | Connector/J runtime dependency | BSD-3-Clause |
+| LWJGL `v.2.9.3-jxa` release jars and OS native ZIPs | Framework, game, and IMC Browser | BSD-3-Clause |
+| `net.java.jinput:jinput:2.0.10` and `natives-all` | Framework/game controllers | BSD |
+| `javazoom:jlayer:1.0.1` | Historical MP3 decoder dependency | LGPL |
+| OpenJFX `17.0.21` (`base`, `graphics`, `controls`, `swing`, `web`, `media`) | IMC Browser JavaFX bridge | GPL-2.0 with Classpath Exception |
+| JAXB API `2.1`, `com.sun.xml.bind:jaxb-impl:2.1.9`, `com.sun.activation:javax.activation:1.2.0` | IMC Browser XML runtime | CDDL/GPL-2.0 with Classpath Exception |
 
 The FMJ artifact contains the JMF-compatible classes used by the browser.
 Actual camera capture and device-specific runtime behavior are not verified.
@@ -54,14 +59,29 @@ These third-party licenses are distinct from the repository's
 LGPL-3.0-or-later license; retain each upstream license and attribution when
 redistributing the dependencies.
 
-This does not resolve every historical dependency omitted from the source
-archives. Java 17 Ant builds may still stop on LWJGL and kernel classes for
-Jigaxtended, the compiled framework for the game, and JavaFX/OpenJFX, JAXB,
-Google Data API, RestFB, and other APIs for the IMC browser. JAXB 2.1.9 is
-published on Maven Central, but its Java 17 runtime compatibility is
-unverified. The descriptors fail on compiler errors rather than reporting a
-misleading success. Use `ant build-jar` for an unsigned jar; the default `jar`
-target invokes the historical signing configuration.
+The LWJGL PR #23 source archive was tried at commit
+`676ace2e11847d83df6169f59434a0364eece5d6`. Its Ant build hard-codes Java
+1.5; the source target can be run on JDK 8 but is not usable as part of the
+required JDK 17 build. The build therefore uses the requested `v.2.9.3-jxa`
+release Java jars and downloads only the matching 64-bit native files from its
+Linux, macOS, or Windows ZIP, with SHA-256 checks. No native binaries or
+downloaded jars are tracked. macOS Apple Silicon and 32-bit platforms are not
+supported by these 2015 LWJGL binaries.
+
+The IMC Browser resolves only the JavaFX platform classifier matching the
+current OS. JAXB 2.1.9 passes a Java 17 marshal/unmarshal round-trip when the
+JVM is launched with
+`-Dcom.sun.xml.bind.v2.bytecode.ClassTailor.noOptimize=true`; without that
+property its runtime attempts reflective access blocked by Java modules.
+
+GData/Picasa, RestFB, and the eSellerate `es-sdk-jdk-binding` remain deferred as
+requested. They are still referenced by archived IMC Browser sources, along
+with the removed Nashorn scripting API. The complete IMC Browser build is
+therefore not yet resolved; framework/game/browser builds also depend on the
+correctly built kernel/framework artifacts. This does not complete phase 1.
+The descriptors fail on compiler errors rather than reporting a misleading
+success. Use `ant build-jar` for an unsigned jar; the default `jar` target
+invokes the historical signing configuration.
 
 The archived Jigaxtended 4.6.7 sources remain unchanged. Only the current
 4.6.8 framework sources have been migrated.

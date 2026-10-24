@@ -440,7 +440,9 @@
 
     </path>
 
-    <target name="compile" depends="resolve-imagen,resolve-fmj,resolve-swingx" description="Compile code">
+    <target name="compile"
+            depends="resolve-imagen,resolve-fmj,resolve-swingx,resolve-lwjgl,resolve-lwjgl-natives,resolve-jinput,resolve-jlayer,resolve-connectorj,resolve-jaxb,resolve-openjfx"
+            description="Compile code">
 
         <mkdir dir="${src.all}"/>
 

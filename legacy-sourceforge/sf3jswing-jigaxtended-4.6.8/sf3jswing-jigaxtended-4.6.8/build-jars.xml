@@ -427,7 +427,9 @@
         
     </path>
 
-    <target name="compile" depends="resolve-imagen,resolve-swingx" description="Compile code">
+    <target name="compile"
+            depends="resolve-imagen,resolve-swingx,resolve-lwjgl,resolve-lwjgl-natives,resolve-jinput,resolve-jlayer"
+            description="Compile code">
 
         <mkdir dir="${src.all}"/>
 

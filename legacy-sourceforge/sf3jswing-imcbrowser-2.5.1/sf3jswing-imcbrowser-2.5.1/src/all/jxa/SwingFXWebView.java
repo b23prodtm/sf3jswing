@@ -1,7 +1,6 @@
 package jxa;
 
 
-import com.sun.javafx.application.PlatformImpl;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -98,7 +97,7 @@ public class SwingFXWebView extends JPanel {
          *
          */
         private void createScene() {
-                PlatformImpl.startup(new Runnable() {
+                Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
 
