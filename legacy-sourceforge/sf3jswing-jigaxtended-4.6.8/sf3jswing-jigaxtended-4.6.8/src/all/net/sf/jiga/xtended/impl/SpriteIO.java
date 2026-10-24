@@ -5,15 +5,6 @@
  */
 package net.sf.jiga.xtended.impl;
 
-import com.sun.media.imageio.plugins.tiff.BaselineTIFFTagSet;
-import com.sun.media.imageio.plugins.tiff.EXIFTIFFTagSet;
-import com.sun.media.imageio.plugins.tiff.TIFFDirectory;
-import com.sun.media.imageio.plugins.tiff.TIFFField;
-import com.sun.media.imageio.plugins.tiff.TIFFImageReadParam;
-import com.sun.media.imageio.plugins.tiff.TIFFTag;
-import com.sun.media.imageio.plugins.tiff.TIFFTagSet;
-import com.sun.media.imageioimpl.plugins.tiff.TIFFImageReader;
-import com.sun.media.imageioimpl.plugins.tiff.TIFFImageWriter;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
@@ -54,7 +45,6 @@ import javax.imageio.event.IIOReadProgressListener;
 import javax.imageio.event.IIOReadWarningListener;
 import javax.imageio.event.IIOWriteProgressListener;
 import javax.imageio.event.IIOWriteWarningListener;
-import javax.imageio.metadata.IIOInvalidTreeException;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.FileCacheImageInputStream;
 import javax.imageio.stream.FileCacheImageOutputStream;
@@ -90,154 +80,26 @@ public class SpriteIO implements Debugger {
     private final static long hash = System.nanoTime();
     static Map<String, IIOParamController> IIOControllers = Collections.synchronizedMap(new HashMap<String, IIOParamController>());
     /**
-     * RGB - no headroom/no footroom
-     */
-    static final float[] referenceBlackWhiteRGB_NOHead_NOFoot = new float[]{0, 255, 0, 255, 0, 255};
-    /**
-     * returns the current IIOMetadata instance. it is NOT stored until the
-     * Sprite instance is serialized or one of the
-     * {@link #writeImageToIOStream(OutputStream) writeImage...()} is called.
-     *
-     * @return
-     *
-     * public IIOMetadata getMetadata() { return metadata; }
-     */
-    /**
-     * sets up the current IIOMetadata instance. it is NOT stored until the
-     * Sprite instance is serialized or one of the
-     * {@link #writeImageToIOStream(OutputStream) writeImage...()} is called.
-     *
-     * @param metadata the specified IIOMetadata to associate, if possible
-     *
-     * public void setMetadata(IIOMetadata metadata) { this.metadata = metadata;
-     * }
-     */
-    /**
      * its recommended to use power-of-two sizes
      */
     public static Dimension _WRITE_TILES_DIMENSION = BufferIO._WRITE_TILES_DIMENSION;
-    /**
-     * YCbCr - CCIR Recommendation 601.1 headroom/footroom
-     */
-    static final float[] referenceBlackWhiteYCbCr_601_1 = new float[]{15, 235, 128, 240, 128, 240};
-    /**
-     * this system property is read at first static time and defines the
-     * TIFFImageWriter IIOMetadata
-     * {@linkplain BaselineTIFFTagSet#TAG_REFERENCE_BLACK_WHITE ReferenceBlackWhite}
-     * with no Head/Footroom if set to true (
-     *
-     * @see http://partners.adobe.com/public/developer/en/tiff/TIFF6.pdf#page=86
-     * TIFF 6.0 spec document}
-     * @default jxa.tiff.nohf=false
-     */
+    @Deprecated
     public static boolean _useTIFF_NOHead_NOFoot = Boolean.getBoolean("jxa.tiff.nohf");
-    /**
-     * YCbCr coefficients CCIR Recommandation 601.1
-     */
-    static final float[] ycbcrCoefficients_601_1 = new float[]{299.0F / 1000.0F, 587.0F / 1000.0F, 114.0F / 1000.0F};
-    /**
-     * * EXIF 2.2 output for all TIFF images. (EXPERIMENTAL)
-     *
-     * @default jxa.tiff.exif=false
-     */
+    @Deprecated
     public static boolean _useTIFF_EXIF = Boolean.getBoolean("jxa.tiff.exif");
-    /**
-     * RGB - CCIR Recommendation 601.1 headroom/footroom
-     */
-    static final float[] referenceBlackWhiteRGB_601_1 = new float[]{16, 235, 16, 235, 16, 235};
-    /**
-     * YCbCr coefficients CCIR Recommandation 709
-     */
-    static final float[] ycbcrCoefficients_709 = new float[]{2125.0F / 10000.0F, 7154.0F / 10000.0F, 721.0F / 10000.0F};
-    /**
-     * * Unforced TIFF RGB PhotometricInterpretation (slower and buggy if
-     * enabled)
-     *
-     * @default jxa.tiff.norgb=false
-     */
+    @Deprecated
     public static boolean _useTIFF_UnforcedRGB = Boolean.getBoolean("jxa.tiff.norgb");
-    /**
-     * YCbCr - no headroom/no footroom
-     */
-    static final float[] referenceBlackWhiteYCbCr_NOHead_NOFoot = new float[]{0, 255, 128, 255, 128, 255};
     /**
      * minimal pixels size of thumbnails cannot be greater than
      * {@link #_WRITE_TILES_DIMENSION}
      */
     public static int _MIN_THUMBNAILS_SIZE = 16;
 
-    /**
-     * TIFFImageWriter will create and return a TIFFDirectory metadata (IFD)
-     * {@link #prepareTileWrite(boolean)}
-     *
-     * @param w
-     * @param pmetadata
-     * @param iwp
-     * @param its
-     * @return
-     * @discussion
-     * {@link http://download.java.net/media/jai-imageio/javadoc/1.1/com/sun/media/imageio/plugins/tiff/package-summary.html#EXIFStructure tiff plugin}
-     */
     public static IIOMetadata _getIIOMforImageType(ImageWriter w, IIOMetadata pmetadata, ImageTypeSpecifier its, ImageWriteParam iwp) {
         IIOMetadata metadata = w.getDefaultImageMetadata(its, iwp);
         if (pmetadata != null && metadata != null) {
             if (metadata.getClass().isInstance(pmetadata)) {
                 metadata = w.convertImageMetadata(pmetadata, its, iwp);
-            }
-        }
-        if (w instanceof TIFFImageWriter) {
-            TIFFTag ttagRefBW = BaselineTIFFTagSet.getInstance().getTag(BaselineTIFFTagSet.TAG_REFERENCE_BLACK_WHITE);
-            TIFFTag ttagPhoto = BaselineTIFFTagSet.getInstance().getTag(BaselineTIFFTagSet.TAG_PHOTOMETRIC_INTERPRETATION);
-            TIFFTag ttagCoeff = BaselineTIFFTagSet.getInstance().getTag(BaselineTIFFTagSet.TAG_Y_CB_CR_COEFFICIENTS);
-            TIFFDirectory tifd;
-            try {
-                tifd = metadata == null ? new TIFFDirectory(new TIFFTagSet[]{BaselineTIFFTagSet.getInstance()}, null) : TIFFDirectory.createFromMetadata(metadata);
-                if (!_useTIFF_UnforcedRGB) {
-                    tifd.removeTIFFField(ttagPhoto.getNumber());
-                    tifd.addTIFFField(new TIFFField(ttagPhoto, BaselineTIFFTagSet.PHOTOMETRIC_INTERPRETATION_RGB));
-                }
-                if (tifd.containsTIFFField(ttagPhoto.getNumber())) {
-                    int photometric = tifd.getTIFFField(ttagPhoto.getNumber()).getAsInt(0);
-                    float[] referenceBlackWhite;
-                    float[] ycbcrCoefficients = null;
-                    switch (photometric) {
-                        case BaselineTIFFTagSet.PHOTOMETRIC_INTERPRETATION_RGB:
-                            referenceBlackWhite = _useTIFF_NOHead_NOFoot ? referenceBlackWhiteRGB_NOHead_NOFoot : referenceBlackWhiteRGB_601_1;
-                            break;
-                        case BaselineTIFFTagSet.PHOTOMETRIC_INTERPRETATION_Y_CB_CR:
-                            referenceBlackWhite = _useTIFF_NOHead_NOFoot ? referenceBlackWhiteYCbCr_NOHead_NOFoot : referenceBlackWhiteYCbCr_601_1;
-                            ycbcrCoefficients = _useTIFF_NOHead_NOFoot ? ycbcrCoefficients_709 : ycbcrCoefficients_601_1;
-                            break;
-                        default:
-                            referenceBlackWhite = null;
-                            break;
-                    }
-                    if (referenceBlackWhite != null) {
-                        tifd.removeTIFFField(ttagRefBW.getNumber());
-                        tifd.addTIFFField(new TIFFField(ttagRefBW, TIFFTag.TIFF_FLOAT, 6, referenceBlackWhite));
-                        if (ycbcrCoefficients != null) {
-                            tifd.removeTIFFField(ttagCoeff.getNumber());
-                            tifd.addTIFFField(new TIFFField(ttagCoeff, TIFFTag.TIFF_FLOAT, 3, ycbcrCoefficients));
-                        }
-                        if (DebugMap._getInstance().isDebuggerEnabled(Sprite.class) && DebugMap._getInstance().isDebugLevelEnabled(DebugMap._getInstance()._VOID)) {
-                            System.out.print("TIFFField ReferenceBlackWhite ");
-                            for (float f : referenceBlackWhite) {
-                                System.out.print(" " + f);
-                            }
-                            System.out.println();
-                        }
-                    }
-                }
-                if (_useTIFF_EXIF) {
-                    TIFFTagSet exif = EXIFTIFFTagSet.getInstance();
-                    tifd.addTagSet(exif);
-                    tifd.addTIFFField(new TIFFField(exif.getTag(EXIFTIFFTagSet.TAG_EXIF_VERSION), TIFFTag.TIFF_UNDEFINED, 4, EXIFTIFFTagSet.EXIF_VERSION_2_2));
-                }
-                metadata = tifd.getAsMetadata();
-            } catch (IIOInvalidTreeException ex) {
-                if (DebugMap._getInstance().isDebuggerEnabled(Sprite.class)) {
-                    ex.printStackTrace();
-                }
             }
         }
         return metadata;
@@ -1028,18 +890,6 @@ public class SpriteIO implements Debugger {
         }
     }
 
-    /**
-     * TIFFImageWriter will create and return a TIFFDirectory metadata (IFD)
-     * {@link #prepareTileWrite(boolean)}
-     *
-     * @param w
-     * @param its
-     * @param iwp
-     * @return
-     * @discussion <a
-     * href="http://download.java.net/media/jai-imageio/javadoc/1.1/com/sun/media/imageio/plugins/tiff/package-summary.html#EXIFStructure"/>tiff
-     * plugin</a>
-     */
     public static IIOMetadata _getIIOMforDefaultImage(ImageWriter w, ImageTypeSpecifier its, ImageWriteParam iwp) {
         return _getIIOMforImageType(w, null, its, iwp);
     }
@@ -1070,16 +920,11 @@ public class SpriteIO implements Debugger {
                 }
             }
         }
-        if (irp instanceof TIFFImageReadParam) {
-            if (_useTIFF_EXIF) {
-                ((TIFFImageReadParam) irp).addAllowedTagSet(EXIFTIFFTagSet.getInstance());
-            }
-            if (DebugMap._getInstance().isDebuggerEnabled(Sprite.class) && irp.getDestinationType() != null) {
-                try {
-                    System.out.println("imagereader will use " + ImageCollection.BUFFERED_TYPE.valueOf(irp.getDestinationType().getBufferedImageType()) + " for " + r.getFormatName());
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+        if (DebugMap._getInstance().isDebuggerEnabled(Sprite.class) && irp.getDestinationType() != null) {
+            try {
+                System.out.println("imagereader will use " + ImageCollection.BUFFERED_TYPE.valueOf(irp.getDestinationType().getBufferedImageType()) + " for " + r.getFormatName());
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
         return irp;
@@ -1324,7 +1169,7 @@ public class SpriteIO implements Debugger {
                 mt.waitForID(0);
                 mt.removeImage(im, 0);
             }
-        } else if (r.getNumImages(true) > 1 && r instanceof TIFFImageReader) {
+        } else if (r.getNumImages(true) > 1) {
             thumbnails.add(im = r.read(1, irp));
             mt.addImage(im, 0);
             mt.waitForID(0);
