@@ -4,6 +4,8 @@
 
 - Remove the JAI-specific TIFF metadata and JDIC tray integrations while retaining
   generic ImageIO handling and the standard AWT system tray.
+- Use standard ImageIO file streams in ImageMultiConverter instead of removed
+  JAI ImageIO stream implementations.
 - Migrate framework MIME registration to Jakarta Activation and align its
   ThreadWorks calls with the available kernel API (which has no timeout).
 - Resolve historical LWJGL, JInput, JLayer, OpenJFX, and JAXB dependencies

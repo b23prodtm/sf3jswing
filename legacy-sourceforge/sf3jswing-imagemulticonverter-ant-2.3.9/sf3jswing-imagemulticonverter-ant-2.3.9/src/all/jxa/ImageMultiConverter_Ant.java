@@ -1,7 +1,5 @@
 package jxa;
 
-import com.sun.media.imageio.stream.FileChannelImageInputStream;
-import com.sun.media.imageio.stream.FileChannelImageOutputStream;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -12,10 +10,9 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.io.Closeable;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.*;
@@ -25,6 +22,8 @@ import javax.imageio.event.IIOReadWarningListener;
 import javax.imageio.event.IIOWriteProgressListener;
 import javax.imageio.event.IIOWriteWarningListener;
 import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.swing.*;
@@ -362,18 +361,17 @@ public class ImageMultiConverter_Ant implements AntApplet {
                                     fileJPB.setString((selectedFiles.length - 1 - index) + " image files are remaining...");
                                     File inputFile = file;
                                     final String k = selectedFiles[index].getName();
-                                    RandomAccessFile raf;
                                     ImageReader r = null;
                                     ImageInputStream iis = null;
                                     RProgressListener rpl = new RProgressListener();
                                     RWarningListener rwl = new RWarningListener();
                                     try {
                                         r = (ImageReader) ImageIO.getImageReadersByMIMEType(ImageCollection._getImageMimeType(inputFile, "r")).next();
-                                        r.setInput(iis = new FileChannelImageInputStream((raf = new RandomAccessFile(inputFile, "r")).getChannel()));
+                                        r.setInput(iis = new FileImageInputStream(inputFile));
                                         cache.buffer(iis);
                                         r.addIIOReadProgressListener(rpl);
                                         r.addIIOReadWarningListener(rwl);
-                                        toggleStep.addActiveStream((Closeable) raf.getChannel());
+                                        toggleStep.addActiveStream(iis);
                                         cache.buffer(img);
                                         /**
                                          * read once
@@ -382,7 +380,6 @@ public class ImageMultiConverter_Ant implements AntApplet {
                                         readMeta.push(r.getImageMetadata(r.getMinIndex()));
                                         r.dispose();
                                         iis.close();
-                                        raf.close();
                                         imageCollection.addImage(img.peek(), k);
                                         imageCollection.waitForPicture(k);
                                     } catch (Exception ex) {
@@ -526,13 +523,12 @@ public class ImageMultiConverter_Ant implements AntApplet {
                                                     sp.runValidate();
                                                     sp.writeImageToOutput(outputFile, compression_quality);
                                                 } else {
-                                                    raf = new RandomAccessFile(outputFile, "rw");
                                                     try {
-                                                        raf.setLength(0);
-                                                        w.setOutput(ios = new FileChannelImageOutputStream((raf = new RandomAccessFile(outputFile, "rw")).getChannel()));
+                                                        new FileOutputStream(outputFile).close();
+                                                        FileImageOutputStream fileStream = new FileImageOutputStream(outputFile);
+                                                        w.setOutput(ios = fileStream);
                                                         cache.buffer(ios);
-                                                        cache.buffer(raf);
-                                                        toggleStep.addActiveStream((Closeable) raf.getChannel());
+                                                        toggleStep.addActiveStream(ios);
                                                         mt.addImage(newImg.peek(), 0);
                                                         mt.waitForID(0);
                                                         mt.removeImage(newImg.peek(), 0);
@@ -553,8 +549,9 @@ public class ImageMultiConverter_Ant implements AntApplet {
                                                     } catch (InterruptedException ex) {
                                                         ex.printStackTrace();
                                                     } finally {
-                                                        ios.close();
-                                                        raf.close();
+                                                        if (ios != null) {
+                                                            ios.close();
+                                                        }
                                                     }
                                                 }
                                                 imageCollection.addImage(newImg.peek(), nK);
