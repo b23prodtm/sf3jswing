@@ -395,7 +395,7 @@
         <mkdir dir="${resources.os.arch.dir}"/>
         <javac failonerror="true" nowarn="on"
                destdir="${bin}"
-               source="17" target="17"
+               source="17" target="17" encoding="windows-1252"
                includeAntRuntime="no"
                classpathref="lib.path"
                debug="${compile.debug}"

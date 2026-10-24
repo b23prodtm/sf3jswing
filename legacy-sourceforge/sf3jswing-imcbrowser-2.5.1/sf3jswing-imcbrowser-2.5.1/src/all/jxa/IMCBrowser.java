@@ -2755,8 +2755,7 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
                 }
             }
         }
-        /* Create a LookupTableJAI object to be used with the
-         "lookup" operator.hi*/
+        /* Build a byte lookup table for the image. */
         return new LookupOp(new ByteLookupTable(0, tableData), null).filter(img, null);
     }
 
