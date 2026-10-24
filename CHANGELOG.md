@@ -6,6 +6,7 @@
   generic ImageIO handling and the standard AWT system tray.
 - Use standard ImageIO file streams in ImageMultiConverter instead of removed
   JAI ImageIO stream implementations.
+- Build ImageMultiConverter's unsigned Linux amd64 jars successfully on JDK 17.
 - Migrate framework MIME registration to Jakarta Activation and align its
   ThreadWorks calls with the available kernel API (which has no timeout).
 - Resolve historical LWJGL, JInput, JLayer, OpenJFX, and JAXB dependencies

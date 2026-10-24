@@ -82,14 +82,24 @@ JVM is launched with
 `-Dcom.sun.xml.bind.v2.bytecode.ClassTailor.noOptimize=true`; without that
 property its runtime attempts reflective access blocked by Java modules.
 
-GData/Picasa, RestFB, and the eSellerate `es-sdk-jdk-binding` remain deferred as
-requested. They are still referenced by archived IMC Browser sources, along
-with the removed Nashorn scripting API. The complete IMC Browser build is
-therefore not yet resolved; framework/game/browser builds also depend on the
-correctly built kernel/framework artifacts. This does not complete phase 1.
-The descriptors fail on compiler errors rather than reporting a misleading
-success. Use `ant build-jar` for an unsigned jar; the default `jar` target
-invokes the historical signing configuration.
+Build status on Temurin 17, using the module's `ant build-jar` target:
+
+| Module | Result | Remaining issue |
+|---|---|---|
+| Kernel 1.3.6 | Successful | Its jar and the framework's expected kernel bundle currently need to be staged into the next module's `lib/` directories. |
+| Jigaxtended 4.6.8 | Successful | Same staging requirement for consumers. |
+| ImageMultiConverter 2.3.9 | Successful | Packages an unsigned Linux amd64 jar; GUI/image conversion behavior has not been exercised. |
+| The Game 0.9.10 | Fails | UPnP classes are absent; game references also mismatch the available kernel/framework APIs, including rendering-scene and sound methods. |
+| IMC Browser 2.5.1 | Fails | Deferred GData/Picasa, RestFB, and eSellerate integrations remain referenced, Nashorn is absent from JDK 17, and additional API incompatibilities remain. |
+| JXA test 0.2.0 | Not yet verified | Requires the staged kernel/framework jars. |
+
+The social publishing and product-key integrations remain deferred as
+requested; they have not yet been cleanly isolated from the browser's source
+set, so a complete IMC Browser build is not available. The application build
+effort is therefore incomplete, as is phase 1. The descriptors fail on
+compiler errors rather than reporting a misleading success. Use
+`ant build-jar` for an unsigned jar; the default `jar` target invokes the
+historical signing configuration.
 
 The archived Jigaxtended 4.6.7 sources remain unchanged. Only the current
 4.6.8 framework sources have been migrated.
