@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="sf3jswing-thegame-ant" default="jar" basedir=".">
+
+    <import file="build-Windows-x86.xml"/>
+
+</project>

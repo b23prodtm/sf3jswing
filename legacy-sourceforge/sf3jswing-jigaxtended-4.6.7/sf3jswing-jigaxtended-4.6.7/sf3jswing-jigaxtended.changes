@@ -1,0 +1,233 @@
+-------------------------------------------------------------------
+@PROJECTSTAMPTODAYRPM@ - @COMPANYEMAIL@
+
+- @PROJECTVERSIONIMPL@_@PROJECTVERSIONRELEASE@
+- SoundInput update
+  + Added MemScratch implementation 
+- Code enhancements
+  + Improved states coding
+  + Improved for-while-... loops with recursive calls
+- ImageCollection sync
+  + Thread synchronization
+- GameActionLayer sync
+  + Loading activity performed with a recursive method (more reactive)
+
+-------------------------------------------------------------------
+Tue Jun 04 12:21:10 CEST 2013 - b23prodtm@users.sourceforge.net
+
+- 4.6.1_04
+- StencilPBO (HUD backer)
+  + Final Hook :à)
+- GLGeomObject
+  + work in progress : add scalability of objects
+- JXAException extends RuntimeException
+  + better code readability
+- GL error checking
+  + debugged VBO and PBO (GLGeom and StencilPBO/HUD resp.)
+- net.sf.jiga.xtended.impl.game.gl
+  + new package
+- MemScratch
+  + abstract GL memory buffer handler
+- Animation is not a Sprite object anymore
+  + Animation does not extend Sprite anymore. Sf3Renderable is the common trunk for both classes and Model's.
+- editor.*
+  + updates to add multi-selection for model animation IDs
+- RenderingScene
+  + _GL_FARVAL and _GL_NEARVAL viewport integration. Rendering coord are FROM THIS RELEASE ON within the range (0,0,0) < (width,height,_GL_FARVAL-_GL_NEARVAL)
+
+-------------------------------------------------------------------
+Sun Aug 28 13:13:37 CEST 2011 - b23prodtm@users.sourceforge.net
+
+- 4.4.2_08
+- Externalizable
+  + Implementations of (progressively) BufferIO, Sf3Texture, Sprite, Animation, SpritesChar -> Model -> XtendedModel, ImageCollection for higher performance
+- Sprite
+  + trackImage-untrackimage fixed reference holder bug
+  + volatile cache improvement. VolatileImage fixed bug. http://gpwiki.org/index.php/Java:Tutorials:VolatileImage#How_to_Make_Transparent_Regions_in_a_VolatileImage
+- sf3jswing-jxatest-unit
+  + free form JXA project to implement test units (no JUnit though ;) )
+- build-jars.xml
+  + removed targets : run, run-applet, run-extension (2 first moved to sf3jswing-jxatest-unit, and the latter to jxakernel)
+
+-------------------------------------------------------------------
+Sun Apr 03 17:01:41 CEST 2011 - b23prodtm@users.sourceforge.net
+
+- 4.4.0_18
+- Sprite
+  + buffered all IO streams
+- META-INF/mime.types
+  + updated contents
+- XML's build file revision
+  + Extension Mechanism
+- GLHandler
+  + new functions (alternatively switch the projective matrix from ortho<>proj,...)
+  + impovements
+- GLText
+  + new implementation up to 3x faster; transform TX handle (translate, scale, rotate)
+- GUIConsoleOutput
+  + fixed clipsize bug
+- GLFX
+  + _GLdisableFX switches off assertion to callbacks within a _GLrender call; the code can then
+  + make stencil, clipping, etc. operations around original encapsulated openGL calls from GLGeom, Sprite, etc.
+- RenderingScene
+  + new fps counter png
+  + fps calculation with nanotime fixed bug
+  + moved _GLRenderTexture* to GLFX implementation
+  + Console is rendered orthogonally
+- SoundInput
+  + openAL buffers
+- BufferIO
+  + NO handle for direct buffers re-use (with WeakReference) FIXED to LWJGL 2.2.2 backcompatiblity (direct alloc caused permgen space overflow!)
+- GLGeom
+  + handle of GLFX effects (pass-callbacks); transform TX handle (translate, scale, rotate)
+  + polygons rendering binding switch
+
+-------------------------------------------------------------------
+Thu Aug 26 15:55:55 CEST 2010 - b23prodtm@users.sourceforge.net
+
+- 4.3.0_02
+- build.xml
+  + many arch's supports added for convenience
+- template/build-extended-template.xml
+  + every java developer can now easily create and manage its own JXA applet or desktop app with a free-form project
+    template builder
+
+-------------------------------------------------------------------
+Wed Aug 11 20:26:17 CEST 2010 - b23prodtm@users.sourceforge.net
+
+- 4.2.5_06
+- AppLauncher._load()
+  + fixed thread lock issues
+- LogArea.getConsole()
+- RenderingScene
+  + fixed clearResource() bug from GUIConsoleOutput
+- build-jars.xml
+  + fixed lib kernel path
+- NOTICE
+  + added LWJGL License Terms
+- sf3jswing-jigaxtended-kernel.html
+  + fixed applet archive param to point ext-kernel jar
+- GUIConsoleOutput
+  + no more a JComponent (Swing issue)
+-------------------------------------------------------------------
+Thu Jul 15 00:47:42 CEST 2010 - b23prodtm@users.sourceforge.net
+
+- 4.2.4_05
+- Sprite
+  + _load() fixed nullpointer bug
+  + Sprite uses the context ClassLoader when looking for resources
+- ImageCollection
+  + jxa/ImcBrowser.properties moved to net/sf/jiga/xtended/impl/ImcBrowser.properties (was conflicting with jxa package in IMCBrowser app)
+  + load state_errored fixed bug
+- FileChooserPane
+  + ignore directories on preview panel
+- RenderingScene
+  + improved load speed
+  + keyboard event handler can be disabled
+- GLHandler
+  + __GLRenderTileTexture fixed z and transform values
+  + fixed rendering in tile mode for texture smaller than tiled size (map is 1-sized)
+
+-------------------------------------------------------------------
+Mon Jun 14 00:07:33 CEST 2010 - b23prodtm@users.sourceforge.net
+
+- 4.2.4_01
+- ImageCollection
+  + removed and renamed a few functionalities
+- Sprite
+  + TileWriter new implementation, was impossible to replacepixels()
+  + TIFF tile mode fixed bug
+  + JP2 buffered type fix
+- GameActionLayer
+  + synch issue
+
+-------------------------------------------------------------------
+Tue May 25 00:41:48 CEST 2010 - b23prodtm@users.sourceforge.net
+
+- 4.2.3_02
+- ImageCollection
+  + load states bug fix
+- FileChooserPane
+  + displays preview thumbnails faster
+- GLHandler
+  + color blending fixed bug
+- Sprite
+  + jxa.nofx=true disables graphics effects
+  + tile mode available for resize and internal transforms
+- RenderingScene
+  + -Dorg.lwjgl.opengl.Display.allowSoftwareOpenGL=true is added to the VM arg to void errors on machines missing opengl drivers
+- BufferIO, Sf3Texture, Sf3Texture3D, Sprite
+  + as of LWJGL 2.3 specs, strictly native direct buffers are used with JXA.
+
+-------------------------------------------------------------------
+Sat Jan 16 23:09:17 CET 2010 - b23prodtm@users.sourceforge.net
+
+- 4.1.3_00
+- Sprite
+  + tile mode may now be used in java2d draw() and validate() methods.
+
+-------------------------------------------------------------------
+Wed Jan 06 18:08:55 CET 2010 - b23prodtm@users.sourceforge.net
+
+- 4.1.2_00
+- Sprite
+  + tile mode fix; getScaled bug fix
+- JMF 2.1.1e
+  + added to the librairies (native support on Windows and Linux 32 bits machines)
+- ModelAnimBrowser
+  + Popup menu fix
+- kernel update
+  + env utils bug fixes
+- FileChooserPane
+  + invoke swing to show dialogs; preview render size
+- LWJGL 2.2.1
+  + GLU tesselation
+- GLText
+  + render with GLU tesselation
+
+-------------------------------------------------------------------
+Thu Oct 29 00:11:31 CET 2009 - b23prodtm@users.sourceforge.net
+
+- 4.0.2_01
+- GLHandler
+  + ext.ARBImaging check bug fix
+- ImageCollection
+  + serialization bug fix
+
+-------------------------------------------------------------------
+Tue Oct 27 23:19:15 CET 2009 - b23prodtm@users.sourceforge.net
+
+- 4.0.2_00
+- ImageCollection
+  + fx state for individual pictures
+- GLHandler.ext
+  + enum for handling common opengl extensions
+- InstructionPane + Navigator
+  + step change listeners are correctly updated with the Navigator
+
+-------------------------------------------------------------------
+Mon Oct 26 00:50:34 CET 2009 - b23prodtm@users.sourceforge.net
+
+- BufferIO
+  + bug fix with 0-buffers
+- Sf3Texture
+  + bug fix with empty textures
+- Sf3TextureTile
+  + fixed bug in constructor
+
+-------------------------------------------------------------------
+Mon Oct 19 04:47:33 CET 2009 - b23prodtm@users.sourceforge.net
+
+- Sprite Texture cache
+  + It is now a full SpritesCacheManager. The Sprite serializes faster.
+- Sprite Tile cache
+  + Using the Texture cache it can spare heap usage when handling big images as textures.
+  + Tiling mode may be enabled via its dedicated method. IF the image contents are greater than the _WRITE_TILES_DIMENSION static value, then it is tiled in any of the output made with. ONLY tiff mime type, which may be enabled by explicitely using the tiff as mime type from any BufferedImage, may tile the picture (J2k is used to do so, but it seems not working yet).
+- GLHandler
+  + This class gathers most LWJGL utilities needed by JXA. Sprite, Animation and Model have a GL counter part resp. SpriteGLHandler, AnimationGLHandler and ModelGLHandler to monitor texture loading and bindings.
+- RenderingScene
+  + It now offers the GL Orthographic Projection. Many improvements to the loading states and mechanisms.
+- Sf3TextureBuffer
+  + This class is backing now Sf3Texture, Sf3TextureTile and Sf3Texture3D as a common trunk.
+- build <- build-jars.xml, build-mac os x-ppc.xml, build-windows vista-x86.xml and build-linux-i386.xml
+  + build.xml handles the current platform hosting the JDK. If you want to do Cross-Compile, ensure that you run the JDK of the same version for the targeted platform (e.g. mac os x would require JDK 1.5), run the ant tasks with build-mac os x-ppc.xml (which will build a mac os x universal binary) or one of a customized build-[os]-[arch].xml file. "ant install" will make an application for the targeted os. NOTICE : if you want a mac os x .app application bundle, it may be better to be running a UNIx/Linux system, because of file permissions constraints.

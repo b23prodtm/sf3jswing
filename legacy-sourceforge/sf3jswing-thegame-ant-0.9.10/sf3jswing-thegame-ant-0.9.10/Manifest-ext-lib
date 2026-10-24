@@ -1,0 +1,18 @@
+Extension-Name: @PROJECTNAMEBIN@.lib
+Class-Path: log4j.jar log4j-core.jar
+Trusted-Library: true
+Specification-Title: @PROJECTNAME@ LIBRARIES
+Specification-Version: @PROJECTVERSIONSPEC@
+Specification-Vendor: @COMPANYNAME@ @PROJECTYEARS@
+Implementation-Vendor-Id: @PROJECTNAMEBIN@
+Implementation-Title: @PROJECTOSNAME@ LIBRARIES (@PROJECTOSARCH@)
+Implementation-Version: @PROJECTVERSIONIMPL@_@PROJECTVERSIONRELEASE@
+Implementation-Vendor: @COMPANYNAME@ @PROJECTYEARS@
+
+Name: org/apache/commons/
+Specification-Title: commons-jxpath
+Specification-Version: 1.1
+Specification-Vendor: Apache Software Foundation
+Implementation-Title: org.apache.commons.*
+Implementation-Version: 1.1
+Implementation-Vendor: Apache Software Foundation

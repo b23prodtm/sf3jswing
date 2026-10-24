@@ -1,0 +1,22 @@
+INSTALL
+-------
+
+To build with ant :
+extract the tarball into a folder;
+open shell and browse to the folder;
+ant clean
+
+To pack into .jar (dist/yourOSname/) :
+ant jar
+
+To pack extensions .jar if available :
+ant DO-jar-extension
+
+For Linux users only, to install into /usr/games/projectname) :
+su
+ant install
+
+To build and run applet/application without install :
+ant run-applet
+  or
+ant run

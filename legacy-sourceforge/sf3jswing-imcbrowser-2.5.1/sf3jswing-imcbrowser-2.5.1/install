@@ -1,0 +1,26 @@
+INSTALL
+-------
+
+To build with ant :
+extract the tarball into a folder;
+open shell and browse to the folder;
+ant clean
+
+To pack into .jar (dist/yourOSname/) :
+ant jar
+
+On Linux, to install into /usr/games/projectname) :
+su
+ant install
+
+On Windows, you can build an (32 bits) .exe file :
+ant install
+
+## deprecated On Mac OS X, you can build an .app bundle (stub, .plist and icons are located in resources/Mac/all) : ##
+deprecated On Mac OS X, you can build an Universal (32/64) .app bundle (stub, .plist and icons are located in lib/appbundler.jar) :
+ant install
+
+To build and run applet/application without install :
+ant run-applet
+  or
+ant run

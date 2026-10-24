@@ -1,0 +1,7 @@
+-------------------------------------------------------------------
+@PROJECTSTAMPTODAYRPM@ - @COMPANYEMAIL@
+
+- @PROJECTVERSIONIMPL@_@PROJECTVERSIONRELEASE@
+- initial release
+- fixed GL implementation of the menu interface
+- HUD integration (fillrate is improved)

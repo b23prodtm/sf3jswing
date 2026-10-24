@@ -1,0 +1,176 @@
+-------------------------------------------------------------------
+@PROJECTSTAMPTODAYRPM@ - @COMPANYEMAIL@
+
+- @PROJECTVERSIONIMPL@_@PROJECTVERSIONRELEASE@
+- classpath issues
+  + managing Attribute Class-Path as of Extensions specifications.
+- deleted class JXARandomAccessFile
+- JFCApplet
+  + improvements for restarting outside stub feature
+  + splashscreen (JXAenvUtils) 
+-------------------------------------------------------------------
+Thu Nov 01 19:52:24 CET 2012 - b23prodtm@users.sourceforge.net
+
+- 1.2.3_00
+- Monitor
+  + FIFO queue added
+- ExtensionsInstaller, JXAenvUtils, ExtensionsClassLoader-Impl
+  + downloads JFCApplet's class-path fully 
+- CoalescedThreadsMonitor class is removed
+- JXAenvUtils
+  + restart JFCFrame and JFCApplet and temp files survival
+  + multithreading switch on fix
+  + MD5 install integrity check
+- SpritesCacheManager
+  + delete of swap File's fixed bug
+- JFCApplet
+  + applet loading error fixed bug (workaround)
+- Display
+  + mediatracker image tracking issue
+- Externalizable
+  + implementations of SpritesCacheManager for higher performance
+
+-------------------------------------------------------------------
+Sun Jun 26 12:57:14 CEST 2011 - b23prodtm@users.sourceforge.net
+
+- 1.1.5_04
+- Console
+   + Strinbuilder replaces StringBuffer according to guide : http://download.oracle.com/javase/1.5.0/docs/guide/performance/speed.html
+- JXAenvUtils
+   + update JMF.properties storage in java.class.path from user.home
+- SpritesCacheManager
+   + Switched to WeakReference for better performance and heap memory usage management
+   + buffered I/O operations (64k)
+   + Heap memory
+- ThreadWorks 
+   + doLater and DoAndWait tasks can be run on memorySensitive caches (OutOfMemoryError protection)
+
+-------------------------------------------------------------------
+Sun Apr 03 17:01:39 CEST 2011 - b23prodtm@users.sourceforge.net
+
+- 1.1.5_00
+- Console
+  + fixed printstream reader thread
+- ExtensionsClassLoader
+  + loads classes, resources and natives in the extensions folder, on-the-fly (Applet support) FIXED
+- XML's build file revision
+  + Extension Mechanism
+- ThreadWorks
+  + lengthy operations will show a popup to abort (in multithreaded environement only) 
+- BigBitStack
+  + new bitmap comparison handler (using BigInteger)
+- DebugMap
+  + new debugging / log utility class
+- SpritesCacheManager.SoftValue
+  + updated clearing process to ensure file-cache handling FIXED
+- BitStack
+  + updated documentation
+- JXAenvUtils, ExtensionsInstaller
+  + un/loadEnvironment processes update
+- JXAenvUtils.LWJGLenvLayer
+  + libraries for JInput have a specific system property set
+- Ant, JFCApplet, JFCFrame, AntHandler
+  + new splash implementation; fixed showSplash implementation for IMCBrowser (double interfaces)
+
+-------------------------------------------------------------------
+Thu Aug 26 15:55:50 CEST 2010 - b23prodtm@users.sourceforge.net
+
+- 1.1.2_14
+- build-Linux-...xml
+  + pre-deb-build-install and pre-rpm-build-install fixed bug
+- UIMessage
+  + dialog should appear centered on the screen now
+- build.xml
+  + many arch's supports added for convenience
+- JFCFrame, JFCApplet, JFCFrameApp (Mac), JFCAppletApp (Mac) : .main(String args[])
+  + fixed Swing invoke at frame creation and startup
+- Console
+  + is now a Resource and can be cleared off
+- ExtensionsInstaller
+  + Can install a platform specific un/installer on the user's desktop
+- JXAenvUtils
+  + __fileCopy fixed bug with InputStream that get closed
+  + ImageIO cache is initialized at loading
+
+-------------------------------------------------------------------
+Wed Jul 28 03:33:17 CEST 2010 - b23prodtm@users.sourceforge.net
+
+- 1.1.1_11
+- JFCApplet
+  + parses the antargs parameter String for setting system properties when the jvm_arguments is not read (<= Java 1.5 Plugin)
+- JFCAppletApp and JFCFrameApp (src/Mac)
+  + moved to net.sf.jiga.xtended.kernel package because of a conflict with the external jxa package
+- ExtensionsInstaller + build-jars.xml
+  + jxa/extensions.properties moved to net/sf/jiga/xtended/kernel/extensions.properties
+  + on Mac Systems, a reboot of Safari is attempted after extensions install (usually on Java 1.5 plugin).
+    See properties/Mac/all/net/sf/jiga/xtended/kernel/restartSafari.applescript.
+- JXAenvUtils
+  + new env._ARCH enum properties
+  + exit thread issue
+- SpritesCacheManager
+  + compress mode, fixed bug
+  + writeSwap invoked before adding to cache
+  + public static void _cleanFileSwap() : cleans up the file swapping directory.
+    CAUTION : this method IMMEDIATELY deletes all files located in the swapping directory. all cache instances that use the same directory may fail to recover after using this method.
+    {@link #clearMemorySwap() use clearMemorySwap()} to safely delete all files used by this cache instance.
+    @throws Exception if a file is not found
+- UIMessage
+  + new Icons
+
+-------------------------------------------------------------------
+Sun May 16 17:41:18 CEST 2010 - b23prodtm@users.sourceforge.net
+
+- 1.1.0_04
+- UIMessage
+  + new Icons
+- JXAenvUtils
+  + jxa.nomt=true disables multi-threading on multi-core-threaded systems
+  + temp directory is cleaned up of ".JXA.tmp" temp files at shutdown time
+  + _USERHOMESTOREDIRECTORY will store log files of uncaught exceptions
+- JXAEnvUtils.env
+  + Windows 7 env
+
+-------------------------------------------------------------------
+Wed Jan 06 18:08:44 CET 2010 - b23prodtm@users.sourceforge.net
+
+- 1.1.0_01
+- JFCApplet
+  + new "antargs" <param>, arguments may be passed to the actual AntApplet
+
+-------------------------------------------------------------------
+Fri Jan 01 04:07:30 CET 2010 - b23prodtm@users.sourceforge.net
+
+- 1.1.0_00
+- UIMessage
+  + displayWaiting and displayProgress may have a custom icon label
+- ExtensionsClassLoader.findResource() .findLibrary() .findClass()
+  + will load from the parent class loader (bootstrap included) firstly, as of the ClassLoader.getResource() contract
+- ExtensionsInstaller._externalInstall
+  + Safari check
+- JXAenvUtils.isResourceLoaded
+  + returns false when loading had errors
+- JXAenvUtils._loadenvfile
+  + try-catch-finally blocks wouldn't return correct values, fixed
+- JXAenvUtils._kernelVersion
+  + reports current kernel package implementation version
+
+-------------------------------------------------------------------
+Wed Nov 11 23:59:15 CET 2009 - b23prodtm@users.sourceforge.net
+
+- 1.0.6_00
+- DnDHandler
+  + handling of Drag'n'drop behaviours
+
+-------------------------------------------------------------------
+Tue Oct 27 21:54:02 CET 2009 - b23prodtm@users.sourceforge.net
+
+- 1.0.5_02
+- JFCApplet and JFCFrame
+  + screen device id may be specified as a command line argument to define the default screen to use in a multi-head environment
+- SpritesCacheManager
+  + clear() will not clear the submaps obtained via keySet(), values() and entrySet()
+
+-------------------------------------------------------------------
+Mon Oct 26 00:50:49 CET 2009 - b23prodtm@users.sourceforge.net
+
+- Initial Release

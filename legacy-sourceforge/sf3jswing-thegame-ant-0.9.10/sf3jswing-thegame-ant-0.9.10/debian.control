@@ -1,0 +1,12 @@
+Source: @ANTPROJECTNAME@
+Section: non-free/games
+Priority: optional
+Maintainer: @COMPANYNAME@ <@COMPANYEMAIL@>
+Build-Depends: debhelper (>= 5), locales-all, ant, sun-java6-jdk, ant-apache-regexp, sf3jswing-jigaxtended
+
+Package: @ANTPROJECTNAME@
+Architecture: any
+Depends: ${shlibs:Depends}, sun-java6-jre, sun-java6-plugin, sf3jswing-jigaxtended
+Description: @PROJECTNAME@
+ @PROJECTDESCRIPTIONDEBIAN@
+

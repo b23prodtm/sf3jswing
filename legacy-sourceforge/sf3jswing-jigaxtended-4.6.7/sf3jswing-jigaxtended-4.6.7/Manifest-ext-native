@@ -1,0 +1,9 @@
+Extension-Name: @PROJECTNAMEBIN@.native
+Trusted-Library: true
+Specification-Title: @PROJECTNAME@ native
+Specification-Version: @PROJECTVERSIONSPEC@
+Specification-Vendor: @COMPANYNAME@ @PROJECTYEARS@
+Implementation-Vendor-Id: @PROJECTNAMEBIN@
+Implementation-Title: @PROJECTOSNAME@ native (@PROJECTOSARCH@)
+Implementation-Version: @PROJECTVERSIONIMPL@_@PROJECTVERSIONRELEASE@
+Implementation-Vendor: @COMPANYNAME@ @PROJECTYEARS@

@@ -1,0 +1,3 @@
+## 64 bits natives for Windows platform ##
+Running on an 64 bits windows with the 32 bits JDK (e.g. Java Chrome Plugin for Windows only) implies that _64 bits_ native libraries must be loaded on the system. Therefore 64 bits native libraries like "jinput-dx8_64.dll" must be found in the project/resources/properties/Windows/all/natives and _not_ ../Windows/amd64/natives. This is because a 32 bits compiler will not look into amd64 folder to add the natives to the .jar.
+This concern does not involve Mac OS and other Unix platforms which cannot run 32 bits JDK on 64 bits machines.

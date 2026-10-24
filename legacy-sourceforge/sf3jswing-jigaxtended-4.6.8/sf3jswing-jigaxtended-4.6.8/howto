@@ -1,0 +1,28 @@
+HOW TO BUILD A COMPLETE NATIVE INSTALLER AND JXA EXTENDED PROJECT
+======================================
+
+1. download the latest sf3jswing-jxakernel release 1.3.2+
+2. compile the kernel library with the ant default task (update-template), the kernel is copied into the listed template projects see sf3jswing-jxakernel/HOWTO
+3. open sf3jswing-jigaxtended.
+4. edit build-YOUROS-YOURARCH.xml. Section below :
+            <!-- #### EXTENSIONS FILES AND *** NATIVE INSTALLER *** ####
+                    CONFIGURE HERE THE EXTENSIONS INSTALLER (USEFUL ON OPERATING SYSTEM RUNNING THE PLUGIN V. 1
+                    (E.G. MAC OS X AND JAVA 5, OR SAFARI ON WINDOWS)
+                    ####
+               //-->
+        a) you must specify the location on the web where your -might- upload the sf3jswing-jigaxtended-ext-...jar's
+        b) you must specify ALL native libraries that you want the kernel to install before to launch your Applet-or-Frame app
+        c) copy the necessary natives in the resources/properties/YOUROS/YOURARCH/natives/ folder as they will be
+            merged into the file sf3jswing-jigaxtended-YOUROS-YOURARCH-ext-native...jar .
+5. configure the project that uses this API, to be updated each time you trigger a new build update (update-template or DO-new-project-template)
+            <!-- LIST HERE PROJECT NAMES THAT NEED TO BE UPDATED (UPDATE-TEMPLATE TASK)-->
+        a) edit once <property name="co.prj.template-project.name.list" value="sf3jswing-jigaxtended,sf3jswing-jxatest-unit,sf3jswing-imagemulticonverter-ant,sf3jswing-imcbrowser,sf3jswing-animsbrowser-ant,sf3jswing-thegame-ant"/>
+        b) and use build.xml or build-YOUROS-YOURARCH.xml (no matter if you run another OS or arch) to
+                run update-template or DO-new-project-template
+
+7. open a new "free-form project" (e.g. in Netbeans) a then you might edit the src/all/jxa/ package to begin
+8. it may be useful to configure the editor project classpath to look into resources/YOUROS/YOURARCH/*ext-kernel_signed.jar and ext_signed.jar files
+9. SEE README and install for more information about build.xml's in JXA Free-form Projects
+
+==============================
+2010-2014 B23PRODTM

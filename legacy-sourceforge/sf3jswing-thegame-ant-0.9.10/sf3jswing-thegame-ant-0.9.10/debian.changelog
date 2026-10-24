@@ -1,0 +1,7 @@
+@ANTPROJECTNAME@ (@PROJECTVERSIONIMPL@-@PROJECTVERSIONRELEASE@) stable; urgency=low
+
+  * Initial Release
+  * fixed GL implementation of the menu interface
+  * HUD integration (fillrate is improved)
+
+ -- @COMPANYNAME@ <@COMPANYEMAIL@>  @PROJECTSTAMPTODAY@

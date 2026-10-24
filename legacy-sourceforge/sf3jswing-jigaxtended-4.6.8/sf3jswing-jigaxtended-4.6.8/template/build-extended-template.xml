@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<project default="DO-new-project-template" basedir="..">
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+        <classpath>
+            <pathelement location="template/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
+    <!--
+    #####                           #####
+    ##### PROJECT TEMPLATE CREATION #####
+    #####                           #####
+    //-->
+    
+    <!--    #### UPDATE EXTERNAL EXISTING JXA PROJECT(S) ####
+            EDIT HERE THE FOREACH LIST TO
+            DO AUTOMATICALLY COPY THE EXTENSIONS.JARS
+            INTO THE APPROPRIATE FOLDERS LOCATED IN THE LIST
+            //-->
+    <property name="target-path" location=".."/>
+    <target name="update-template" depends="DO-jar-extension" description="Will perform build of the extension and copy to the target template projects.
+    Solely .jar are copied and overwritten.
+    Solely template/files that do not exist in the target project are added.">
+        <property name="new-project" value="false"/>
+        <!-- LIST OF PROJECT THAT NEED TO BE UPDATED (UPDATE-TEMPLATE TASK) in build.jars.xml property definitions (first part)-->
+        <foreach            
+        list="${co.prj.template-project.list}"
+        target="_update-template-task"
+        param="template-project">
+        </foreach>
+    </target>
+
+    <!--    #### CREATE NEW JXA PROJECT (THAT MAY BE FRAMED APPLICATION OR EXTENDED APPLETS ####
+            THIS WILL OUTPUT TO THE PARENT FOLDER OF YOUR COPY OF JIGAXTENDED PROJECT
+            //-->
+    <property name="new.project.template" value="esell-validation"/>
+
+    <target name="DO-new-project-template" depends="DO-jar-extension" description="Will create a new project template of name specified above">
+        <property name="new-project" value="true"/>
+        <foreach inheritall="true"
+        list="${new.project.template}"
+        target="_update-template-task"
+        param="template-project">
+        </foreach>
+    </target>
+    <target name="_update-template-task">
+        <!--    #### CONFIGURE NEW PROJECT VALUES
+                (unless you know about them, don't change any token values,
+                it's for filtering the source files !)
+                ####
+        //-->
+        <property name="new-jxa-project.class" value="ESell"/>
+        <property name="new-jxa-project.class.token" value="NEWJXAPROJECTCLASS"/>
+        <property name="new-jxa-project.company" value="Descom AG Online Shop"/>
+        <property name="new-jxa-project.company.token" value="NEWJXAPROJECTCOMPANYNAME"/>
+        <property name="new-jxa-project.company.country.id" value="CH"/>
+        <property name="new-jxa-project.company.country.id.token" value="NEWJXAPROJECTCOMPANYCOUNTRYID"/>
+        <property name="new-jxa-project.company.url" value="http://www.descom-online.info"/>
+        <property name="new-jxa-project.company.url.token" value="NEWJXAPROJECTCOMPANYURL"/>
+        <property name="new-jxa-project.company.email" value="webmaster@descom-online.info"/>
+        <property name="new-jxa-project.company.email.token" value="NEWJXAPROJECTCOMPANYEMAIL"/>
+        <property name="new-jxa-project.co.prj.codebase" value="http://sf3jswing.sf.net/"/>
+        <property name="new-jxa-project.co.prj.codebase.token" value="NEWJXAPROJECTCODEBASE"/>
+        <property name="new-jxa-project.co.prj" value="${template-project}"/>
+        <property name="new-jxa-project.co.prj.token" value="NEWJXAPROJECTNAME"/>
+        <property name="new-jxa-project.co.prj.description" value="ESellerate Validation Toolkit"/>
+        <property name="new-jxa-project.co.prj.description.token" value="NEWJXAPROJECTPROJECTDESCRIPTION"/>
+        <property name="new-jxa-project.co.prj.url" value="http://www.esellerate.net"/>
+        <property name="new-jxa-project.co.prj.url.token" value="NEWJXAPROJECTURL"/>
+        <property name="new-jxa-project.co.prj.years" value="2013"/>
+        <property name="new-jxa-project.co.prj.years.token" value="NEWJXAPROJECTYEARS"/>
+        <filterset id="filtertokens-template">
+            <filter token="${new-jxa-project.class.token}" value="${new-jxa-project.class}"/>
+            <filter token="${new-jxa-project.company.token}" value="${new-jxa-project.company}"/>
+            <filter token="${new-jxa-project.company.country.id.token}" value="${new-jxa-project.company.id}"/>
+            <filter token="${new-jxa-project.company.url.token}" value="${new-jxa-project.company.url}"/>
+            <filter token="${new-jxa-project.company.email.token}" value="${new-jxa-project.company.email}"/>
+            <filter token="${new-jxa-project.co.prj.codebase.token}" value="${new-jxa-project.co.prj.codebase}"/>
+            <filter token="${new-jxa-project.co.prj.token}" value="${new-jxa-project.co.prj}"/>
+            <filter token="${new-jxa-project.co.prj.description.token}" value="${new-jxa-project.co.prj.description}"/>
+            <filter token="${new-jxa-project.co.prj.url.token}" value="${new-jxa-project.co.prj.url}"/>
+            <filter token="${new-jxa-project.co.prj.years.token}" value="${new-jxa-project.co.prj.years}"/>
+        </filterset>
+        <!--    #### EXISTING FILES WON'T BE MODIFIED ####
+        //-->
+        <property name="template-project.dir" location="${target-path}/${template-project}"/>
+        <property name="template-project-src.dir" location="${template-project.dir}/src"/>
+        <property name="template-project-src.os.dir" location="${template-project-src.dir}/${co.prj.os}"/>
+        <property name="template-project-src.all.dir" location="${template-project-src.dir}/all"/>
+        <property name="template-project-lib.dir" location="${template-project.dir}/lib"/>
+        <property name="template-project-lib.all.dir" location="${template-project-lib.dir}/all"/>
+        <property name="template-project-lib.os.dir" location="${template-project-lib.dir}/${co.prj.os}"/>
+        <property name="template-project-lib.os.all.dir" location="${template-project-lib.os.dir}/all"/>
+        <property name="template-project-lib.os.arch.dir" location="${template-project-lib.os.dir}/${co.prj.os.arch}"/>
+        <property name="template-project-resources.dir" location="${template-project.dir}/resources"/>
+        <property name="template-project-resources.all.dir" location="${template-project-resources.dir}/all"/>
+        <property name="template-project-resources.os.dir" location="${template-project-resources.dir}/${co.prj.os}"/>
+        <property name="template-project-resources.os.all.dir" location="${template-project-resources.os.dir}/all"/>
+        <property name="template-project-resources.os.arch.dir" location="${template-project-resources.os.dir}/${co.prj.os.arch}"/>
+        <mkdir dir="${template-project.dir}"/>
+        <mkdir dir="${template-project-src.dir}"/>
+        <mkdir dir="${template-project-src.os.dir}"/>
+        <mkdir dir="${template-project-src.all.dir}"/>
+        <mkdir dir="${template-project-lib.dir}"/>
+        <mkdir dir="${template-project-lib.all.dir}"/>
+        <mkdir dir="${template-project-lib.os.dir}"/>
+        <mkdir dir="${template-project-lib.os.all.dir}"/>
+        <mkdir dir="${template-project-lib.os.arch.dir}"/>
+        <mkdir dir="${template-project-resources.dir}"/>
+        <mkdir dir="${template-project-resources.all.dir}"/>
+        <mkdir dir="${template-project-resources.os.dir}"/>
+        <mkdir dir="${template-project-resources.os.all.dir}"/>
+        <mkdir dir="${template-project-resources.os.arch.dir}"/>
+        <if>
+            <equals arg1="${new-project}" arg2="true" />
+            <then>
+   <!-- new project specific file names //-->
+                <copy overwrite="false" todir="${template-project.dir}">
+            <!--filterset refid="filtertokens"//-->
+                    <filterset refid="filtertokens-template"/>
+                    <fileset dir="template/project-files">
+                        <include name="**/new-jxa-project*"/>
+                    </fileset>
+                    <mapper type="regexp" from="(.*)new-jxa-project(.*)$$" to="\1${template-project}\2"/>
+                </copy>
+        <!-- Java source files //-->
+                <copy overwrite="false" todir="${template-project.dir}">
+                    <filterset refid="filtertokens"/>
+                    <filterset refid="filtertokens-template"/>
+                    <fileset dir="template/project-files">
+                        <include  name="**/*.java"/>
+                    </fileset>
+                    <mapper type="regexp" from="(.*)NewClass(.*)$$" to="\1${new-jxa-project.class}\2"/>
+                </copy>
+            </then>
+        </if>
+        <!-- xml build files //-->
+        <copy overwrite="false" todir="${template-project.dir}">
+            <filterset refid="filtertokens"/>
+            <filterset refid="filtertokens-template"/>
+            <fileset dir="template/project-files">
+                <present present="srconly" targetdir="${template-project.dir}"/>
+                <include name="**/build.xml"/>
+                <include name="**/build-jars.xml"/>
+                <include name="**/build-${co.prj.os}-${co.prj.os.arch}.xml"/>
+            </fileset>
+        </copy>
+        <foreach inheritall="true" inheritrefs="true"
+        list="${co.prj.os.1},${co.prj.os.2},${co.prj.os.3},${co.prj.os.4}"
+        param="os"
+        target="_make-build-xml-os"/>
+        <!-- other files //-->
+        <copy overwrite="false" todir="${template-project.dir}">
+            <!--filterset refid="filtertokens"//-->
+            <filterset refid="filtertokens-template"/>
+            <fileset dir="template/project-files/">
+                <present present="srconly" targetdir="${template-project.dir}"/>
+                <exclude name="**/new-jxa-project*"/>
+                <exclude name="**/*.java"/>
+                <exclude name="**/build*.xml"/>
+            </fileset>
+        </copy>
+        <!-- jar extension files //-->
+        <copy overwrite="true" todir="${template-project-resources.os.arch.dir}">
+            <fileset dir="${dist.extension}">
+                <include name="*.jar"/>
+                <exclude name="*kernel_signed.jar"/>
+            </fileset>
+        </copy>
+        <!-- kernel library file //-->
+        <copy overwrite="true" todir="${template-project-lib.os.arch.dir}">
+            <fileset dir="${lib.os.arch}">
+                <include name="lib-*.jar"/>
+            </fileset>
+        </copy>
+        <copy file="${lib.all}/lib-Manifest-ext-kernel" overwrite="true" tofile="${template-project-lib.all.dir}/lib-Manifest-ext-kernel">            
+        </copy>
+    </target>
+    <target name="_make-build-xml-os">
+        <foreach inheritall="true" inheritrefs="true"
+        list="${co.prj.os.arch.1},${co.prj.os.arch.2},${co.prj.os.arch.3},${co.prj.os.arch.4}"
+        param="arch"
+        target="_make-build-xml-arch"/>
+    </target>
+    <target name="_make-build-xml-arch">
+        <copy file="template/project-files/build-os-arch.xml" overwrite="false" tofile="${template-project.dir}/build-${os.name}-${arch}.xml">
+            <filterset refid="filtertokens"/>
+            <filterset refid="filtertokens-template"/>
+        </copy>
+    </target>
+</project>

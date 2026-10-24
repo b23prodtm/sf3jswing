@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="@PROJECTCODEBASE@" href="@ANTPROJECTNAME@.jnlp">
+    <information>
+        <title>@PROJECTNAME@</title>
+        <vendor>@COMPANYNAME@</vendor>
+        <homepage href="@PROJECTURL@"/>
+        <description>@PROJECTDESCRIPTION@</description>
+        <icon href="_icons/duke.gif"/>
+        <offline-allowed/>
+        <shortcut online="true">
+            <desktop/>
+            <menu submenu="@PROJECTNAME@"/>
+        </shortcut>
+    </information>
+    <security>
+        <all-permissions/>
+    </security>
+    <!-- Below resources properties may be modified to fit your settings //-->
+    <resources>
+        <j2se href="http://java.sun.com/products/autodl/j2se" version="1.5+"/>
+        <extension href="@ANTPROJECTNAME@-Linux-i386.jnlp"/>
+        <extension href="@ANTPROJECTNAME@-Mac-ppc.jnlp"/>
+        <extension href="@ANTPROJECTNAME@-Windows-x86.jnlp"/>
+    </resources>
+    <!--application-desc main-class="net.sf.jiga.xtended.ui.test.TestAntFrame"/-->
+    <applet-desc name="@PROJECTNAME@" main-class="@PROJECTAPPLETMAIN@" width="@PROJECTAPPLETWIDTH@" height="@PROJECTAPPLETHEIGHT@">
+        <param name="antapplet" value="@PROJECTAPPLETANTAPPLET@"/>
+    </applet-desc>
+</jnlp>

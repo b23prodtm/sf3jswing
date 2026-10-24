@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir=".." name="sf3jswing-imagemulticonverter-ant">
+    <property file="nbproject/nbjdk.properties"/>
+    <property location="${netbeans.user}/build.properties" name="user.properties.file"/>
+    <property file="${user.properties.file}"/>
+    <import file="jdk.xml"/>
+    <import file="../build-${os.name}-${os.arch}.xml"/>
+    <import file="../build-jars.xml"/>
+    <!-- TODO: edit the following target according to your needs -->
+    <!-- (more info: http://www.netbeans.org/kb/articles/freeform-config.html#debugj2se) -->
+        <path id="cp">
+            <!-- TODO configure the runtime classpath for your project here: -->
+        <fileset dir="${dist}">
+            <include name="**/*.jar"/>
+        </fileset>
+        </path>
+    <target depends="-jdk-init, clean, jar" name="debug-nb">
+        <nbjpdastart addressproperty="jpda.address" name="sf3jswing-imagemulticonverter-ant" transport="dt_socket">
+            <classpath refid="cp"/>
+        </nbjpdastart>
+        <!-- TODO configure the main class for your project here: -->
+        <java classname="${co.prj.os.app.run.main}" dir="${dist}" fork="true">
+            <classpath refid="cp"/>
+            <!-- main class implements the AntFrame JXA interface//-->
+            <arg line="${co.prj.os.debug.args}"/>
+            <arg line="${co.prj.os.app.run.args}"/>
+            <jvmarg value="-Xdebug"/>
+            <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
+        </java>
+    </target>
+    <target name="-profile-check">
+        <startprofiler freeform="true"/>
+    </target>
+    <!-- TODO: edit the following target according to your needs -->
+    <!-- (more info: http://netbeans.org/kb/articles/freeform-config.html#profilej2se) -->
+    <target depends="-jdk-init,-profile-check" if="profiler.configured" name="profile-nb">
+        <!-- TODO configure the main class for your project here: -->
+        <!-- TODO configure the main class for your project here: -->
+        <java classname="${co.prj.os.app.run.main}" dir="${dist}" fork="true">
+            <classpath refid="cp"/>
+            <!-- main class implements the AntFrame JXA interface//-->
+            <arg line="${co.prj.os.app.run.args}"/>
+            <jvmarg line="${agent.jvmargs}"/>
+        </java>
+    </target>
+</project>

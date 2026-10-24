@@ -1,0 +1,18 @@
+Class-Path: @PROJECTJARCLASSPATH@
+Manifest-Version: 1.2
+Trusted-Library: true
+Specification-Title: @PROJECTNAME@
+Specification-Version: @PROJECTVERSIONSPEC@
+Specification-Vendor: @COMPANYNAME@ @PROJECTYEARS@
+Implementation-Vendor-Id: @PROJECTNAMEBIN@
+Implementation-Title: @PROJECTOSNAME@ (@PROJECTOSARCH@)
+Implementation-Version: @PROJECTVERSIONIMPL@_@PROJECTVERSIONRELEASE@
+Implementation-Vendor: @COMPANYNAME@ @PROJECTYEARS@
+Extension-Name: @PROJECTNAMEBIN@.bin
+Sealed: false
+
+Name: net/sf/jiga/xtended/ui/ImageCollection.class
+Java-Bean: True
+
+Name: net/sf/jiga/xtended/ui/LogArea.class
+Java-Bean: True

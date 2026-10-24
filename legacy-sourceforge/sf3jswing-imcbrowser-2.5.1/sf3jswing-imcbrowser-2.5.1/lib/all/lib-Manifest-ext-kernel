@@ -1,0 +1,4 @@
+Extension-Name: @PROJECTNAMEBIN@.kernel
+Specification-Title: @PROJECTNAME@-kernel
+Specification-Version: @PROJECTVERSIONSPEC@
+Specification-Vendor: @COMPANYNAME@ @PROJECTYEARS@

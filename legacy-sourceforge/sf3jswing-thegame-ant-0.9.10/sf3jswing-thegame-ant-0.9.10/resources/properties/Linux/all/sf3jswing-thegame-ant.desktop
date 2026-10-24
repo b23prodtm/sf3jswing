@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=The Game Ant
+Comment=Sf3JSwing project presents The Game
+Type=Application
+Exec=@ANTPROJECTNAME@
+Icon=@ANTPROJECTNAME@
+Categories=Game;ArcadeGame;
+X-SuSE-translate=false
+MimeType=application/x-java-serialized-object;

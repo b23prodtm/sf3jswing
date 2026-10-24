@@ -1,0 +1,11 @@
+Main-Class: thegame.Sf3
+Class-Path: @PROJECTJARCLASSPATH@
+Manifest-Version: 1.3
+Trusted-Library: true
+Specification-Title: @PROJECTNAME@
+Specification-Version: @PROJECTVERSIONSPEC@
+Specification-Vendor: @COMPANYNAME@ @PROJECTYEARS@
+Implementation-Vendor-Id: @PROJECTNAMEBIN@
+Implementation-Title: @PROJECTOSNAME@ (@PROJECTOSARCH@)
+Implementation-Version: @PROJECTVERSIONIMPL@_@PROJECTVERSIONRELEASE@
+Implementation-Vendor: @COMPANYNAME@ @PROJECTYEARS@

@@ -1,0 +1,11 @@
+<HTML>
+    <HEAD>
+        <TITLE>@PROJECTNAME@ extensions installer (@PROJECTOSNAME@ @PROJECTOSARCH@ release)</TITLE>
+        <style>div{color:white}
+        a:hover{background-color:white}</style></HEAD>
+    <BODY BGCOLOR="WHITE" COLOR="GREEN"><div align="right"><a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=163092&amp;type=3" width="125" height="37" border="0" alt="SourceForge.net Logo" /></a></div>
+        <APPLET archive="@PROJECTOSKERNELJAR@" code="net.sf.jiga.xtended.ui.AppletInstaller" width=400 height=400>
+            Your browser does not support Java, so nothing is displayed.<!-- VOID DOUBLE RESOURCE LOADING, NOT USED WITH EXTENSION MECHANISM param name="jnlp_href" value="@PROJECTAPPLETJNLPHREF@"/-->
+            <param name="separate_jvm" value="true"/>
+    </APPLET></BODY>
+</HTML>

@@ -1,0 +1,9 @@
+To build :
+    - get JXA API SRC PACK and compile it for your platform !
+    - Once done, copy and paste
+        JIGAXtended-YOUR OS-YOUR ARCH-ext_signed.jar,
+        JIGAXtended-YOUR OS-YOUR ARCH-ext-kernel_signed.jar,
+        JIGAXtended-YOUR OS-YOUR ARCH-ext-native_signed.jar
+        and JIGAXtended-YOUR OS-YOUR ARCH-ext-props_signed.jar
+into the resources/YOUR OS/YOUR ARCH folder !
+    - Compile and Run this project !

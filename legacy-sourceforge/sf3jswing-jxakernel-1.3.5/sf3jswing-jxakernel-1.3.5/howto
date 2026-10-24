@@ -1,0 +1,16 @@
+HOW TO BUILD A JXA PROJECT (including the JXAKernel only)
+======================================
+
+1. download the latest sf3jswing-jxakernel release 1.3.2+, extract it in a folder, open it with your favorite IDE.
+2. edit the first part of build-jars.xml
+    a) there are properties .TOKENs that replaces those @TOKENS@ in any of the filtered files, e.g. Manifest, resources/all/LICENSE, resources/all/NOTICE, etc. (look for <filter> tasks within this xml file).
+    b) configure the project that uses this kernel, to be updated each time you trigger a new build (DO-Lib)
+        <!-- LIST HERE PROJECT NAMES THAT NEED TO BE UPDATED (DO-LIB TASK)-->
+            <property name="co.prj.template-project.name.list" value="sf3jswing-jigaxtended,sf3jswing-jxatest-unit,sf3jswing-imagemulticonverter-ant,../sf3jswing-imcbrowser,../es-sdk-jdk-binding,sf3jswing-animsbrowser-ant,sf3jswing-thegame-ant"/>
+    c) explore <target> 's and edit them if you want more functionalities.
+
+3. compile the kernel library with the ant default task (update-template)
+4. start your project builder !
+
+==============================
+2014 B23PRODTM

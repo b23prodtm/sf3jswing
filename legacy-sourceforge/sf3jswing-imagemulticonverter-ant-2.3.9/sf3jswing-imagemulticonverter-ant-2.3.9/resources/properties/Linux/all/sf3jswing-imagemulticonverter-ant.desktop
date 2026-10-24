@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Image Multi-Converter Ant
+Comment=Digital Photo Converter
+Type=Application
+Exec=@ANTPROJECTNAME@
+Icon=@ANTPROJECTNAME@
+Categories=Graphics;Photography;
+MimeType=image/x-portable-graymap;image/x-portable-pixmap;image/x-portable-anymap;image/x-png;image/png;image/jp2;image/jpeg2000;image/jpg;image/jpeg;image/tif;image/tiff;image/gif;image/x-bmp;image/bmp;image/x-windws-bmp;image/vnd.wap.wbmp;image/x-portable-bitmap;
+X-SuSE-translate=false

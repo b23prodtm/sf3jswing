@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project default="update-template" basedir=".">    
+    
+    <import file="build-${os.name}-${os.arch}.xml"/>
+    <import file="build-jars.xml"/>    
+    
+</project>
+
