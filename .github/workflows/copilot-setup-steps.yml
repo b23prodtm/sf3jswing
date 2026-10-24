@@ -62,3 +62,77 @@ jobs:
           java -version
           ant -version
           mvn -version
+
+  import-sourceforge-archives:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download and extract SourceForge archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive_dir="$RUNNER_TEMP/legacy-archives"
+          mkdir -p "$archive_dir"
+          cd "$archive_dir"
+          base="https://sourceforge.net/projects/sf3jswing/files/Latest"
+          curl -fsL --retry 3 "https://sourceforge.net/projects/sf3jswing/rss?path=/Latest&limit=100" \
+            | grep -oE "<link>${base}/[^<]+\.(tar\.gz|tgz|tar\.bz2|tar\.xz)/download</link>" \
+            | sed -E 's#</?link>##g' | sort -u > "$RUNNER_TEMP/latest-urls.txt" || true
+          if [ -s "$RUNNER_TEMP/latest-urls.txt" ]; then
+            while read -r url; do
+              curl -fL --retry 3 -OJ "$url" || echo "Download failed: $url"
+            done < "$RUNNER_TEMP/latest-urls.txt"
+          fi
+          game_archive="sf3jswing-thegame-ant-0.9.10.tar.gz"
+          game_url="https://sourceforge.net/projects/sf3jswing/files/The%20Game%20%28SF3JSWING%29/0.9/${game_archive}/download"
+          curl -fL --retry 3 -o "$game_archive" "$game_url" || echo "Download failed: $game_url"
+          gh release download legacy-sourceforge --dir . || echo "Release legacy-sourceforge unavailable"
+
+          shopt -s nullglob
+          archives=( *.tar.gz *.tgz *.tar.bz2 *.tar.xz )
+          if [ "${#archives[@]}" -eq 0 ]; then
+            echo "No SourceForge tarballs were downloaded."
+            exit 1
+          fi
+          for archive in "${archives[@]}"; do
+            destination="$GITHUB_WORKSPACE/legacy-sourceforge/${archive%.*}"
+            case "$archive" in
+              *.tar.gz) destination="$GITHUB_WORKSPACE/legacy-sourceforge/${archive%.tar.gz}" ;;
+              *.tar.bz2) destination="$GITHUB_WORKSPACE/legacy-sourceforge/${archive%.tar.bz2}" ;;
+              *.tar.xz) destination="$GITHUB_WORKSPACE/legacy-sourceforge/${archive%.tar.xz}" ;;
+              *.tgz) destination="$GITHUB_WORKSPACE/legacy-sourceforge/${archive%.tgz}" ;;
+            esac
+            mkdir -p "$destination"
+            while IFS= read -r member; do
+              case "$member" in
+                /*|../*|*/../*|*/..) echo "Unsafe archive path: $member"; exit 1 ;;
+              esac
+            done < <(tar -tf "$archive")
+            tar -xf "$archive" -C "$destination" --no-same-owner --no-same-permissions
+            find "$destination" \( -type d \( -name bin -o -name dist \) -o \
+              -type f \( -iname '*.jar' -o -iname '*.class' -o -iname '*.dll' \
+              -o -iname '*.so' -o -iname '*.dylib' -o -name '.keystore' \
+              -o -iname '*.pem' -o -iname '*.crt' -o -iname '*.cer' \
+              -o -iname '*.p12' -o -iname '*.pfx' -o -iname '*.jks' \) \) -print0 \
+              | xargs -0r rm -rf
+          done
+
+      - name: Create pull request with extracted files
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ github.token }}
+          branch: automation/sourceforge-archive-import
+          delete-branch: true
+          title: "Import extracted SourceForge archives"
+          body: |
+            This pull request contains files extracted from the SourceForge tarballs.
+
+            Binary outputs and certificate/keystore files are excluded. Review the
+            imported paths and provenance before merging.
+          commit-message: "import: extracted SourceForge archives"
