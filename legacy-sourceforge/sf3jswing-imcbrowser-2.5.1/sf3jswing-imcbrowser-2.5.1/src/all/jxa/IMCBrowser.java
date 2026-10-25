@@ -1022,6 +1022,7 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
     }
 
     private void updateMenus() {
+        String[] lstr;
         if (selectedKeys.isEmpty()) {
             action_save.setEnabled(false);
             action_saveAs.setEnabled(false);
