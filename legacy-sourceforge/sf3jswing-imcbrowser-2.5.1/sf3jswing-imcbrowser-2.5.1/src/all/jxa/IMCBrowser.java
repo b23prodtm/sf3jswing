@@ -4,8 +4,6 @@ package jxa;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-import jxa.fb.FBimportAction;
-import com.google.gdata.client.photos.PicasawebService;
 import cz.dhl.ftp.Ftp;
 import cz.dhl.ftp.FtpFile;
 import cz.dhl.ftp.FtpOutputStream;
@@ -110,7 +108,6 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Vector;
-import javafx.beans.value.ObservableValue;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.ImageTypeSpecifier;
@@ -171,11 +168,6 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.TableCellRenderer;
-import jdk.nashorn.api.scripting.JSObject;
-import jxa.fb.FBConnector;
-import jxa.fb.FBexportAction;
-import jxa.pi.PIexportAction;
-import jxa.pi.PIimportAction;
 import net.sf.jiga.xtended.JXAException;
 import net.sf.jiga.xtended.impl.IIOReadProgressAdapter;
 import net.sf.jiga.xtended.impl.IIOWriteProgressAdapter;
@@ -229,13 +221,10 @@ import net.sf.jiga.xtended.ui.Navigator;
 import net.sf.jiga.xtended.ui.StepListener;
 import net.sf.jiga.xtended.ui.UIMessage;
 import net.sf.jiga.xtended.ui.UIMessage.SwingStaticReturn;
-import org.jdesktop.swingx.JXLoginDialog;
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 import org.jdesktop.swingx.JXTitledPanel;
-import org.jdesktop.swingx.auth.LoginListener;
-import org.jdesktop.swingx.auth.LoginService;
 import org.jdesktop.swingx.auth.PasswordStore;
 import org.jdesktop.swingx.auth.UserNameStore;
 import org.lwjgl.opengl.GL11;
@@ -311,15 +300,13 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
     private Led wLed, rLed;
     long timeRef = System.currentTimeMillis();
     ExampleFileFilter allFF = new ExampleFileFilter();
-    private AbstractAction action_export_facebook;
+    private AbstractAction action_share;
     private AbstractAction action_undo;
     private AbstractAction action_selectAll;
     private AbstractAction action_undoAll;
     private JPanel dbPanel;
     public JComboBox dbList;
     private AbstractAction action_sendFTP;
-    private AbstractAction action_export_picasa;
-    private AbstractAction action_import_facebook;
     private AbstractAction action_fxRotateCCW;
     private AbstractAction action_fxRotateCW;
     private AbstractAction action_fxFlipV;
@@ -329,11 +316,8 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
     private AbstractAction action_opengl;
     private AbstractAction action_search;
     private AbstractAction action_help;
-    private AbstractAction action_picasaWWW;
-    private AbstractAction action_facebookWWW;
     private AbstractAction action_about;
     private AbstractAction action_JMFload;
-    private AbstractAction action_import_picasa;
     private AbstractAction action_seeInHdd;
     private AbstractAction action_copy_make;
     private AbstractAction action_copy_toClipboard;
@@ -444,42 +428,6 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
         };
         reloading = true;
         ThreadWorks.Swing.invokeLater(r);
-    }
-
-    public JXLoginDialog PICASALogin(final PicasawebService pcweb, LoginListener ll) {
-        final LoginService ls = new LoginService("picasaweb.google.com") {
-            @Override
-            public boolean authenticate(String user, char[] pass, String server) throws Exception {
-                /*System.out.println("user : " + user + " pass : " + new String(pass));*/
-                pcweb.setUserCredentials(user, new String(pass));
-                return true;
-            }
-        };
-        ls.addLoginListener(ll);
-        final JXLoginDialog jlogin = new JXLoginDialog(ls, passs, users);
-        jlogin.setTitle(getLocalizedStringCap("LogintoPicasa"));
-        jlogin.getPanel().setBannerText("Google Picasa");
-        return jlogin;
-    }
-
-    public FBConnector FBConnect() throws MalformedURLException, IOException {
-        final FBConnector fbcon = new FBConnector();
-        final SwingFXWebView webView = new SwingFXWebView(new URL(fbcon.login));
-        // process page loading
-        webView.getWebEngine().getLoadWorker().stateProperty().addListener(
-                new javafx.beans.value.ChangeListener<javafx.concurrent.Worker.State>() {
-                    @Override
-                    public void changed(ObservableValue<? extends javafx.concurrent.Worker.State> ov,
-                            javafx.concurrent.Worker.State oldState, javafx.concurrent.Worker.State newState) {
-                        if (newState == javafx.concurrent.Worker.State.SUCCEEDED) {
-                            JSObject win = (JSObject) webView.getWebEngine().executeScript("window");
-                            win.setMember("app", fbcon);
-                        }
-                    }
-                }
-        );
-        UIMessage.showPopupMessage((JComponent) webView, null, picView, UIMessage.UI_CENTER);
-        return fbcon;
     }
 
     public void edit_started(long progressBar, String opName) {
@@ -1083,8 +1031,7 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
             action_add.setEnabled(false);
             action_remove.setEnabled(false);
             action_sendFTP.setEnabled(false);
-            action_export_facebook.setEnabled(false);
-            action_export_picasa.setEnabled(false);
+            action_share.setEnabled(false);
             action_fxFlipH.setEnabled(false);
             action_fxFlipV.setEnabled(false);
             action_fxRotateCW.setEnabled(false);
@@ -1110,10 +1057,8 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
             action_remove.putValue(Action.NAME, getLocalizedStringCap("removefromalbum") + "...");
             action_sendFTP.setEnabled(true);
             action_sendFTP.putValue(Action.NAME, getLocalizedStringCap("send"));
-            action_export_facebook.setEnabled(true);
-            action_export_facebook.putValue(Action.NAME, getLocalizedStringCap("exporttoFacebook..."));
-            action_export_picasa.setEnabled(true);
-            action_export_picasa.putValue(Action.NAME, getLocalizedStringCap("exporttoPicasa..."));
+            action_share.setEnabled(true);
+            action_share.putValue(Action.NAME, getLocalizedStringCap("share") + "...");
             action_fxFlipH.setEnabled(true);
             action_fxFlipH.putValue(Action.NAME, getLocalizedStringCap("fliphorizontally"));
             action_fxFlipV.setEnabled(true);
@@ -1145,11 +1090,8 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
             action_remove.putValue(Action.NAME, getLocalizedStringCap("remove") + " (" + selectedKeys.size() + LocalizedResources.localized.getString("pic.") + ") " + LocalizedResources.localized.getString("fromalbum") + "...");
             action_sendFTP.setEnabled(true);
             action_sendFTP.putValue(Action.NAME, getLocalizedStringCap("send") + " (" + selectedKeys.size() + " " + LocalizedResources.localized.getString("pic.") + ")");
-            action_export_facebook.setEnabled(true);
-            action_export_facebook.putValue(Action.NAME, getLocalizedStringCap("exporttoFacebook..."));
-            action_export_picasa.setEnabled(true);
-            String[] lstr = LocalizedResources.localizedGetStringArray("action1", 2);
-            action_export_picasa.putValue(Action.NAME, "<html>" + lstr[0] + " (" + selectedKeys.size() + " pic.) " + lstr[1] + " Picasa&#153;...</html>");
+            action_share.setEnabled(true);
+            action_share.putValue(Action.NAME, getLocalizedStringCap("share") + " (" + selectedKeys.size() + ")");
             action_fxFlipH.setEnabled(true);
             lstr = LocalizedResources.localizedGetStringArray("action2", 2);
             action_fxFlipH.putValue(Action.NAME, lstr[0] + " (" + selectedKeys.size() + " " + LocalizedResources.localized.getString("pic.") + ") " + lstr[1]);
@@ -1170,19 +1112,10 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
             action_print.setEnabled(true);
             action_print.putValue(Action.NAME, getLocalizedStringCap("print") + " (" + selectedKeys.size() + " " + LocalizedResources.localized.getString("pic.") + ")...");
         }
-        /**
-         * disabled FB and PIC
-         */
-        action_import_facebook.setEnabled(true);
-        action_export_facebook.setEnabled(false);
-        action_import_picasa.setEnabled(false);
-        action_export_picasa.setEnabled(false);
-        /**/
         if (applet) {
             action_export.setEnabled(false);
-            action_export_picasa.setEnabled(false);
+            action_share.setEnabled(false);
             action_import.setEnabled(false);
-            action_import_picasa.setEnabled(false);
             action_opengl.setEnabled(false);
             action_sendFTP.setEnabled(false);
             action_quit.setEnabled(false);
@@ -1217,8 +1150,7 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
         actions_selection.add(action_fxRotateCCW);
         actions_selection.add(action_fxRotateCW);
         actions_selection.add(nullAction);
-        actions_selection.add(action_export_facebook);
-        actions_selection.add(action_export_picasa);
+        actions_selection.add(action_share);
         actions_selection.add(nullAction);
         actions_selection.add(action_print);
     }
@@ -4323,19 +4255,13 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
         action_import.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         menu.add(action_import);
         menu.addSeparator();
-        action_export_facebook = exportFacebook();
-        action_export_facebook.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_1, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        menu.add(action_export_facebook);
-        action_import_facebook = importFacebook();
-        action_import_facebook.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_1, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() | (env.OS_MAC.isEnv() ? InputEvent.ALT_DOWN_MASK : InputEvent.SHIFT_DOWN_MASK)));
-        menu.add(action_import_facebook);
-        menu.addSeparator();
-        action_export_picasa = exportPicasa();
-        action_export_picasa.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_2, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        menu.add(action_export_picasa);
-        action_import_picasa = importPicasa();
-        action_import_picasa.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_2, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() | (env.OS_MAC.isEnv() ? InputEvent.ALT_DOWN_MASK : InputEvent.SHIFT_DOWN_MASK)));
-        menu.add(action_import_picasa);
+        action_share = new AbstractAction(getLocalizedStringCap("share") + "...") {
+            public void actionPerformed(ActionEvent e) {
+                shareSelectedImages();
+            }
+        };
+        action_share.setEnabled(false);
+        menu.add(action_share);
 
         menuBar.add(menu = new JMenu(getLocalizedStringCap("JMF")));
         Vector<CaptureDeviceInfo> devs = CaptureDeviceManager.getDeviceList(null);/* all formats includes YUV H264 etc...*/
@@ -4387,27 +4313,6 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
         };
         action_help.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
         menu.add(action_help);
-        menu.addSeparator();
-        action_facebookWWW = new AbstractAction(getLocalizedStringCap("facebookReg"), facebookIcon) {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    _goWeb(new URL(LocalizedResources.localized.getString("facebookWWW")));
-                } catch (MalformedURLException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        };
-        menu.add(action_facebookWWW);
-        action_picasaWWW = new AbstractAction(getLocalizedStringCap("picasaReg"), picasaIcon) {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    _goWeb(new URL(LocalizedResources.localized.getString("picasaWWW")));
-                } catch (MalformedURLException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        };
-        menu.add(action_picasaWWW);
         if (applet) {
             ((JApplet) mainFrame).setJMenuBar(menuBar);
         } else {
@@ -4576,20 +4481,39 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
         };
     }
 
-    private AbstractAction exportFacebook() {
-        return new FBexportAction(this);
-    }
-
-    private AbstractAction importFacebook() {
-        return new FBimportAction(this);
-    }
-
-    private AbstractAction exportPicasa() {
-        return new PIexportAction(this);
-    }
-
-    private AbstractAction importPicasa() {
-        return new PIimportAction(this);
+    private void shareSelectedImages() {
+        if (selectedKeys.isEmpty()) {
+            return;
+        }
+        Object[] destinations = {
+            getLocalizedStringCap("shareFacebook"),
+            getLocalizedStringCap("shareGooglePhotos"),
+            getLocalizedStringCap("shareCopyOnly")
+        };
+        int destination = JOptionPane.showOptionDialog(mainFrame,
+                getLocalizedStringCap("shareInstructions"),
+                getLocalizedStringCap("share"),
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                destinations,
+                destinations[0]);
+        if (destination == JOptionPane.CLOSED_OPTION) {
+            return;
+        }
+        try {
+            action_copy_toClipboard.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "share"));
+            if (destination == 0) {
+                _goWeb(new URL("https://www.facebook.com/"));
+            } else if (destination == 1) {
+                _goWeb(new URL("https://photos.google.com/"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            UIMessage.showLightPopupMessage(new JLabel(ex.getMessage(),
+                    UIMessage._getIcon(UIMessage.ERROR_TYPE, false),
+                    SwingConstants.LEADING), null, picView, UIMessage.UI_BOTTOM_RIGHT);
+        }
     }
 
     private MouseInputAdapter getMouseInput() {
@@ -5196,7 +5120,7 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
     };
     private static File applicationStore = new File(FileHelper._USERHOMESTOREDIRECTORY, "." + System.getProperty("user.name") + ".imc.bkp");
     protected static Sprite unSavedPic;
-    public static ImageIcon contrastIcon, brightnessIcon, cropIcon, magicIcon, lutIcon, cropIcon_64, magicIcon_64, lutIcon_64, facebookIcon, picasaIcon, facebookIcon_64, picasaIcon_64;
+    public static ImageIcon contrastIcon, brightnessIcon, cropIcon, magicIcon, lutIcon, cropIcon_64, magicIcon_64, lutIcon_64;
 
     private static void loadApplication(File fileStore) {
         try {
@@ -5240,22 +5164,6 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
             sp.setStoreMode(Sprite.MODE_JAVA2D);
             sp.runValidate();
             lutIcon_64 = new ImageIcon(sp.toBuffered());
-            sp = new Sprite("/jxa/facebook.png", true, "image/x-png", new Dimension(16, 16), true);
-            sp.setStoreMode(Sprite.MODE_JAVA2D);
-            sp.runValidate();
-            facebookIcon = new ImageIcon(sp.toBuffered());
-            sp.setSize(24, 24);
-            sp.setStoreMode(Sprite.MODE_JAVA2D);
-            sp.runValidate();
-            facebookIcon_64 = new ImageIcon(sp.toBuffered());
-            sp = new Sprite("/jxa/picasa.png", true, "image/x-png", new Dimension(16, 16), true);
-            sp.setStoreMode(Sprite.MODE_JAVA2D);
-            sp.runValidate();
-            picasaIcon = new ImageIcon(sp.toBuffered());
-            sp.setSize(24, 24);
-            sp.setStoreMode(Sprite.MODE_JAVA2D);
-            sp.runValidate();
-            picasaIcon_64 = new ImageIcon(sp.toBuffered());
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {

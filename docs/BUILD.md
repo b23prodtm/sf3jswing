@@ -90,14 +90,15 @@ Build status on Temurin 17, using the module's `ant build-jar` target:
 | Jigaxtended 4.6.8 | Successful | Same staging requirement for consumers. |
 | ImageMultiConverter 2.3.9 | Successful | Packages an unsigned Linux amd64 jar; GUI/image conversion behavior has not been exercised. |
 | The Game 0.9.10 | Fails | UPnP classes are absent; game references also mismatch the available kernel/framework APIs, including rendering-scene and sound methods. |
-| IMC Browser 2.5.1 | Fails | Deferred GData/Picasa, RestFB, and eSellerate integrations remain referenced, Nashorn is absent from JDK 17, and additional API incompatibilities remain. |
+| IMC Browser 2.5.1 | Fails | The legacy GData/Picasa and RestFB actions have been replaced with clipboard-assisted links; eSellerate code and other API incompatibilities remain. |
 | JXA test 0.2.0 | Not yet verified | Requires the staged kernel/framework jars. |
 
-The social publishing and product-key integrations remain deferred as
-requested; they have not yet been cleanly isolated from the browser's source
-set, so a complete IMC Browser build is not available. The application build
-effort is therefore incomplete, as is phase 1. The descriptors fail on
-compiler errors rather than reporting a misleading success. Use
+The browser's Share action copies the selected images/files to the clipboard
+and opens Facebook or Google Photos in the system browser. The user completes
+the upload on the destination site; the application does not call their APIs
+or claim direct upload support. eSellerate remains deferred. The complete IMC
+Browser build is therefore not available, and phase 1 is incomplete. The
+descriptors fail on compiler errors rather than reporting a misleading success. Use
 `ant build-jar` for an unsigned jar; the default `jar` target invokes the
 historical signing configuration.
 

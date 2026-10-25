@@ -11,5 +11,6 @@
   ThreadWorks calls with the available kernel API (which has no timeout).
 - Resolve historical LWJGL, JInput, JLayer, OpenJFX, and JAXB dependencies
   through checksum-pinned Ant targets.
-- Keep social publishing and eSellerate product-key integrations deferred.
+- Replace legacy Facebook/Picasa actions with clipboard-assisted links to
+  Facebook and Google Photos; keep eSellerate product-key integration deferred.
 - Use the public JavaFX `Platform.runLater` API in the IMC Browser.
