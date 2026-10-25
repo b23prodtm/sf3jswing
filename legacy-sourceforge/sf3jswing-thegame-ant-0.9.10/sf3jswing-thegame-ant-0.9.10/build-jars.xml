@@ -723,7 +723,7 @@
 
     <target name="genkey" depends="checkforkey" if="createPrivateKey">
 
-        <genkey validity="3650" alias="${username}" storepass="${storepass}" keystore="${keystore}" storetype="${keystore-type}">
+        <genkey validity="3650" alias="${username}" storepass="${storepass}" keystore="${keystore}" storetype="${keystore-type}" keyalg="RSA" keysize="3072" sigalg="SHA256withRSA">
 
             <dname>
 
