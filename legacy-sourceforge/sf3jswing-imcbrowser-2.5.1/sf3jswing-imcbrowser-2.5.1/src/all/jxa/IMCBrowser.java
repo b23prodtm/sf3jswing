@@ -391,7 +391,6 @@ public class IMCBrowser implements AntFrame, AntApplet, ClipboardOwner {
     public Container mainFrame;
 
     public IMCBrowser(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
-        super(args);
         if (args != null) {
             for (String a : args) {
                 if (a.equalsIgnoreCase("-vram")) {
