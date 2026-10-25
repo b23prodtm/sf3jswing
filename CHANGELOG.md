@@ -12,5 +12,8 @@
 - Resolve historical LWJGL, JInput, JLayer, OpenJFX, and JAXB dependencies
   through checksum-pinned Ant targets.
 - Replace legacy Facebook/Picasa actions with clipboard-assisted links to
-  Facebook and Google Photos; keep eSellerate product-key integration deferred.
+  Facebook and Google Photos.
 - Use the public JavaFX `Platform.runLater` API in the IMC Browser.
+- Remove IMC Browser's eSellerate base class, product-key/demo checks, stale
+  validation keys, native libraries, and packaging references; build successfully
+  as an unsigned Linux amd64 jar on Java 17.

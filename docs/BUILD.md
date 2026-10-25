@@ -90,17 +90,23 @@ Build status on Temurin 17, using the module's `ant build-jar` target:
 | Jigaxtended 4.6.8 | Successful | Same staging requirement for consumers. |
 | ImageMultiConverter 2.3.9 | Successful | Packages an unsigned Linux amd64 jar; GUI/image conversion behavior has not been exercised. |
 | The Game 0.9.10 | Fails | UPnP classes are absent; game references also mismatch the available kernel/framework APIs, including rendering-scene and sound methods. |
-| IMC Browser 2.5.1 | Fails | The legacy GData/Picasa and RestFB actions have been replaced with clipboard-assisted links; eSellerate code and other API incompatibilities remain. |
+| IMC Browser 2.5.1 | Successful | `ant build-jar` compiles and packages on Temurin 17/Linux amd64 after staging the unsigned kernel and framework jars. eSellerate validation and demo/serial UI are disabled; no Java compiler errors remain. GUI, camera capture, and desktop integration are not exercised. |
 | JXA test 0.2.0 | Not yet verified | Requires the staged kernel/framework jars. |
 
 The browser's Share action copies the selected images/files to the clipboard
 and opens Facebook or Google Photos in the system browser. The user completes
 the upload on the destination site; the application does not call their APIs
-or claim direct upload support. eSellerate remains deferred. The complete IMC
-Browser build is therefore not available, and phase 1 is incomplete. The
-descriptors fail on compiler errors rather than reporting a misleading success. Use
-`ant build-jar` for an unsigned jar; the default `jar` target invokes the
-historical signing configuration.
+or claim direct upload support. The eSellerate superclass and product-key
+validation are removed; IMC Browser now implements the framework's frame and
+applet interfaces directly and has no demo/serial gating. The remaining
+compiler incompatibility was the obsolete `super(args)` call from that removed
+superclass; it is fixed, and the Java 17 compiler reports no errors.
+
+For unsigned builds, use `ant build-jar`; the legacy `DO-lib` target currently
+fails during key generation because its Ant `<genkey>` task omits the required
+key algorithm. The default `jar` target also invokes the historical signing
+configuration. GUI, camera capture, OpenGL, and hardware-dependent behavior
+remain unverified.
 
 The archived Jigaxtended 4.6.7 sources remain unchanged. Only the current
 4.6.8 framework sources have been migrated.
