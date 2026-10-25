@@ -90,7 +90,7 @@ Build status on Temurin 17, using the module's `ant build-jar` target:
 | Jigaxtended 4.6.8 | Successful | Same staging requirement for consumers. |
 | ImageMultiConverter 2.3.9 | Successful | Packages an unsigned Linux amd64 jar; GUI/image conversion behavior has not been exercised. |
 | The Game 0.9.10 | Fails | UPnP classes are absent; game references also mismatch the available kernel/framework APIs, including rendering-scene and sound methods. |
-| IMC Browser 2.5.1 | Successful | `ant build-jar` compiles and packages on Temurin 17/Linux amd64 after staging the unsigned kernel and framework jars. eSellerate validation and demo/serial UI are disabled; no Java compiler errors remain. GUI, camera capture, and desktop integration are not exercised. |
+| IMC Browser 2.5.1 | Successful | `ant build-jar` compiles and packages on Temurin 17/Linux amd64 after staging unsigned kernel/framework jars. eSellerate validation/demo UI are disabled; no compiler errors remain. Xvfb launch stays alive but reports missing JXA runtime resources; camera is unavailable. |
 | JXA test 0.2.0 | Not yet verified | Requires the staged kernel/framework jars. |
 
 The browser's Share action copies the selected images/files to the clipboard
@@ -102,11 +102,23 @@ applet interfaces directly and has no demo/serial gating. The remaining
 compiler incompatibility was the obsolete `super(args)` call from that removed
 superclass; it is fixed, and the Java 17 compiler reports no errors.
 
-For unsigned builds, use `ant build-jar`; the legacy `DO-lib` target currently
-fails during key generation because its Ant `<genkey>` task omits the required
-key algorithm. The default `jar` target also invokes the historical signing
-configuration. GUI, camera capture, OpenGL, and hardware-dependent behavior
-remain unverified.
+The active signing targets now request a 3072-bit RSA key and `SHA256withRSA`
+certificate signature (10-year validity). This was verified with JDK 17 using
+`ant genkey` and an isolated temporary JKS keystore; the keystore was removed
+after checking the key size and signature algorithm. Do not use the historical
+default signing configuration for release artifacts until its hard-coded
+password and external keystore setup are replaced with protected credentials.
+Use `ant build-jar` for unsigned jars.
+
+Phase 2 smoke testing is incomplete. The IMC Browser process remained alive
+under Xvfb with Mesa software-rendering requested, but startup logged JXA
+extension installation failures, including missing `jaxb1-impl.jar` and
+framework `_signed.jar` resources; this does not count as successful GUI
+validation. The environment has no `/dev/video*` camera device, so capture could
+not be tested. No physical camera, controller, or GPU is available, and the
+10-minute software-rendering acceptance demo has not been performed. Resolve
+the local extension/runtime packaging failures and repeat the UI test before
+claiming Phase 2 complete.
 
 The archived Jigaxtended 4.6.7 sources remain unchanged. Only the current
 4.6.8 framework sources have been migrated.

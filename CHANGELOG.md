@@ -17,3 +17,5 @@
 - Remove IMC Browser's eSellerate base class, product-key/demo checks, stale
   validation keys, native libraries, and packaging references; build successfully
   as an unsigned Linux amd64 jar on Java 17.
+- Define 3072-bit RSA keys and SHA256withRSA certificate signatures in active
+  Ant key-generation targets; document the incomplete GUI/camera smoke checks.
