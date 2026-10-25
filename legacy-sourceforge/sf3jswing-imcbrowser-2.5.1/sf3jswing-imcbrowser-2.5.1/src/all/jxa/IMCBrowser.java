@@ -7,7 +7,6 @@ package jxa;
 import cz.dhl.ftp.Ftp;
 import cz.dhl.ftp.FtpFile;
 import cz.dhl.ftp.FtpOutputStream;
-import esell.Validate;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
@@ -90,7 +89,6 @@ import java.nio.file.LinkOption;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -211,6 +209,8 @@ import net.sf.jiga.xtended.ui.ImageCollectionRenderer;
 import net.sf.jiga.xtended.ui.ImagePluginDescriptor;
 import net.sf.jiga.xtended.ui.ImagePluginFilter;
 import net.sf.jiga.xtended.ui.InstructionsPane;
+import net.sf.jiga.xtended.ui.AntApplet;
+import net.sf.jiga.xtended.ui.AntFrame;
 import net.sf.jiga.xtended.ui.JFCApplet;
 import net.sf.jiga.xtended.ui.JFCFrame;
 import net.sf.jiga.xtended.ui.JXALabel;
@@ -234,7 +234,7 @@ import org.lwjgl.opengl.Util;
  *
  * @author www.b23prodtm.info
  */
-public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
+public class IMCBrowser implements AntFrame, AntApplet, ClipboardOwner {
 
     private final static String COLLECTION_MIME_TILED = "image/tiff";
     private final static String COLLECTION_MIME_UNTILED = COLLECTION_MIME_TILED;
@@ -1661,26 +1661,11 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
         loaders.add(new AbstractAction(getLocalizedStringCap("Startup")) {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Your system uses " + LocalizedResources.language.getLanguage() + " language.");
-                System.err.println(getLicenseMessage());
+                System.err.println("IMC Browser started.");
                 storeApplication(applicationStore);
             }
         });
         return loaders;
-    }
-
-    private String getLicenseMessage() {
-        String[] lstr = LocalizedResources.localizedGetStringArray("label9", 3);
-        return lstr[0] + (Validate.isDemoMode() ? "DEMO " + lstr[1] + getExpiringDays() + " " + LocalizedResources.localized.getString("days") : (applet ? "APPLET " : "LICENSED " + getExpiringDate().getTime() + " " + getSerialName()) + lstr[1]) + lstr[2];
-    }
-
-    private int getExpiringDays() {
-        Calendar today = Calendar.getInstance();
-        Calendar expiring = getExpiringDate();
-        if (Validate.isDemoMode()) {
-            return (int) Math.ceil((expiring.getTimeInMillis() - today.getTimeInMillis()) / (24L * 3600L * 1000L));
-        } else {
-            return 0;
-        }
     }
 
     private static enum ANCHOR {
@@ -2842,7 +2827,7 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
 
     public void initComponents() {
         try {
-            ((JFrame) mainFrame).setTitle(getLocalizedStringCap("ImageMultiConverterandBrowser") + (Validate.isDemoMode() ? " DEMO" : ""));
+            ((JFrame) mainFrame).setTitle(getLocalizedStringCap("ImageMultiConverterandBrowser"));
             ((JFrame) mainFrame).setIconImage((Image) Sprite._loadImage(getClass().getResourceAsStream("icon.png"), true, "image/x-png", Sprite.MODE_JAVA2D, Sprite.DEFAULT_TYPE).get("image"));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -4441,7 +4426,6 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
                 String[] lstr = LocalizedResources.localizedGetStringArray("label8", 4);
                 about.add(new JLabel(lstr[0] + IMCBrowser.class.getPackage().getSpecificationTitle() + lstr[1] + lstr[3]), c);
                 about.add(new JLabel("<html>" + IMCBrowser.class.getPackage().getImplementationTitle() + lstr[2] + IMCBrowser.class.getPackage().getImplementationVersion() + "</html>"), c);
-                about.add(new JLabel(getLicenseMessage()), c);
                 about.add(new JLabel(getLocalizedStringCap("label10")), c);
                 about.add(new JLabel(getLocalizedStringCap("label19")), c);
                 about.add(new JLabel(getLocalizedStringCap("label11")), c);
@@ -4463,12 +4447,11 @@ public class IMCBrowser extends jxa.ESell implements ClipboardOwner {
                     }
                 });
                 about.add(storeLink, c);
-                if (Validate.isDemoMode() || applet) {
-                    about.add(new JButton(new AbstractAction(Validate.isDemoMode() ? "buy" : "donate", UIMessage._getIcon(UIMessage.DONATE_TYPE, true)) {
+                if (applet) {
+                    about.add(new JButton(new AbstractAction("donate", UIMessage._getIcon(UIMessage.DONATE_TYPE, true)) {
                         public void actionPerformed(ActionEvent e) {
                             try {
-                                URL url = Validate.isDemoMode() ? new URL(LocalizedResources.localized.getString("URL_shop")) : new URL(LocalizedResources.localized.getString("URL_donate"));
-                                _goWeb(url);
+                                _goWeb(new URL(LocalizedResources.localized.getString("URL_donate")));
                             } catch (MalformedURLException ex) {
                                 if (_debug) {
                                     ex.printStackTrace();

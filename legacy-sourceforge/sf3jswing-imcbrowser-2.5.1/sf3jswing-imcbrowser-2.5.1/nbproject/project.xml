@@ -100,7 +100,7 @@ auxiliary.show.customizer.message=<message>
                 <package-root>src/all</package-root>
                 <package-root>src/Windows</package-root>
                 <package-root>resources/properties</package-root>
-                <classpath mode="compile">resources/Windows/x86/sf3jswing-jigaxtended-Windows-x86-ext-kernel_signed.jar;resources/Windows/x86/sf3jswing-jigaxtended-Windows-x86-ext-lib_signed.jar;resources/Windows/x86/sf3jswing-jigaxtended-Windows-x86-ext_signed.jar;resources/Windows/x86/esell-validation-Windows-x86-ext-lib_signed.jar;resources/Windows/x86/esell-validation-Windows-x86-ext_signed.jar</classpath>
+                <classpath mode="compile">resources/Windows/x86/sf3jswing-jigaxtended-Windows-x86-ext-kernel_signed.jar;resources/Windows/x86/sf3jswing-jigaxtended-Windows-x86-ext-lib_signed.jar;resources/Windows/x86/sf3jswing-jigaxtended-Windows-x86-ext_signed.jar</classpath>
                 <built-to>dist/Windows/applet</built-to>
                 <source-level>1.5</source-level>
             </compilation-unit>
