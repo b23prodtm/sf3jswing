@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- CI: fetch `sbbi-upnplib` 1.0.4 (Apache-1.1, Maven Central) so the game module
+  compiles its UPnP port-mapping classes.
+
 - Remove the JAI-specific TIFF metadata and JDIC tray integrations while retaining
   generic ImageIO handling and the standard AWT system tray.
 - Use standard ImageIO file streams in ImageMultiConverter instead of removed
