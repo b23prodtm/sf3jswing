@@ -110,6 +110,20 @@ default signing configuration for release artifacts until its hard-coded
 password and external keystore setup are replaced with protected credentials.
 Use `ant build-jar` for unsigned jars.
 
+## Cross-platform build workflow
+
+`.github/workflows/build.yml` runs the unsigned `build-jar` target for the
+kernel, Jigaxtended framework, game, and IMC Browser on Temurin 17 across
+Linux, Windows, and Intel macOS. The matrix is x86_64 only; ARM runners and
+native binaries are not supported. The workflow stages the kernel/framework
+jars required by downstream modules and uploads any jars produced, including
+when another module fails.
+
+The game currently has known compilation errors involving missing UPnP APIs
+and framework API mismatches (see the build status above). The matrix reports
+these failures rather than treating an Ant invocation as a successful build;
+green status for all four modules awaits fixing those issues.
+
 Phase 2 smoke testing is incomplete. The IMC Browser process remained alive
 under Xvfb with Mesa software-rendering requested, but startup logged JXA
 extension installation failures, including missing `jaxb1-impl.jar` and
