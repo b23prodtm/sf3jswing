@@ -158,6 +158,7 @@ import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
 import javax.swing.RootPaneContainer;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
 import javax.swing.event.ChangeEvent;
@@ -3286,44 +3287,7 @@ public class IMCBrowser implements AntFrame, AntApplet, ClipboardOwner {
                     if (th.hashCode() == hashCode()) {
                         switch (action) {
                             case COPY:
-                                Runnable r = new Runnable() {
-                                    public void run() {
-                                        if (!waitForAllPictures(imageCollection)) {
-                                            return;
-                                        }
-                                        final DataFlavor[] flavors = getTransferDataFlavors();
-                                        final Map<DataFlavor, Boolean> supported = Collections.synchronizedMap(new HashMap<DataFlavor, Boolean>());
-                                        final Map<DataFlavor, Object> data = Collections.synchronizedMap(new HashMap<DataFlavor, Object>());
-                                        for (DataFlavor df : flavors) {
-                                            supported.put(df, isDataFlavorSupported(df));
-                                            if (isDataFlavorSupported(df)) {
-                                                try {
-                                                    data.put(df, getTransferData(df));
-                                                } catch (Exception ex) {
-                                                    ex.printStackTrace();
-                                                }
-                                            }
-                                        }
-                                        Transferable transfer = new Transferable() {
-                                            public DataFlavor[] getTransferDataFlavors() {
-                                                return flavors;
-                                            }
-
-                                            public boolean isDataFlavorSupported(DataFlavor arg0) {
-                                                return supported.get(arg0);
-                                            }
-
-                                            public Object getTransferData(DataFlavor arg0) throws UnsupportedFlavorException, IOException {
-                                                if (data.containsKey(arg0)) {
-                                                    return data.get(arg0);
-                                                }
-                                                throw new UnsupportedFlavorException(arg0);
-                                            }
-                                        };
-                                        clip.setContents((Transferable) transfer, IMCBrowser.this);
-                                    }
-                                };
-                                canvas.doTaskOnScreen(r);
+                                copySelectedImagesToClipboard(clip, null);
                                 break;
                             default:
                                 break;
@@ -4028,7 +3992,7 @@ public class IMCBrowser implements AntFrame, AntApplet, ClipboardOwner {
                 if (!picView.isEnabled()) {
                     return;
                 }
-                picView.getTransferHandler().exportToClipboard(picView, picView.getToolkit().getSystemClipboard(), TransferHandler.COPY);
+                copySelectedImagesToClipboard(picView.getToolkit().getSystemClipboard(), null);
             }
         };
         action_copy_toClipboard.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
@@ -4485,18 +4449,86 @@ public class IMCBrowser implements AntFrame, AntApplet, ClipboardOwner {
             return;
         }
         try {
-            action_copy_toClipboard.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "share"));
-            if (destination == 0) {
-                _goWeb(new URL("https://www.facebook.com/"));
-            } else if (destination == 1) {
-                _goWeb(new URL("https://photos.google.com/"));
-            }
+            final URL destinationUrl = destination == 0
+                    ? new URL("https://www.facebook.com/")
+                    : destination == 1 ? new URL("https://photos.google.com/") : null;
+            copySelectedImagesToClipboard(picView.getToolkit().getSystemClipboard(),
+                    destinationUrl == null ? null : new Runnable() {
+                @Override
+                public void run() {
+                    Thread openSite = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            _goWeb(destinationUrl);
+                        }
+                    }, "IMCBrowser share");
+                    openSite.setDaemon(true);
+                    openSite.start();
+                }
+            });
         } catch (Exception ex) {
-            ex.printStackTrace();
-            UIMessage.showLightPopupMessage(new JLabel(ex.getMessage(),
-                    UIMessage._getIcon(UIMessage.ERROR_TYPE, false),
-                    SwingConstants.LEADING), null, picView, UIMessage.UI_BOTTOM_RIGHT);
+            showClipboardCopyError(ex);
         }
+    }
+
+    private void copySelectedImagesToClipboard(final Clipboard clipboard, final Runnable onSuccess) {
+        canvas.doTaskOnScreen(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (!waitForAllPictures(imageCollection)) {
+                        return;
+                    }
+                    final DataFlavor[] flavors = getTransferDataFlavors();
+                    final Map<DataFlavor, Boolean> supported = Collections.synchronizedMap(new HashMap<DataFlavor, Boolean>());
+                    final Map<DataFlavor, Object> data = Collections.synchronizedMap(new HashMap<DataFlavor, Object>());
+                    for (DataFlavor flavor : flavors) {
+                        boolean isSupported = isDataFlavorSupported(flavor);
+                        supported.put(flavor, isSupported);
+                        if (isSupported) {
+                            data.put(flavor, getTransferData(flavor));
+                        }
+                    }
+                    Transferable transfer = new Transferable() {
+                        @Override
+                        public DataFlavor[] getTransferDataFlavors() {
+                            return flavors;
+                        }
+
+                        @Override
+                        public boolean isDataFlavorSupported(DataFlavor flavor) {
+                            return Boolean.TRUE.equals(supported.get(flavor));
+                        }
+
+                        @Override
+                        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+                            if (data.containsKey(flavor)) {
+                                return data.get(flavor);
+                            }
+                            throw new UnsupportedFlavorException(flavor);
+                        }
+                    };
+                    clipboard.setContents(transfer, IMCBrowser.this);
+                    if (onSuccess != null) {
+                        onSuccess.run();
+                    }
+                } catch (Exception ex) {
+                    showClipboardCopyError(ex);
+                }
+            }
+        });
+    }
+
+    private void showClipboardCopyError(final Exception ex) {
+        ex.printStackTrace();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                UIMessage.showLightPopupMessage(new JLabel(ex.getMessage(),
+                        UIMessage._getIcon(UIMessage.ERROR_TYPE, false),
+                        SwingConstants.LEADING), null, picView, UIMessage.UI_BOTTOM_RIGHT);
+            }
+        });
     }
 
     private MouseInputAdapter getMouseInput() {

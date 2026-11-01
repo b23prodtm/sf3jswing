@@ -1,3 +1,5 @@
+[![Build](https://github.com/b23prodtm/sf3jswing/actions/workflows/build.yml/badge.svg)](https://github.com/b23prodtm/sf3jswing/actions/workflows/build.yml)
+
 # SF3JSwing
 
 **SF3JSwing** est un framework et moteur de jeu de combat 2D 1v1 en Java.

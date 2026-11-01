@@ -2860,6 +2860,17 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
         }
     }
 
+    private static PerspectiveTransform readPerspectiveTransform(Object transform) throws IOException {
+        if (transform == null || transform instanceof PerspectiveTransform) {
+            return (PerspectiveTransform) transform;
+        }
+        if (transform instanceof javax.media.jai.PerspectiveTransform) {
+            return new PerspectiveTransform(
+                    ((javax.media.jai.PerspectiveTransform) transform).getMatrix((double[]) null));
+        }
+        throw new IOException("Unsupported serialized perspective transform: " + transform.getClass().getName());
+    }
+
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         int currentPty = Thread.currentThread().getPriority();
@@ -2871,7 +2882,13 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
         MAX_SIZE = in.readInt();
         _texData = in.readBoolean() ? (SpritesCacheManager<Integer, Sf3Texture>) in.readObject() : _texData;
         _type = in.readInt();
-        attributes = in.readBoolean() ? (HashMap<String, Serializable>) in.readObject() : attributes;
+        if (in.readBoolean()) {
+            attributes = (HashMap<String, Serializable>) in.readObject();
+            if (attributes.containsKey("currentPrePerspectiveTransforming")) {
+                attributes.put("currentPrePerspectiveTransforming",
+                        readPerspectiveTransform(attributes.get("currentPrePerspectiveTransforming")));
+            }
+        }
         try {
             base = in.readBoolean() ? new URI(in.readUTF()) : base;
             renderableImpl.bounds.setBounds(in.readInt(), in.readInt(), in.readInt(), in.readInt());
@@ -2886,7 +2903,8 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
             mirror = in.readInt();
             mirroring = in.readBoolean() ? (AffineTransform) in.readObject() : mirroring;
             opaque = in.readBoolean();
-            perspectiveTransforming = in.readBoolean() ? (PerspectiveTransform) in.readObject() : perspectiveTransforming;
+            perspectiveTransforming = in.readBoolean()
+                    ? readPerspectiveTransform(in.readObject()) : perspectiveTransforming;
             renderableImpl.setMode(in.readInt());
             scaling = in.readBoolean() ? (AffineTransform) in.readObject() : scaling;
             renderableImpl.setStoreMode(in.readInt());

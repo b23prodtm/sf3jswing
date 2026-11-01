@@ -33,6 +33,8 @@ public class SystemTrayIcon {
                 trayIcon.setPopupMenu(menu = new PopupMenu(title));
                 SystemTray.getSystemTray().add(trayIcon);
             } catch (Exception ex) {
+                trayIcon = null;
+                menu = null;
                 ex.printStackTrace();
             }
         }

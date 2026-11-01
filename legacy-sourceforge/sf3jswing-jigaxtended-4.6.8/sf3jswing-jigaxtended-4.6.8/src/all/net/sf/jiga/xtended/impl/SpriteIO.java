@@ -1169,7 +1169,8 @@ public class SpriteIO implements Debugger {
                 mt.waitForID(0);
                 mt.removeImage(im, 0);
             }
-        } else if (r.getNumImages(true) > 1) {
+        } else if (("TIFF".equalsIgnoreCase(r.getFormatName())
+                || "TIF".equalsIgnoreCase(r.getFormatName())) && r.getNumImages(true) > 1) {
             thumbnails.add(im = r.read(1, irp));
             mt.addImage(im, 0);
             mt.waitForID(0);

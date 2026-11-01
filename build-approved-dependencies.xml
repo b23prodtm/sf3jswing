@@ -103,11 +103,11 @@
             <delete dir="${dependency.cache.dir}/@{platform}-native"/>
             <unzip src="${dependency.cache.dir}/@{archive}"
                    dest="${dependency.cache.dir}/@{platform}-native"/>
-            <mkdir dir="${resources.os.arch.dir}"/>
+            <mkdir dir="${nativeLib.os.arch.dir}"/>
             <copy file="${dependency.cache.dir}/@{platform}-native/@{folder}/@{lwjgl-file}"
-                  todir="${resources.os.arch.dir}"/>
+                  todir="${nativeLib.os.arch.dir}"/>
             <copy file="${dependency.cache.dir}/@{platform}-native/@{folder}/@{openal-file}"
-                  todir="${resources.os.arch.dir}"/>
+                  todir="${nativeLib.os.arch.dir}"/>
             <delete file="${dependency.cache.dir}/@{archive}"/>
             <delete dir="${dependency.cache.dir}/@{platform}-native"/>
         </sequential>
@@ -183,7 +183,7 @@
 
     <target name="resolve-lwjgl-natives-windows" if="lwjgl.platform.windows">
         <resolve-lwjgl-native platform="windows" archive="lwjgl-windows.zip"
-                              sha256="78743c9009fef244dc9847d614105768cc4c94a5d1c095fc0d560846a3654ee"
+                              sha256="78743c9009fef244dc9847d614105768cc4c94a5d1c095fc0d560846a3654ee9"
                               folder="windows" lwjgl-file="lwjgl64.dll"
                               openal-file="OpenAL64.dll"/>
     </target>
