@@ -30,7 +30,7 @@ jobs:
             ant_arch: amd64
           - label: macOS x86_64
             runner: macos-15-intel
-            module_os: Mac OS X
+            module_os: Mac
             module_arch: x86_64
             ant_os: Mac OS X
             ant_arch: x86_64
@@ -123,16 +123,6 @@ jobs:
                 -exec cp {} "$consumer/lib/$MODULE_OS/$MODULE_ARCH/" \;
             fi
           done
-
-      - name: Fetch UPnP library for game
-        if: always()
-        shell: bash
-        run: |
-          # net.sbbi.upnp (sbbi-upnplib, Apache-1.1) is not tracked in git; fetch it from Maven Central.
-          lib="legacy-sourceforge/sf3jswing-thegame-ant-0.9.10/sf3jswing-thegame-ant-0.9.10/lib/all"
-          mkdir -p "$lib"
-          curl -fsSL -o "$lib/sbbi-upnplib-1.0.4.jar" \
-            https://repo1.maven.org/maven2/nl/junglecomputing/sbbi-upnplib/1.0.4/sbbi-upnplib-1.0.4.jar
 
       - name: Build game
         id: game

@@ -5,6 +5,9 @@
     <property name="protobuf.version" value="4.31.1"/>
     <property name="jinput.version" value="2.0.10"/>
     <property name="jlayer.version" value="1.0.1"/>
+    <property name="commons.jxpath.version" value="1.1"/>
+    <property name="commons.logging.version" value="1.0.3"/>
+    <property name="sbbi.upnplib.version" value="1.0.4"/>
     <property name="jaxb.version" value="2.1.9"/>
     <property name="activation.version" value="1.2.0"/>
     <property name="jakarta.activation.version" value="2.1.3"/>
@@ -209,6 +212,21 @@
         <resolve-central-jar artifact="jlayer" group-path="javazoom"
                              version="${jlayer.version}" destination="${lib.all}"
                              sha256="850508c837454a1b06017c32a36876fae516de1e89a829f725fee1e6dcc52000"/>
+    </target>
+
+    <target name="resolve-sbbi-upnplib">
+        <resolve-central-jar artifact="sbbi-upnplib" group-path="nl/junglecomputing"
+                             version="${sbbi.upnplib.version}" destination="${lib.all}"
+                             sha256="9cac63ef172897a5d8feaa9a3db031199e3badbb9927c4de1b24da01161be508"/>
+        <resolve-central-jar artifact="commons-jxpath" group-path="commons-jxpath"
+                             version="${commons.jxpath.version}" destination="${lib.all}"
+                             sha256="68a93e1e203952ee8761256645078a9e23e6bb01739fffe9fa295018b5c51f10"/>
+        <resolve-central-jar artifact="commons-logging" group-path="commons-logging"
+                             version="${commons.logging.version}" destination="${lib.all}"
+                             sha256="bcfa023daea8525d6db029ea82e8f58dbf1a06006db6526d9f984dbf215d8a75"/>
+        <resolve-central-jar artifact="commons-logging-api" group-path="commons-logging"
+                             version="${commons.logging.version}" destination="${lib.all}"
+                             sha256="bef9709c87db6485f1b1c21a97ff06d6b44bb0d9e4a5e2dee9441f29a1e451d8"/>
     </target>
 
     <target name="resolve-jaxb">
