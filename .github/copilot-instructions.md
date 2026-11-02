@@ -1,31 +1,15 @@
-# Instructions Copilot — sf3jswing
+# Copilot Instructions — sf3jswing
+5. **Deliverables**: Executable JAR (`java -jar`), portable ZIP with launchers (`.sh`, `.bat`, `.command`), and an installer including OpenJDK + Ant/Maven. No proprietary tools.
+6. **No secrets in the repository**: Never include keystores, certificates, passwords, or tokens. JAR signing is optional and must use GitHub secrets. Do not commit new native binaries; retrieve them from releases or Maven instead.
+7. **Out of scope (unless explicitly requested)**: Gradle, Kotlin, LWJGL 3, migrating from Swing to JavaFX, renaming packages, global reformatting (to avoid noise in diffs), and using Java versions higher than 8.
 
-## Contexte
+## Workflow
 
-sf3jswing est un framework et moteur de jeu de combat 2D 1v1 en Java (licence LGPL-3.0-or-later, statut alpha, environ 90-95 % terminé). Mainteneur : b23prodtm. Les sources Bitbucket n'existent plus : ce dépôt est reconstruit à partir des archives SourceForge (2009-2015) et, si besoin, des artefacts Maven Central `net.sf.sf3jswing:*`. L'historique git d'origine est perdu (voir `docs/PROVENANCE.md`). Objectif : finaliser le projet sans en changer la structure.
-
-Modules connus d'après les builds SourceForge (`docs/AUDIT.md` fait foi une fois produit) :
-`sf3jswing-jxakernel` (noyau), `sf3jswing-jigaxtended` (projets Ant), `sf3jswing-jxatest-unit`, `sf3jswing-imagemulticonverter-ant`, `sf3jswing-imcbrowser`, `sf3jswing-animsbrowser-ant`, `sf3jswing-thegame-ant`.
-
-Dépendances connues : LWJGL 2.x (fork `b23prodtm/lwjgl`, tag `v.2.9.3-jxa`), JInput, JAI, artefacts Maven Central `net.sf.sf3jswing:*`.
-
-## Règles non négociables
-
-1. **Java 17** : le code et les builds ciblent Java 17 (`-source 17 -target 17`). Ne pas réintroduire de dépendance ou d'API Java 8-only.
-2. **Licence LGPL-3.0-or-later** : conserver les avis de droits d'auteur et notices des composants tiers. Vérifier la compatibilité des nouvelles dépendances avec LGPL-3.0-or-later et indiquer leur licence dans la PR.
-3. **Structure d'origine** : ne pas renommer packages, modules ni formats de fichiers (personnages, niveaux, sprites). Les formats restent rétrocompatibles, vérifiés en chargeant les exemples d'origine.
-4. **Ant reste le build de référence** tant qu'un build Maven ne produit pas des jars équivalents (comparer leur contenu). Ne supprimer aucun `build.xml`.
-5. **Livrables** : jar exécutable (`java -jar`), zip portable avec lanceurs (`.sh`, `.bat`, `.command`), installable avec OpenJDK + Ant/Maven. Aucun outil propriétaire.
-6. **Aucun secret dans le dépôt** : jamais de keystore, certificat, mot de passe ni token. La signature des jars est optionnelle et utilise des secrets GitHub. Ne pas committer de nouveaux binaires natifs : les récupérer depuis les releases ou Maven.
-7. **Hors périmètre sauf demande explicite** : Gradle, Kotlin, LWJGL 3, migration Swing → JavaFX, renommage de packages, reformatage global (pas de bruit dans les diffs), Java > 8 dans le code.
-
-## Méthode de travail
-
-- Une issue = une PR courte et relisible (cible : moins de 40 fichiers et 400 lignes modifiées hors fichiers générés). Sinon, découper.
-- Avant de coder : lire `docs/AUDIT.md` et `docs/COPILOT-PHASES.md`. Ne pas inventer de commandes de build : utiliser celles de l'audit.
-- Compiler et tester avant d'ouvrir la PR. Décrire dans la PR : ce qui change, comment le tester, les risques, ce qui n'a pas pu être testé (rendu OpenGL, manette physique, réseau réel).
-- **S'arrêter et poser la question dans la PR** si : 3 échecs consécutifs de la CI, changement d'API publique, de format de fichier, de licence ou de dépendance. Ne pas deviner.
-- Tests : JUnit 4, exécutables en headless (`-Djava.awt.headless=true`, rendu logiciel Java2D). Aucun accès réseau externe ni GPU. Tests déterministes : graine fixe, pas de `sleep` long.
-- Style : suivre les conventions du fichier modifié. Commits en anglais (Conventional Commits). Javadoc et commentaires des nouveaux fichiers en anglais. Tenir `CHANGELOG.md` à jour.
-- CI : GitHub Actions, permissions minimales (`contents: read` par défaut), actions épinglées par version majeure.
-- Réseau : borner et valider tout paquet reçu (taille, plages de valeurs). Jamais de désérialisation d'objets Java (`ObjectInputStream`) sur des données réseau.
+- One issue = one concise, readable PR (target: fewer than 40 files and 400 lines modified, excluding generated files). If it exceeds this, break it down.
+- Before coding: Read `docs/AUDIT.md` and `docs/COPILOT-PHASES.md`. Do not invent new build commands; use those specified in the audit.
+- Compile and test before opening a PR. In the PR description, include: what has changed, how to test it, potential risks, and any components that could not be tested (e.g., OpenGL rendering, physical controllers, or real-world network conditions).
+- **Pause and ask a question within the PR** if: there are 3 consecutive CI failures, or if there are changes to the public API, file formats, licenses, or dependencies. Do not guess.
+- Tests: Use JUnit 4, executable in headless mode (`-Djava.awt.headless=true`, using Java2D software rendering). No external network or GPU access. Tests must be deterministic: use a fixed seed and avoid long `sleep` calls.
+- Style: Follow the conventions of the file being modified. Use English for commit messages (following the Conventional Commits standard). Javadoc and comments for new files must be in English. Keep `CHANGELOG.md` up to date.
+- CI: Use GitHub Actions with minimal permissions (`contents: read` by default) and pin actions to specific major versions.
+- Networking: Bound and validate all incoming packets (size, value ranges). Never deserialize Java objects (`ObjectInputStream`) from network data.
