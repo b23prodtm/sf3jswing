@@ -2,30 +2,30 @@
 
 # SF3JSwing
 
-**SF3JSwing** est un framework et moteur de jeu de combat 2D 1v1 en Java.
+**SF3JSwing** is a 2D 1v1 fighting game framework and engine built in Java.
 
-## À propos
+## About
 
-SF3JSwing fournit une base robuste pour développer des jeux de combat en 2D avec une gameplay 1v1. Il combine la puissance de Java avec une architecture moderne pour créer des jeux d'action fluides et réactifs.
+SF3JSwing provides a robust foundation for developing 2D fighting games with 1v1 gameplay. It combines the power of Java with a modern architecture to create fluid and responsive action games.
 
-## Fonctionnalités
+## Features
 
-- Framework complet pour les jeux de combat 2D
-- Système de gameplay 1v1
-- Architecture modulaire et extensible
-- Développé en Java
+- Comprehensive framework for 2D fighting games
+- 1v1 gameplay system
+- Modular and extensible architecture
+- Developed in Java
 
 ## Installation
 
-*(À compléter)*
+*(To be completed)*
 
-## Utilisation
+## Usage
 
-*(À compléter)*
+*(To be completed)*
 
-## Contribution
+## Contributing
 
-Les contributions sont bienvenues ! N'hésitez pas à soumettre des pull requests ou des issues.
+Contributions are welcome! Feel free to submit pull requests or open issues.
 
 ## Licence
 
