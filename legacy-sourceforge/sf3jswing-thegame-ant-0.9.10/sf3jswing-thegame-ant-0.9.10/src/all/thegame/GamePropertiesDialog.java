@@ -17,6 +17,7 @@ import net.sf.jiga.xtended.impl.Animation;
 import net.sf.jiga.xtended.impl.game.*;
 import net.sf.jiga.xtended.impl.game.physics.Player;
 import net.sf.jiga.xtended.kernel.JXAenvUtils;
+import net.sf.jiga.xtended.kernel.FileHelper;
 import net.sf.jiga.xtended.kernel.ThreadWorks;
 import net.sf.jiga.xtended.ui.*;
 import thegame.comp.Fighter;
@@ -77,7 +78,7 @@ public class GamePropertiesDialog extends JPanel implements RaSSetListener {
     public GamePropertiesDialog(GameProperties props, boolean fullscreen) throws Exception {
         super(true);
         this.props = props;
-        this.rASSet = new ReadAndSaveSettings(JXAenvUtils._USERHOMESTOREDIRECTORY + File.separator + SETTINGSPATH, props);
+        this.rASSet = new ReadAndSaveSettings(FileHelper._USERHOMESTOREDIRECTORY + File.separator + SETTINGSPATH, props);
         rASSet.addRaSSetListener(this);
         isFullscreen = fullscreen;
         rASSet.addRaSSetListener(new RaSSetListener() {

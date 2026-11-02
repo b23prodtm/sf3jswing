@@ -17,6 +17,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import net.sf.jiga.xtended.impl.Sprite;
 import net.sf.jiga.xtended.impl.game.RenderingScene;
+import net.sf.jiga.xtended.impl.game.gl.RenderingSceneGL;
 import net.sf.jiga.xtended.impl.game.TextLayout;
 import net.sf.jiga.xtended.impl.game.gl.GLFX;
 import net.sf.jiga.xtended.impl.game.gl.geom.GLGeom;
@@ -54,7 +55,7 @@ public class GameMenu extends Thegamelayer {
                 GameMenu.this.gui.getScene().setLoading(false);
             }
         }, null);
-        addToMenu(menu, (GameMenu.this.gui.getLayout() & RenderingScene.options.MODE_EXT_FIXED.bitMask()) != 0 ? "-" : "MENU_fullscreen", new Runnable() {
+        addToMenu(menu, (GameMenu.this.gui.getLayout() & RenderingScene.options.MODE_EXT_EXCLUSIVE.bitMask()) != 0 ? "-" : "MENU_fullscreen", new Runnable() {
 
             public void run() {
                 GameMenu.this.gui.switchFullScreen();
@@ -136,14 +137,14 @@ public class GameMenu extends Thegamelayer {
     }
 
     @Override
-    protected void doLoadOnGL(RenderingScene context) {
+    protected void doLoadOnGL(RenderingSceneGL context) {
         super.doLoadOnGL(context);
-        RenderingScene._GLloadSprite((Sprite) gui.getCacheEntry("GFX_MENU_BACKGROUND"), context);
-        RenderingScene._GLloadSprite((Sprite) gui.getCacheEntry("GFX_LOGO"), context);
+        RenderingSceneGL._GLloadSprite((Sprite) gui.getCacheEntry("GFX_MENU_BACKGROUND"), context);
+        RenderingSceneGL._GLloadSprite((Sprite) gui.getCacheEntry("GFX_LOGO"), context);
     }
 
     @Override
-    protected void renderToGL(RenderingScene context) {
+    protected void renderToGL(RenderingSceneGL context) {
         super.renderToGL(context);
         if (context.isLoading()) {
             return;

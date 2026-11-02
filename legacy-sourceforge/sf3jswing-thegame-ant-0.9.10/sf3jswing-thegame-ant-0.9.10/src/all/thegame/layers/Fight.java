@@ -10,7 +10,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import net.sf.jiga.xtended.impl.Sprite;
-import net.sf.jiga.xtended.impl.game.RenderingScene;
+import net.sf.jiga.xtended.impl.game.gl.RenderingSceneGL;
 import net.sf.jiga.xtended.impl.game.gl.GLFX;
 import net.sf.jiga.xtended.impl.game.gl.GLHandler;
 import net.sf.jiga.xtended.impl.game.gl.SpriteGLHandler;
@@ -77,7 +77,7 @@ public class Fight extends Thegamelayer {
     }
 
     @Override
-    protected void doLoadOnGL(RenderingScene context) {
+    protected void doLoadOnGL(RenderingSceneGL context) {
         super.doLoadOnGL(context);
         for (int i = 0; i < life.length; i++) {
             String leftRightBar = i >= (float) gui.NPLAYERS / 2f ? "_RIGHT" : "_LEFT";
@@ -90,7 +90,7 @@ public class Fight extends Thegamelayer {
     }
 
     @Override
-    protected void doUnloadFromGL(RenderingScene context) {
+    protected void doUnloadFromGL(RenderingSceneGL context) {
         super.doUnloadFromGL(context);
         for (int i = 0; i < life.length; i++) {
             String leftRightBar = i >= (float) gui.NPLAYERS / 2f ? "_RIGHT" : "_LEFT";
@@ -102,7 +102,7 @@ public class Fight extends Thegamelayer {
     private SpriteGLHandler[] playerIconID = new SpriteGLHandler[gui.NPLAYERS];
     private Dimension playerIconDim = new Dimension();
 
-    public void _barRender(RenderingScene context, int[][][] clipShape, Rectangle lifeBarMask, SpriteGLHandler lifeBarGlow, int i) {
+    public void _barRender(RenderingSceneGL context, int[][][] clipShape, Rectangle lifeBarMask, SpriteGLHandler lifeBarGlow, int i) {
         /**
          * GLdraw bar stencil
          */
@@ -139,7 +139,7 @@ public class Fight extends Thegamelayer {
     }
 
     @Override
-    protected void renderToGL(RenderingScene context) {
+    protected void renderToGL(RenderingSceneGL context) {
         super.renderToGL(context);
         int arg0 = battle.getState();
         try {
@@ -197,7 +197,7 @@ public class Fight extends Thegamelayer {
                         /**
                          * GLdraw bar stencil
                          */
-                        GLFX._GLpushRender("_barRender", this, new Object[]{context, clipShape, lifeBarMask, lifeBarGlow, i}, new Class[]{RenderingScene.class, int[][][].class, Rectangle.class, SpriteGLHandler.class, int.class});
+                        GLFX._GLpushRender("_barRender", this, new Object[]{context, clipShape, lifeBarMask, lifeBarGlow, i}, new Class[]{RenderingSceneGL.class, int[][][].class, Rectangle.class, SpriteGLHandler.class, int.class});
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     } finally {

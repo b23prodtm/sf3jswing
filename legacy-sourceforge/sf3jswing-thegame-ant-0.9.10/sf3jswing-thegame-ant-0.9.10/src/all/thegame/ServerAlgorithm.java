@@ -7,6 +7,7 @@ import java.awt.geom.Point2D;
 import java.util.*;
 import net.sf.jiga.xtended.impl.game.GameActionLayer;
 import net.sf.jiga.xtended.impl.game.RenderingScene;
+import net.sf.jiga.xtended.impl.game.gl.RenderingSceneGL;
 import net.sf.jiga.xtended.kernel.ThreadWorks;
 
 /**
@@ -225,7 +226,7 @@ public class ServerAlgorithm extends GameActionLayer implements GameStateHandler
             });
             synchronized (this) {
                 try {
-                    while ((gui.cacheloading.getLoadState() & RenderingScene._GLLOADSTATE_Loaded) == 0) {
+                    while ((gui.cacheloading.getLoadState() & RenderingSceneGL._GLLOADSTATE_Loaded) == 0) {
                         wait(1000);
                     }
                 } catch (InterruptedException ex) {
@@ -293,7 +294,7 @@ public class ServerAlgorithm extends GameActionLayer implements GameStateHandler
         /*if the game has finished, make run() return*/
         if (state == Game.STATE_FINISHED) {
         }
-        if (state == Game.STATE_RUNNING && (gui.cacheloading.getLoadState() & RenderingScene._GLLOADSTATE_Loaded) != 0) {
+        if (state == Game.STATE_RUNNING && (gui.cacheloading.getLoadState() & RenderingSceneGL._GLLOADSTATE_Loaded) != 0) {
             processing = true;
             System.out.println("(/) 'Tick processed' event spreading " + new Date(System.currentTimeMillis()).toString());
             /*inform all the listeners about the current state of the game*/

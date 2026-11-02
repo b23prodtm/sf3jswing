@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Port the game module to the 4.6.8 framework API (`RenderingSceneGL`, viewport
+  option names, `FileHelper` store directory, instance gamepad handler) so it
+  compiles on JDK 17.
 - CI: fetch `sbbi-upnplib` 1.0.4 (Apache-1.1, Maven Central) so the game module
   compiles its UPnP port-mapping classes.
 

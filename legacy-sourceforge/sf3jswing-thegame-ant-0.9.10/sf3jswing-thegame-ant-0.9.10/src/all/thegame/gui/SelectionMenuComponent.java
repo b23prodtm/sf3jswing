@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import javax.swing.JComponent;
 import net.sf.jiga.xtended.impl.Sprite;
-import net.sf.jiga.xtended.impl.game.RenderingScene;
+import net.sf.jiga.xtended.impl.game.gl.RenderingSceneGL;
 import net.sf.jiga.xtended.impl.game.physics.Player;
 import thegame.FieldGui;
 
@@ -101,7 +101,7 @@ public class SelectionMenuComponent extends JComponent implements KeyListener {
     Sprite offscreen = null;
 
     /** INTERNAL : renders immediatelly*/
-    public void GLpaintComponent(RenderingScene gld, double z, int fx, Point fx_loc, Color fx_color) throws Exception {
+    public void GLpaintComponent(RenderingSceneGL gld, double z, int fx, Point fx_loc, Color fx_color) throws Exception {
         Rectangle menuBounds = getBounds();
         Rectangle lastBounds = null;
         int selected = getFocusedMenu();

@@ -213,7 +213,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
             gs[selectedDEV].setDisplayMode(dmw.getDM());
             dmw = new DisplayModeWrapper(gs[selectedDEV].getDisplayMode());
         } else {
-            if (scene instanceof RenderingScene) {
+            if (scene instanceof RenderingSceneGL) {
                 scene.setPreferredSize(new Dimension(dmw.getDM().getWidth(), dmw.getDM().getHeight()));
                 JFrame frame = scene.getToDevice();
                 if (frame instanceof JFrame) {
@@ -250,7 +250,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
         _cacheManager.setSwapDiskEnabled(true);
         _cacheManager.setCompressionEnabled(false);
     }
-    private RenderingScene scene;
+    private RenderingSceneGL scene;
     private static java.util.List<XtendedModel> availablePlayerModels = Collections.synchronizedList(new Vector<XtendedModel>());
 
     public static List<XtendedModel> getAvailablePlayerModels() {
@@ -325,7 +325,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
     }
 
     public static void removePlayerModel(XtendedModel model) {
-        if (model.getRenderingScene() instanceof RenderingScene) {
+        if (model.getRenderingScene() instanceof RenderingSceneGL) {
             model.getRenderingScene().removeKeyboardEventsDispatcher(model);
         }
         availablePlayerModels.remove(model);
@@ -607,13 +607,13 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
         return labDim;
     }
 
-    public static Dimension _GL_baseCodeStringCLIPSIZE(RenderingScene gld, String s, int font) {
+    public static Dimension _GL_baseCodeStringCLIPSIZE(RenderingSceneGL gld, String s, int font) {
         Dimension charDim = _GL_baseCodeStringFONT(gld, font);
         return _baseCodeStringCLIPSIZE(s, charDim);
     }
 
-    public static Dimension _GL_baseCodeStringFONT(RenderingScene gld, int font) {
-        Dimension charDim = RenderingScene._GLtoGraphicalMetrics(gld);
+    public static Dimension _GL_baseCodeStringFONT(RenderingSceneGL gld, int font) {
+        Dimension charDim = RenderingSceneGL._GLtoGraphicalMetrics(gld);
         charDim.width = charDim.width * font;
         charDim.height = charDim.height * font;
         return charDim;
@@ -624,31 +624,31 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
      * y, int font, String s) throws InterruptedException {
      * _baseCodeStringDRAW(comp, g, x, y, font, s, 0, new Point(0, 0), null); }
      */
-    public static void _GL_baseCodeStringDRAW(RenderingScene gld, int x, int y, double z, int font, String s) {
+    public static void _GL_baseCodeStringDRAW(RenderingSceneGL gld, int x, int y, double z, int font, String s) {
         _GL_baseCodeStringDRAW(gld, x, y, z, font, s, 0, new Point(0, 0), null);
     }
 
-    public static void _GL_baseCodeStringDRAW(RenderingScene gld, int x, int y, double z, int font, String s, int fx, Point fx_loc, Color fx_color) {
+    public static void _GL_baseCodeStringDRAW(RenderingSceneGL gld, int x, int y, double z, int font, String s, int fx, Point fx_loc, Color fx_color) {
         Dimension charDim = _GL_baseCodeStringFONT(gld, font);
         _GL_baseCodeStringDRAW(gld, x, y, z, charDim, s, fx, fx_loc, fx_color);
     }
 
-    public static void _GL_baseCodeStringDRAW(RenderingScene gld, int x, int y, double z, Dimension charDim, String s) {
+    public static void _GL_baseCodeStringDRAW(RenderingSceneGL gld, int x, int y, double z, Dimension charDim, String s) {
         _GL_baseCodeStringDRAW(gld, x, y, z, charDim, s, 0, new Point(0, 0), null);
     }
 
-    public static void _GL_baseCodeStringDRAW(RenderingScene gld, int x, int y, double z, Dimension charDim, String s, int fx, Point fx_loc, Color fx_color) {
+    public static void _GL_baseCodeStringDRAW(RenderingSceneGL gld, int x, int y, double z, Dimension charDim, String s, int fx, Point fx_loc, Color fx_color) {
         _GL__baseCodeStringDRAW(gld, x, y, z, charDim, s, fx, fx_loc, fx_color);
     }
 
-    private static void _GL__baseCodeStringDRAW(RenderingScene gld, int x, int y, double z, Dimension charDim, String s, int fx, Point fx_loc, Color fx_color) {
+    private static void _GL__baseCodeStringDRAW(RenderingSceneGL gld, int x, int y, double z, Dimension charDim, String s, int fx, Point fx_loc, Color fx_color) {
         int xTranslation = 0;
         s = s.toLowerCase();
         for (char c : s.toCharArray()) {
             String character = new String(new char[]{c});
             if (_cacheHashRegistry.containsKey(character)) {
-                if (RenderingScene._GLgetLoadState(_cacheHashRegistry.get(character)) == RenderingScene._GLLOADSTATE_Cleared) {
-                    RenderingScene._GLloadSprite((Sprite) _cacheSyncManager.get(character), (RenderingScene) gld);
+                if (RenderingSceneGL._GLgetLoadState(_cacheHashRegistry.get(character)) == RenderingSceneGL._GLLOADSTATE_Cleared) {
+                    RenderingSceneGL._GLloadSprite((Sprite) _cacheSyncManager.get(character), (RenderingSceneGL) gld);
                 }
                 Sprite._GLRenderSprite(gld, Sprite._GLHandlers.getHandler(_cacheHashRegistry.get(character)), new Rectangle(x + xTranslation, y, charDim.width, charDim.height), z, fx, fx_loc, fx_color, 0, null, null, null);
             }
@@ -689,11 +689,11 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
         return new Dimension((int) Math.round(source.getWidth() * scale), (int) Math.round(source.getHeight() * scale));
     }
 
-    public static Dimension _GLgetDimZRatio(RenderingScene scene, double z, String rbString) {
+    public static Dimension _GLgetDimZRatio(RenderingSceneGL scene, double z, String rbString) {
         return _GLgetDimZRatio(scene, z, _fillDim(new Dimension(scene.getWidth(), scene.getHeight()), _rbGetDim(rbString).ROI.getSize()));
     }
 
-    public static Dimension _GLgetDimZRatio(RenderingScene scene, double z, Dimension dim) {
+    public static Dimension _GLgetDimZRatio(RenderingSceneGL scene, double z, Dimension dim) {
         return new Dimension((int) Math.round(scene._GLZRatio(z) * (double) dim.width), (int) Math.round(scene._GLZRatio(z) * (double) dim.height));
     }
     private SoundInput bgSnd = null;
@@ -865,7 +865,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
         return gl ? scene.getHeight() : (int) Math.round((float) scene.getHeight() * 6f / 7f);
     }
 
-    public RenderingScene getScene() {
+    public RenderingSceneGL getScene() {
         return scene;
     }
     private ConsoleInterface console;
@@ -881,7 +881,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
                 }
                 long loadTime = System.currentTimeMillis();
                 if (sp instanceof Model || sp instanceof Sprite) {
-                    if (isLWJGLRendering() && scene._GLgetLoadState(sp) == RenderingScene._GLLOADSTATE_Cleared) {
+                    if (isLWJGLRendering() && scene._GLgetLoadState(sp) == RenderingSceneGL._GLLOADSTATE_Cleared) {
                         if (isDebugEnabled()) {
                             System.out.println("xx load " + sp + " xx");
                         }
@@ -890,7 +890,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
                             scene._GLloadModel((Model) sp, scene, ll);
                         }
                         if (sp instanceof Animation) {
-                            scene._GLloadAnim((Animation) sp, scene, RenderingScene.PTY_ANIM, ll);
+                            scene._GLloadAnim((Animation) sp, scene, RenderingSceneGL.PTY_ANIM, ll);
                         }
                         if (sp instanceof Sprite) {
                             scene._GLloadSprite((Sprite) sp, scene);
@@ -913,18 +913,18 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
                 }
                 long loadTime = System.currentTimeMillis();
                 if (sp instanceof Model || sp instanceof Sprite) {
-                    if (scene._GLgetLoadState(sp) == RenderingScene._GLLOADSTATE_Loaded) {
+                    if (scene._GLgetLoadState(sp) == RenderingSceneGL._GLLOADSTATE_Loaded) {
                         if (isDebugEnabled()) {
                             System.out.println("xx unload " + sp + " xx");
                         }
                         if (sp instanceof Model) {
-                            RenderingScene._GLunloadModel((ModelGLHandler) Model._GLHandlers.getHandler((RenderingSceneComponent) sp));
+                            RenderingSceneGL._GLunloadModel((ModelGLHandler) Model._GLHandlers.getHandler((RenderingSceneComponent) sp));
                         }
                         /*
                          * CAuTION : Animation is an extended Sprite
                          */
                         if (sp instanceof Animation) {
-                            RenderingScene._GLunloadAnim((AnimationGLHandler) Animation._GLHandlers.getHandler((RenderingSceneComponent) sp));
+                            RenderingSceneGL._GLunloadAnim((AnimationGLHandler) Animation._GLHandlers.getHandler((RenderingSceneComponent) sp));
                         }
                         if (sp instanceof Sprite) {
                             scene._GLunloadSprite((SpriteGLHandler) Sprite._GLHandlers.getHandler((RenderingSceneComponent) sp));
@@ -940,8 +940,8 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
 
     private void initGraphics(boolean enableHUDConsole) {
         try {
-            RenderingScene._GLclearColor = BufferIO._wrapf(Color.WHITE.getRGBComponents(null));
-            scene = new RenderingScene(container.getGraphicsConfiguration().getDevice());
+            RenderingSceneGL._GLclearColor = BufferIO._wrapf(Color.WHITE.getRGBComponents(null));
+            scene = new RenderingSceneGL(container.getGraphicsConfiguration().getDevice());
             scene.setGL_NEARVAL(sceneNear);
             scene.setGL_FARVAL(sceneFar);
             /*
@@ -958,6 +958,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
              *
              */
             scene.addKeyboardEventsDispatcher(this);
+            final ControllersHandler uiGamePadHandler = new net.sf.jiga.xtended.impl.game.scene.ControllersHandlerImpl("UI GamePad handler", scene);
             scene.addBeyondOffscreen(new GameActionLayer("UI GamePad dispatcher") {
 
                 @Override
@@ -966,7 +967,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
                     if (!scene.isConsoleEnabled()) {
                         if ((gameState.state & Game._bits._getMask(Game._STATE) & (Game.STATE_MENU | Game.STATE_READY_TO_START | Game.STATE_PAUSED)) != 0) {
                             if (Sf3Player._availableGamepads.containsKey(0)) {
-                                ControllersHandler._proceedGamePadEvents(Sf3Player._availableGamepads.get(0), scene, Player.id.ONE, FieldGui.this);
+                                uiGamePadHandler.proceedGamePadEvents(Sf3Player._availableGamepads.get(0), scene, Player.id.ONE);
                             }
                         }
                     }
@@ -975,7 +976,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
             scene.addActionOffscreen(new GameActionLayer("graphics") {
 
                 @Override
-                protected void renderToGL(RenderingScene gld) {
+                protected void renderToGL(RenderingSceneGL gld) {
                     super.renderToGL(gld);
                     glow.glow();
                     GLdraw(gld);
@@ -1000,14 +1001,14 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
                 console = new ConsoleInterface(scene.getPrintStream(), scene.getPrintStream());
             }
             console.println("FIELDGUI CONSOLE initied v." + console.getClass().getPackage().getSpecificationVersion());
-        } catch (LWJGLException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public void GLfader(RenderingScene gld) {
+    public void GLfader(RenderingSceneGL gld) {
         try {
-            GLFX._GLpushRender("_fader", this, new Object[]{gld}, new Class[]{RenderingScene.class});
+            GLFX._GLpushRender("_fader", this, new Object[]{gld}, new Class[]{RenderingSceneGL.class});
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1016,7 +1017,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
     /**
      * DO NOT USE directly, it's for internal callback
      */
-    public void _fader(RenderingScene gld) {
+    public void _fader(RenderingSceneGL gld) {
         double faderZ = -1;
         if (faderEnabled) {
             int fadeSign = _FADEINSTART != 0L ? 1 : (_FADEOUTSTART != 0L ? -1 : 0);
@@ -1165,7 +1166,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
     }
 
     public boolean isLWJGLRendering() {
-        if (scene instanceof RenderingScene) {
+        if (scene instanceof RenderingSceneGL) {
             return scene.isLWJGLAccel();
         } else {
             return false;
@@ -1549,7 +1550,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
     }
 
     private void consoleLogInfo() {
-        if (scene instanceof RenderingScene) {
+        if (scene instanceof RenderingSceneGL) {
             console.println("***** scene info *****");
             console.println("scene FPS : " + scene.getFPS());
             console.println("scene width : " + scene.getWidth());
@@ -1561,7 +1562,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
             console.println("swap disk usage : " + JXAenvUtils._getSwapUsage() / Math.pow(1024, 2) + "MB");
             console.println("system architecture : " + JXAenvUtils._systemBean().getArch());
             Map<String, String> gfx = JXAenvUtils2._graphicsInfo();
-            console.println("graphics device : " + gfx.get(RenderingScene._GL_VENDOR + " " + gfx.get(RenderingScene._GL_RENDERER) + " " + gfx.get(RenderingScene._GL_VERSION)));
+            console.println("graphics device : " + gfx.get(RenderingSceneGL._GL_VENDOR + " " + gfx.get(RenderingSceneGL._GL_RENDERER) + " " + gfx.get(RenderingSceneGL._GL_VERSION)));
             console.println("**********************");
         }
     }
@@ -1589,7 +1590,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
 
     private void _logLn(String s) {
         assert scene.isScreenThread() : "running outside screen thread !";
-        if (scene instanceof RenderingScene) {
+        if (scene instanceof RenderingSceneGL) {
             if (isDebugEnabled()) {
                 s = preConcatStackTrace(s);
                 System.out.println(s);
@@ -1614,7 +1615,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
 
     private void _log(String s) {
         assert scene.isScreenThread() : "running outside screen thread !";
-        if (scene instanceof RenderingScene) {
+        if (scene instanceof RenderingSceneGL) {
             if (isDebugEnabled()) {
                 s = preConcatStackTrace(s);
                 System.out.print(s);
@@ -1625,13 +1626,13 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
     }
 
     public void consoleShow() {
-        if (scene instanceof RenderingScene) {
+        if (scene instanceof RenderingSceneGL) {
             scene.setConsoleEnabled(true);
         }
     }
 
     public void consoleHide() {
-        if (scene instanceof RenderingScene) {
+        if (scene instanceof RenderingSceneGL) {
             scene.setConsoleEnabled(false);
         }
     }
@@ -1645,7 +1646,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
      */
     public void setProps(GameProperties props) {
         this.props = props;
-        RenderingScene.setDebugRenderEnabled((props.getDebug() & GameProperties._DEBUG_RENDER) != 0);
+        RenderingSceneGL.setDebugRenderEnabled((props.getDebug() & GameProperties._DEBUG_RENDER) != 0);
         scene.setDebugActivityEnabled((props.getDebug() & GameProperties._DEBUG_LOADING_ACTIVITY) != 0);
         scene.setKeyboardOptionsEnabled((props.getDebug() & GameProperties._DEBUG_GUI) != 0);
         DebugMap._getInstance().setJXADebugEnabled((props.getDebug() & GameProperties._DEBUG_JXA) != 0);
@@ -1667,7 +1668,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
         }
         Player._gamepadCodeMap.putAll(props.gamepadCodeMap);
         Player._keyCodeMap.putAll(props.keyboardCodeMap);
-        RenderingScene.lwjglEnabled = props.lwjglEnabled;
+        RenderingSceneGL.lwjglEnabled = props.lwjglEnabled;
         switchDisplayMode(new DisplayModeWrapper(props.dm.getDM()));
     }
     /**
@@ -1823,7 +1824,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
      * @param cJ1 Couleur pour le joueur 1
      * @param cJ2 Couleur pour le joueur 2
      */
-    boolean GLdrawPlayers(RenderingScene context, Rectangle fieldBounds, Color cJ1, Color cJ2) {
+    boolean GLdrawPlayers(RenderingSceneGL context, Rectangle fieldBounds, Color cJ1, Color cJ2) {
         boolean b = true;
         if (!availablePlayerModels.isEmpty()) {
             modelResolution = modelResolutionPreset(scene.getBounds(), availablePlayerModels.get(0), modelResolutionDEFAULT);
@@ -1910,14 +1911,14 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
     /**
      * Ecrit le nom en bas a gauche de l'�cran.
      */
-    boolean GLdrawName(RenderingScene context, Color couleur, String name) {
+    boolean GLdrawName(RenderingSceneGL context, Color couleur, String name) {
         int font = 3;
         Dimension dim = _GL_baseCodeStringCLIPSIZE(context, name, font);
         _GL_baseCodeStringDRAW(context, 20, scene.getHeight() - dim.height - 20, - 1, dim, name);
         return true;
     }
 
-    boolean GLdrawBall(RenderingScene context, Rectangle fieldBounds, Color couleur) {
+    boolean GLdrawBall(RenderingSceneGL context, Rectangle fieldBounds, Color couleur) {
         boolean b = true;
         int i = 0;
         for (SortedMap plrMap : selectedPlayer) {
@@ -2009,7 +2010,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
      * floor <br>2+ is for the center backgrounds where the greatest index is
      * for the top-most screen, the greater is displayed the larger
      */
-    boolean GLdrawBg(RenderingScene context, Rectangle fieldBounds, int layer) {
+    boolean GLdrawBg(RenderingSceneGL context, Rectangle fieldBounds, int layer) {
         boolean b = true;
         Rectangle bounds = new Rectangle();
         GLHandler.stView.push();
@@ -2119,7 +2120,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
     /**
      * internal callback
      */
-    public void GLdraw(RenderingScene context) {
+    public void GLdraw(RenderingSceneGL context) {
 
         /*
          * Rectangle backgroundColor = new Rectangle(context.getWidth(),
@@ -2218,7 +2219,7 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
             }
 
             @Override
-            protected void renderToGL(RenderingScene context) {
+            protected void renderToGL(RenderingSceneGL context) {
                 super.renderToGL(context);
             }
         });
@@ -2342,5 +2343,8 @@ public final class FieldGui implements GameStateHandler, AlgorithmListener, Rend
     }
 
     public void modeChanged(int arg0) {
+    }
+
+    public void componentResized(java.awt.event.ComponentEvent e) {
     }
 }
