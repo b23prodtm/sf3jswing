@@ -1,0 +1,174 @@
+name: Build legacy applications
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: ${{ matrix.label }} / JDK 17
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: Linux x86_64
+            runner: ubuntu-22.04
+            module_os: Linux
+            module_arch: amd64
+            ant_os: Linux
+            ant_arch: amd64
+          - label: Windows x86_64
+            runner: windows-2022
+            module_os: Windows
+            module_arch: amd64
+            ant_os: Windows 7
+            ant_arch: amd64
+          - label: macOS x86_64
+            runner: macos-15-intel
+            module_os: Mac
+            module_arch: x86_64
+            ant_os: Mac OS X
+            ant_arch: x86_64
+
+    env:
+      MODULE_OS: ${{ matrix.module_os }}
+      MODULE_ARCH: ${{ matrix.module_arch }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Ant
+        shell: bash
+        run: |
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            sudo apt-get update
+            sudo apt-get install -y ant
+          elif [[ "$RUNNER_OS" == "macOS" ]]; then
+            brew install ant
+          else
+            choco install ant --no-progress -y
+          fi
+
+      - name: Verify x86_64 toolchain
+        shell: bash
+        run: |
+          test "$(uname -m)" = "x86_64"
+          java -version
+          ant -version
+
+      - name: Build kernel
+        id: kernel
+        shell: bash
+        run: |
+          cd legacy-sourceforge/sf3jswing-jxakernel-1.3.6/sf3jswing-jxakernel-1.3.6
+          ant "-Dos.name=${{ matrix.ant_os }}" "-Dos.arch=${{ matrix.ant_arch }}" \
+            "-Dco.prj.os.arch=${MODULE_ARCH}" "-Dcompany.project.os.arch=${MODULE_ARCH}" \
+            build-jar
+
+      - name: Stage kernel for framework
+        if: always()
+        shell: bash
+        run: |
+          kernel="legacy-sourceforge/sf3jswing-jxakernel-1.3.6/sf3jswing-jxakernel-1.3.6/dist/$MODULE_OS/unsigned/sf3jswing-jxakernel-$MODULE_OS-$MODULE_ARCH.jar"
+          framework="legacy-sourceforge/sf3jswing-jigaxtended-4.6.8/sf3jswing-jigaxtended-4.6.8"
+          if [[ -f "$kernel" ]]; then
+            mkdir -p "$framework/lib/all" "$framework/lib/$MODULE_OS/$MODULE_ARCH"
+            cp "$kernel" "$framework/lib/all/"
+            cp "$kernel" "$framework/lib/$MODULE_OS/$MODULE_ARCH/lib-sf3jswing-jxakernel-$MODULE_OS-$MODULE_ARCH.jar"
+          else
+            echo "Kernel jar was not produced; framework build will report the dependency failure."
+          fi
+
+      - name: Build Jigaxtended framework
+        id: framework
+        if: always()
+        shell: bash
+        run: |
+          cd legacy-sourceforge/sf3jswing-jigaxtended-4.6.8/sf3jswing-jigaxtended-4.6.8
+          ant "-Dos.name=${{ matrix.ant_os }}" "-Dos.arch=${{ matrix.ant_arch }}" \
+            "-Dco.prj.os.arch=${MODULE_ARCH}" "-Dcompany.project.os.arch=${MODULE_ARCH}" \
+            build-jar
+
+      - name: Stage framework for game and browser
+        if: always()
+        shell: bash
+        run: |
+          kernel="legacy-sourceforge/sf3jswing-jxakernel-1.3.6/sf3jswing-jxakernel-1.3.6/dist/$MODULE_OS/unsigned/sf3jswing-jxakernel-$MODULE_OS-$MODULE_ARCH.jar"
+          framework="legacy-sourceforge/sf3jswing-jigaxtended-4.6.8/sf3jswing-jigaxtended-4.6.8"
+          for consumer in \
+            "legacy-sourceforge/sf3jswing-thegame-ant-0.9.10/sf3jswing-thegame-ant-0.9.10" \
+            "legacy-sourceforge/sf3jswing-imcbrowser-2.5.1/sf3jswing-imcbrowser-2.5.1"; do
+            mkdir -p "$consumer/lib/all" "$consumer/lib/$MODULE_OS/$MODULE_ARCH"
+            if [[ -f "$kernel" ]]; then
+              cp "$kernel" "$consumer/lib/all/"
+              cp "$kernel" "$consumer/lib/$MODULE_OS/$MODULE_ARCH/lib-sf3jswing-jxakernel-$MODULE_OS-$MODULE_ARCH.jar"
+            fi
+            main="$framework/dist/$MODULE_OS/unsigned/sf3jswing-jigaxtended-$MODULE_OS-$MODULE_ARCH.jar"
+            [[ ! -f "$main" ]] || cp "$main" "$consumer/lib/all/"
+            extension_dir="$framework/dist/$MODULE_OS/unsigned"
+            if [[ -d "$extension_dir" ]]; then
+              find "$extension_dir" -maxdepth 1 -type f -name '*-ext*.jar' \
+                -exec cp {} "$consumer/lib/$MODULE_OS/$MODULE_ARCH/" \;
+            fi
+          done
+
+      - name: Build game
+        id: game
+        if: always()
+        shell: bash
+        run: |
+          cd legacy-sourceforge/sf3jswing-thegame-ant-0.9.10/sf3jswing-thegame-ant-0.9.10
+          ant "-Dos.name=${{ matrix.ant_os }}" "-Dos.arch=${{ matrix.ant_arch }}" \
+            "-Dco.prj.os.arch=${MODULE_ARCH}" "-Dcompany.project.os.arch=${MODULE_ARCH}" \
+            build-jar
+
+      - name: Build IMC Browser
+        id: imcbrowser
+        if: always()
+        shell: bash
+        run: |
+          cd legacy-sourceforge/sf3jswing-imcbrowser-2.5.1/sf3jswing-imcbrowser-2.5.1
+          ant "-Dos.name=${{ matrix.ant_os }}" "-Dos.arch=${{ matrix.ant_arch }}" \
+            "-Dco.prj.os.arch=${MODULE_ARCH}" "-Dcompany.project.os.arch=${MODULE_ARCH}" \
+            build-jar
+
+      - name: Upload unsigned JARs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-jars-${{ matrix.label }}
+          if-no-files-found: warn
+          path: |
+            legacy-sourceforge/sf3jswing-jxakernel-1.3.6/sf3jswing-jxakernel-1.3.6/dist/**/*.jar
+            legacy-sourceforge/sf3jswing-jigaxtended-4.6.8/sf3jswing-jigaxtended-4.6.8/dist/**/*.jar
+            legacy-sourceforge/sf3jswing-thegame-ant-0.9.10/sf3jswing-thegame-ant-0.9.10/dist/**/*.jar
+            legacy-sourceforge/sf3jswing-imcbrowser-2.5.1/sf3jswing-imcbrowser-2.5.1/dist/**/*.jar
+
+      - name: Fail if any module build failed
+        if: always()
+        shell: bash
+        env:
+          KERNEL_RESULT: ${{ steps.kernel.outcome }}
+          FRAMEWORK_RESULT: ${{ steps.framework.outcome }}
+          GAME_RESULT: ${{ steps.game.outcome }}
+          IMCBROWSER_RESULT: ${{ steps.imcbrowser.outcome }}
+        run: |
+          failed=0
+          for result in "$KERNEL_RESULT" "$FRAMEWORK_RESULT" "$GAME_RESULT" "$IMCBROWSER_RESULT"; do
+            if [[ "$result" != "success" ]]; then
+              failed=1
+            fi
+          done
+          exit "$failed"

@@ -1,0 +1,8 @@
+**/bin/
+**/dist/
+**/lib/**/*.jar
+**/lib/.cache/
+**/resources/**/*.jar
+**/resources/**/*.dll
+**/resources/**/*.so
+**/resources/**/*.dylib

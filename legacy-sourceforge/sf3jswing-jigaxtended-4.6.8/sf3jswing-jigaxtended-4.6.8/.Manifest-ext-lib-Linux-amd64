@@ -1,0 +1,78 @@
+Extension-Name: net.sf.jiga.xtended.lib
+Trusted-Library: true
+Specification-Title: SF3JSWING JIGAXtended API lib
+Specification-Version: 4.6
+Specification-Vendor: b23:production GNU/GPL 2006 - 2014
+Implementation-Vendor-Id: net.sf.jiga.xtended
+Implementation-Title: Linux lib (amd64)
+Implementation-Version: 4.6.8_01
+Implementation-Vendor: b23:production GNU/GPL 2006 - 2014
+
+Name: javax/activation/
+Implementation-Version: 1.1.1
+Specification-Title: JavaBeans(TM) Activation Framework Specification
+Specification-Version: 1.1
+Extension-Name: javax.activation
+Created-By: 1.4.2 (Sun Microsystems Inc.)
+Implementation-Vendor-Id: com.sun
+Implementation-Vendor: Sun Microsystems, Inc.
+Specification-Vendor: Sun Microsystems, Inc.
+SCCS-ID: @(#)jaf.mf	1.2	05/05/23
+
+Name: com/sun/media/imageio/
+Specification-Title: Java Advanced Imaging Image I/O Tools
+Specification-Version: 1.1
+Specification-Vendor: Sun Microsystems, Inc.
+Implementation-Title: com.sun.media.imageio
+Implementation-Version: 1.1
+Implementation-Vendor: Sun Microsystems, Inc.
+Extension-Name: com.sun.media.imageio
+Sealed: true
+
+Name: com/sun/medialib/mlib/
+Specification-Title: mediaLib for JAI
+Implementation-Title: com.sun.medialib.mlib
+Specification-Vendor: Sun Microsystems, Inc.
+Specification-Version: 1.1
+Implementation-Version: 1.1.3
+Implementation-Vendor: Sun Microsystems, Inc.
+
+Name: javax/media/jai/
+Specification-Title: Java Advanced Imaging
+Specification-Version: 1.1
+Specification-Vendor: Sun Microsystems, Inc.
+Implementation-Title: javax.media.jai
+Implementation-Version: 1.1.3
+Implementation-Vendor: Sun Microsystems, Inc.
+Extension-Name: javax.media.jai
+Sealed: true
+
+Name: com/sun/media/jai/codec/
+Specification-Title: Java Advanced Imaging Codecs
+Specification-Version: 1.1
+Specification-Vendor: Sun Microsystems, Inc.
+Implementation-Title: com.sun.media.jai.codec
+Implementation-Version: 1.1.3
+Implementation-Vendor: Sun Microsystems, Inc.
+Extension-Name: com.sun.media.jai.codec
+Sealed: true
+
+Name: com/sun/medialib/codec/
+Specification-Title: codecLib for JAI Image I/O Tools
+Implementation-Title: com.sun.medialib.codec
+Specification-Vendor: Sun Microsystems, Inc.
+Specification-Version: 1.1
+Implementation-Version: 1.1
+Implementation-Vendor: Sun Microsystems, Inc.
+
+Name: org/apache/commons/httpclient/
+Specification-Title: Jakarta Commons HttpClient
+X-Compile-Source-JDK: 1.2
+Implementation-Title: org.apache.commons.httpclient
+Specification-Version: 3.1
+Specification-Vendor: Apache Software Foundation
+Implementation-Vendor-Id: org.apache
+Extension-name: org.apache.commons.httpclient
+X-Compile-Target-JDK: 1.2
+Implementation-Version: 3.1
+Implementation-Vendor: Apache Software Foundation

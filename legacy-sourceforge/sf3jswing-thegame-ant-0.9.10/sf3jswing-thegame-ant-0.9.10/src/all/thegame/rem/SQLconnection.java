@@ -11,17 +11,17 @@ public class SQLconnection {
 
     static {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         }
     }
     Connection jdbc = null;
-    public String sqlUrl = "mysql://mysql-s.sourceforge.net:4040/s173003_thegame";
-    public String sqlUserRW = "s173003rw";
-    public String sqlPassRW = "ksameht";
-    public String sqlUserRO = "s173003ro";
-    public String sqlPassRO = "password";
+    public String sqlUrl = System.getProperty("sf3jswing.sql.url", "mysql://mysql-s.sourceforge.net:4040/s173003_thegame");
+    public String sqlUserRW = System.getenv().getOrDefault("SF3JSWING_SQL_USER_RW", "");
+    public String sqlPassRW = System.getenv().getOrDefault("SF3JSWING_SQL_PASSWORD_RW", "");
+    public String sqlUserRO = System.getenv().getOrDefault("SF3JSWING_SQL_USER_RO", "");
+    public String sqlPassRO = System.getenv().getOrDefault("SF3JSWING_SQL_PASSWORD_RO", "");
     private boolean write = false;
 
     /**@param write if true, a Read/Write will be opened upon connecting, if false, a Read-Only connection will be made*/

@@ -41,7 +41,7 @@
         <property name="co.prj.os.kernel.jar.token" value="PROJECTOSKERNELJAR"/>
         <property description="for running on application bundle" 
                   name="co.prj.os.jar.classpath" 
-                  value="api/esell-validation-${co.prj.os}-${co.prj.os.arch}-ext_signed.jar mail_signed.jar ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar"/>
+                  value="mail_signed.jar ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar"/>
         <property name="co.prj.os.jar.classpath.token" value="PROJECTJARCLASSPATH"/>
         <property name="co.prj.os.app.run.prefix" value="#!/bin/sh"/>
         <property name="co.prj.os.app.run.prefix.token" value="PROJECTAPPLICATIONRUNPREFIX"/>
@@ -54,7 +54,6 @@
         <!-- WRITE RUN ARGUMENTS AND CLASSPATHS VALUES ON ONE SINGLE LINE ! IMPORTANT NOTE about Applets : if you run a JFCApplet locally, you must manually set the jxa.localApplet property to enabled (-Djxa.localApplet=true), or all extensions will be downloaded from the remote defined extensions server./-->
         <property name="co.prj.os.app.run.params" value="-Djxa.ecl.io=false -Djxa.ecl.first=true -Djxa.ecl.res=false -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled  -Dorg.lwjgl.opengl.Display.allowSoftwareOpenGL=false -Xss2m -XX:PermSize=32m -XX:MaxPermSize=300m -Xms${co.prj.os.app.run.minheap} -Xmx${co.prj.os.app.run.maxheap} -Dcom.sun.media.imageio.disableCodecLib=false -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote -Djava.security.policy=JavaSecurityPolicy -Dapple.laf.useScreenMenuBar=true -Dapple.awt.graphics.UseQuartz=true "/>
         <property name="co.prj.os.app.run.params.token" value="PROJECTAPPLICATIONPARAMS"/>
-        <!-- MAKE FOREACH with esell-validation //-->
         <property name="co.prj.os.app.run.classpath" value="/home/$USER/:/usr/share/games/${parent.prj}/${parent.prj}-${co.prj.os}-${co.prj.os.arch}-ext-kernel.jar:/usr/share/games/${parent.prj}/${parent.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib.jar:/usr/share/games/${parent.prj}/${parent.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props.jar:/usr/share/games/${parent.prj}/${parent.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native.jar:/usr/share/games/${parent.prj}/${parent.prj}-${co.prj.os}-${co.prj.os.arch}.jar:/usr/share/games/${co.prj}/${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib.jar:/usr/share/games/${co.prj}/${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props.jar:/usr/share/games/${co.prj}/${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native.jar:/usr/share/games/${co.prj}/${co.prj}-${co.prj.os}-${co.prj.os.arch}.jar"/>
         <property name="co.prj.os.app.run.classpath.token" value="PROJECTAPPLICATIONRUNCLASSPATH"/>
         <property name="co.prj.os.app.run.main" value="net.sf.jiga.xtended.ui.JFCFrame"/>
@@ -63,11 +62,11 @@
         <property name="co.prj.os.applet.width.token" value="PROJECTAPPLETWIDTH"/>
         <property name="co.prj.os.applet.height" value="600"/>
         <property name="co.prj.os.applet.height.token" value="PROJECTAPPLETHEIGHT"/>
-        <property name="co.prj.os.app.run.args" value="-antframe jxa.IMCBrowser -width ${co.prj.os.applet.width} -height ${co.prj.os.applet.height} -license"/>
+        <property name="co.prj.os.app.run.args" value="-antframe jxa.IMCBrowser -width ${co.prj.os.applet.width} -height ${co.prj.os.applet.height}"/>
         <property name="co.prj.os.app.run.args.token" value="PROJECTAPPLICATIONRUNARGS"/>
         <property name="co.prj.os.applet.jnlphref" value="${co.prj.codebase}/${co.prj}.jnlp"/>
         <property name="co.prj.os.applet.jnlphref.token" value="PROJECTAPPLETJNLPHREF"/>
-        <property name="co.prj.os.applet.classpath" value="api/esell-validation-${co.prj.os}-${co.prj.os.arch}-ext_signed.jar, mail_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar"/>
+        <property name="co.prj.os.applet.classpath" value="mail_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar"/>
         <property name="co.prj.os.applet.classpath.token" value="PROJECTAPPLETCLASSPATH"/>
         <property name="co.prj.os.applet.main" value="net.sf.jiga.xtended.ui.JFCApplet"/>
         <property name="co.prj.os.applet.main.token" value="PROJECTAPPLETMAIN"/>

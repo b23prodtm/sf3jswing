@@ -29,7 +29,7 @@ import javax.imageio.*;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.FileCacheImageInputStream;
 import javax.imageio.stream.ImageInputStream;
-import javax.media.jai.*;
+import org.eclipse.imagen.*;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import net.sf.jiga.xtended.JXAException;
@@ -1931,7 +1931,7 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
                 if (DebugMap._getInstance().isDebugLevelEnabled(gfx.DBUG)) {
                     DebugMap._getInstance().tickPrintln(System.out, "Sprite " + toString() + " warped to : " + basePtx, false);
                 }
-                RenderedOp warpOp = JAI.create("warp", pb);
+                RenderedOp warpOp = ImageN.create("warp", pb);
                 RenderedImage warped = (RenderedImage) warpOp.createInstance();
                 GraphicsJAI jai = GraphicsJAI.createGraphicsJAI(g2, obs);
                 jai.drawRenderedImage(warped, new AffineTransform());
@@ -1970,7 +1970,7 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
                             if (DebugMap._getInstance().isDebugLevelEnabled(gfx.DBUG)) {
                                 DebugMap._getInstance().tickPrintln(System.out, "Sprite " + toString() + " warped to : " + basePtx, false);
                             }
-                            RenderedOp warpOp = JAI.create("warp", pb);
+                            RenderedOp warpOp = ImageN.create("warp", pb);
                             RenderedImage warped = (RenderedImage) warpOp.createInstance();
                             b.flush();
                             GraphicsJAI jai = GraphicsJAI.createGraphicsJAI(g2, obs);
@@ -2477,7 +2477,7 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
                                         tilePtx.concatenate(AffineTransform.getTranslateInstance(srcROIB.getX(), srcROIB.getY()).createInverse());
                                         pb.add(new WarpPerspective(tilePtx));
                                         pb.add(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-                                        RenderedOp warpOp = JAI.create("warp", pb);
+                                        RenderedOp warpOp = ImageN.create("warp", pb);
                                         RenderedImage warped = (RenderedImage) warpOp.createInstance();
                                         srcBuffer.flush();
                                         GraphicsJAI jai = GraphicsJAI.createGraphicsJAI(g, renderableImpl.io.obs);
@@ -2525,7 +2525,7 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
                                 basePtx.concatenate(baseTx.createInverse());
                                 pb.add(new WarpPerspective(basePtx));
                                 pb.add(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
-                                RenderedOp warpOp = JAI.create("warp", pb);
+                                RenderedOp warpOp = ImageN.create("warp", pb);
                                 RenderedImage warped = (RenderedImage) warpOp.createInstance();
                                 GraphicsJAI jai = GraphicsJAI.createGraphicsJAI(g, renderableImpl.io.obs);
                                 jai.drawRenderedImage(warped, new AffineTransform());
@@ -2860,6 +2860,17 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
         }
     }
 
+    private static PerspectiveTransform readPerspectiveTransform(Object transform) throws IOException {
+        if (transform == null || transform instanceof PerspectiveTransform) {
+            return (PerspectiveTransform) transform;
+        }
+        if (transform instanceof javax.media.jai.PerspectiveTransform) {
+            return new PerspectiveTransform(
+                    ((javax.media.jai.PerspectiveTransform) transform).getMatrix((double[]) null));
+        }
+        throw new IOException("Unsupported serialized perspective transform: " + transform.getClass().getName());
+    }
+
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         int currentPty = Thread.currentThread().getPriority();
@@ -2871,7 +2882,13 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
         MAX_SIZE = in.readInt();
         _texData = in.readBoolean() ? (SpritesCacheManager<Integer, Sf3Texture>) in.readObject() : _texData;
         _type = in.readInt();
-        attributes = in.readBoolean() ? (HashMap<String, Serializable>) in.readObject() : attributes;
+        if (in.readBoolean()) {
+            attributes = (HashMap<String, Serializable>) in.readObject();
+            if (attributes.containsKey("currentPrePerspectiveTransforming")) {
+                attributes.put("currentPrePerspectiveTransforming",
+                        readPerspectiveTransform(attributes.get("currentPrePerspectiveTransforming")));
+            }
+        }
         try {
             base = in.readBoolean() ? new URI(in.readUTF()) : base;
             renderableImpl.bounds.setBounds(in.readInt(), in.readInt(), in.readInt(), in.readInt());
@@ -2886,7 +2903,8 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
             mirror = in.readInt();
             mirroring = in.readBoolean() ? (AffineTransform) in.readObject() : mirroring;
             opaque = in.readBoolean();
-            perspectiveTransforming = in.readBoolean() ? (PerspectiveTransform) in.readObject() : perspectiveTransforming;
+            perspectiveTransforming = in.readBoolean()
+                    ? readPerspectiveTransform(in.readObject()) : perspectiveTransforming;
             renderableImpl.setMode(in.readInt());
             scaling = in.readBoolean() ? (AffineTransform) in.readObject() : scaling;
             renderableImpl.setStoreMode(in.readInt());
@@ -3650,7 +3668,7 @@ public class Sprite implements Debugger, CompositeCapable, Externalizable, Clone
      *
      * @param b dis/enables VRAM for this Sprite instance.
      * @see #setBufferedImageEnabled(boolean)
-     * @deprecated not recommended to enable : 1° unstable ; 2° bufferedImage's
+     * @deprecated not recommended to enable : 1ï¿½ unstable ; 2ï¿½ bufferedImage's
      * already use accelerated capabilities
      */
     @Override

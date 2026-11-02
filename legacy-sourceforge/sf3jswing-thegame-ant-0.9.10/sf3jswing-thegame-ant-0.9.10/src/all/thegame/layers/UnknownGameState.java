@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import javax.swing.Icon;
 import net.sf.jiga.xtended.impl.Sprite;
-import net.sf.jiga.xtended.impl.game.RenderingScene;
+import net.sf.jiga.xtended.impl.game.gl.RenderingSceneGL;
 import net.sf.jiga.xtended.impl.game.gl.Sf3Texture;
 import net.sf.jiga.xtended.impl.game.gl.SpriteGLHandler;
 import net.sf.jiga.xtended.ui.UIMessage;
@@ -42,9 +42,9 @@ public class UnknownGameState extends Thegamelayer {
     Rectangle r = new Rectangle();
 
     @Override
-    protected void doLoadOnGL(RenderingScene context) {
+    protected void doLoadOnGL(RenderingSceneGL context) {
         super.doLoadOnGL(context);
-        sgl = RenderingScene._GLloadSprite(s, context);
+        sgl = RenderingSceneGL._GLloadSprite(s, context);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class UnknownGameState extends Thegamelayer {
     }
 
     @Override
-    protected void renderToGL(RenderingScene context) {
+    protected void renderToGL(RenderingSceneGL context) {
         super.renderToGL(context);
         if (stex == null) {
             stex = sgl.GLgetTexInfo(0);

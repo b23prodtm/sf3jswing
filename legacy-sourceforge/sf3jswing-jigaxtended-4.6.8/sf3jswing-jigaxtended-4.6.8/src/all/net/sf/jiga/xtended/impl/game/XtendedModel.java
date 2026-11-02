@@ -19,7 +19,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.TreeMap;
-import javax.media.jai.PerspectiveTransform;
+import org.eclipse.imagen.PerspectiveTransform;
 import net.sf.jiga.xtended.kernel.BitStack;
 import net.sf.jiga.xtended.impl.Sprite;
 import net.sf.jiga.xtended.impl.system.LogicalSystem;

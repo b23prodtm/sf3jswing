@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="DO-lib" basedir=".">    
+    <import file="../../../build-commons.xml"/>
     <!-- FOREACH TASKS -->
     <taskdef resource="net/sf/antcontrib/antcontrib.properties">
         <classpath>
@@ -383,7 +384,7 @@
         <fileset refid="resources.os.all.jars"/>
         <fileset refid="resources.os.arch.jars"/>
     </path>
-    <target name="compile" description="Compile code">
+    <target name="compile" depends="resolve-kernel-commons" description="Compile code">
         <mkdir dir="${src.all}"/>
         <mkdir dir="${src.os}"/>
         <mkdir dir="${bin}"/>
@@ -393,10 +394,9 @@
         <mkdir dir="${resources.all.dir}"/>
         <mkdir dir="${resources.os.all.dir}"/>
         <mkdir dir="${resources.os.arch.dir}"/>
-        <javac nowarn="on"
-               proceed="true"
+        <javac failonerror="true" nowarn="on"
                destdir="${bin}"
-               source="1.5" target="1.5"
+               source="17" target="17" encoding="windows-1252"
                includeAntRuntime="no"
                classpathref="lib.path"
                debug="${compile.debug}"
@@ -567,7 +567,7 @@
     <!-- If createPrivateKey is set we need to call genkey.  -->
     <target name="genkey" depends="checkforkey" if="createPrivateKey">
         
-        <genkey validity="3650" alias="${username}" storepass="${storepass}" keystore="${keystore}" storetype="${keystore-type}">
+        <genkey validity="3650" alias="${username}" storepass="${storepass}" keystore="${keystore}" storetype="${keystore-type}" keyalg="RSA" keysize="3072" sigalg="SHA256withRSA">
             
             <dname>
                 

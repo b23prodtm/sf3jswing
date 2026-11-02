@@ -6,7 +6,7 @@ package thegame.gui;
 
 import java.awt.*;
 import javax.swing.JLabel;
-import net.sf.jiga.xtended.impl.game.RenderingScene;
+import net.sf.jiga.xtended.impl.game.gl.RenderingSceneGL;
 import net.sf.jiga.xtended.impl.game.gl.geom.GLGeom;
 import thegame.FieldGui;
 
@@ -80,7 +80,7 @@ public class SelectionMenuCell extends JLabel {
     }
 
     static int font = 5;
-    protected void GLpaintComponent(RenderingScene gld, double z, int fx, Point fx_loc, Color fx_color) throws Exception {
+    protected void GLpaintComponent(RenderingSceneGL gld, double z, int fx, Point fx_loc, Color fx_color) throws Exception {
         Rectangle cellBounds = getBounds();
         boolean i = gui.glow.glow > .5f;
         String label = (cellHasFocus ? (i ? "> " : " >") : "") + getText() + (cellHasFocus ? (i ? " <" : "< ") : "");

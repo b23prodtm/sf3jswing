@@ -177,6 +177,9 @@
     <property name="lib" location="lib"/>
     
     <property name="lib.all" location="${lib}/all"/>
+
+    <import file="../../../build-imagen.xml"/>
+    <import file="../../../build-approved-dependencies.xml"/>
     
     <property name="lib.os" location="${lib}/${co.prj.os}"/>
     
@@ -424,7 +427,9 @@
         
     </path>
 
-    <target name="compile" description="Compile code">
+    <target name="compile"
+            depends="resolve-imagen,resolve-swingx,resolve-lwjgl,resolve-lwjgl-natives,resolve-jinput,resolve-jlayer,resolve-jakarta-activation"
+            description="Compile code">
 
         <mkdir dir="${src.all}"/>
 
@@ -445,9 +450,8 @@
         <mkdir dir="${resources.os.arch.dir}"/>
 
         <javac nowarn="on"
-               proceed="true"
                destdir="${bin}"
-               source="1.5" target="1.5"
+               source="17" target="17" encoding="windows-1252"
                includeAntRuntime="no"
                classpathref="lib.path"
                debug="${compile.debug}"
@@ -713,7 +717,7 @@
 
     <target name="genkey" depends="checkforkey" if="createPrivateKey">
         
-        <genkey validity="3650" alias="${username}" storepass="${storepass}" keystore="${keystore}" storetype="${keystore-type}">
+        <genkey validity="3650" alias="${username}" storepass="${storepass}" keystore="${keystore}" storetype="${keystore-type}" keyalg="RSA" keysize="3072" sigalg="SHA256withRSA">
             
             <dname>
                 
@@ -855,4 +859,3 @@
         </exec>
     </target>
 </project>
-

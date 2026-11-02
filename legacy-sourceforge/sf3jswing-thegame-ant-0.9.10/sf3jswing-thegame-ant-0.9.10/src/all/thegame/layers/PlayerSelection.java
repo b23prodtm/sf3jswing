@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import net.sf.jiga.xtended.impl.Animation;
 import net.sf.jiga.xtended.impl.Sprite;
-import net.sf.jiga.xtended.impl.game.RenderingScene;
+import net.sf.jiga.xtended.impl.game.gl.RenderingSceneGL;
 import net.sf.jiga.xtended.impl.game.TextLayout;
 import net.sf.jiga.xtended.impl.game.XtendedModel;
 import net.sf.jiga.xtended.impl.game.gl.AnimationGLHandler;
@@ -123,17 +123,17 @@ public class PlayerSelection extends Thegamelayer {
     SpriteGLHandler[] icons = new SpriteGLHandler[gui.NPLAYERS];
 
     @Override
-    protected void doLoadOnGL(RenderingScene context) {
+    protected void doLoadOnGL(RenderingSceneGL context) {
         super.doLoadOnGL(context);
-        RenderingScene._GLloadSprite((Sprite) gui.getCacheEntry("GFX_BACKGROUND_SCROLLING"), context);
-        RenderingScene._GLloadSprite((Sprite) gui.getCacheEntry("GFX_CHARACTER_ICON"), context);
+        RenderingSceneGL._GLloadSprite((Sprite) gui.getCacheEntry("GFX_BACKGROUND_SCROLLING"), context);
+        RenderingSceneGL._GLloadSprite((Sprite) gui.getCacheEntry("GFX_CHARACTER_ICON"), context);
         Animation anim = (Animation) gui.getCacheEntry("GFX_VSLOGO");
-        vsLogo = RenderingScene._GLloadAnim(anim, (RenderingScene) context, RenderingScene.PTY_ANIM);
+        vsLogo = RenderingSceneGL._GLloadAnim(anim, (RenderingSceneGL) context, RenderingSceneGL.PTY_ANIM);
         vsLogoBds = anim.getBounds();
     }
 
     @Override
-    protected void renderToGL(RenderingScene context) {
+    protected void renderToGL(RenderingSceneGL context) {
         super.renderToGL(context);
         try {
             float z = context.getZDepth() * .2f;
@@ -172,7 +172,7 @@ public class PlayerSelection extends Thegamelayer {
                     bounds.setLocation((int) translateX, (int) vsLogoBds.getBounds().getMaxY() - (int) bounds.getHeight());
                     int transform = !onTheLeft ? GLHandler._GL_TRANSFORM_FLIP_HORIZONTAL_BIT : 0;
                     Sprite icon = (Sprite) gui.getModelIconSprite(gui.getSelectedPlayer()[i]);
-                    icons[i] = RenderingScene._GLloadSprite(icon, context);
+                    icons[i] = RenderingSceneGL._GLloadSprite(icon, context);
                     Sprite._GLRenderSprite(context, true, icons[i], bounds, z, GLFX.gfx.FX_DOWNREFLEXION_EXT, new Point(0, context.getHeight()), null, transform, null, null, null);
 
                 }

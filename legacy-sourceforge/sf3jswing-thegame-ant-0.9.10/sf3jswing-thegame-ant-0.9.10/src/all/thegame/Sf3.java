@@ -49,6 +49,7 @@ import net.sf.jiga.xtended.impl.game.GameActionLayer;
 import net.sf.jiga.xtended.impl.game.InteractiveModel;
 import net.sf.jiga.xtended.impl.game.RenderingScene;
 import net.sf.jiga.xtended.kernel.JXAenvUtils;
+import net.sf.jiga.xtended.kernel.FileHelper;
 import net.sf.jiga.xtended.kernel.ThreadWorks;
 import net.sf.jiga.xtended.impl.game.physics.Player;
 import net.sf.jiga.xtended.impl.system.JXAenvUtils2;
@@ -121,17 +122,17 @@ public class Sf3 implements AntApplet, net.sf.jiga.xtended.ui.Menu, GameInterfac
         int layout = 0;
         for (String arg : args) {
             if (arg.equals("-win")) {
-                layout |= RenderingScene.options.MODE_WINDOWED.bitMask();
+                layout |= RenderingScene.options.MODE_VIEWPORT_WINDOWED.bitMask();
             }
             if (arg.equals("-full")) {
-                layout |= RenderingScene.options.MODE_FULLSCREEN.bitMask();
+                layout |= RenderingScene.options.MODE_VIEWPORT_FULLSCREEN.bitMask();
             }
             if (arg.equals("-fixed")) {
-                layout |= RenderingScene.options.MODE_EXT_FIXED.bitMask();
+                layout |= RenderingScene.options.MODE_EXT_EXCLUSIVE.bitMask();
             }
         }
         if ((layout & RenderingScene.options.getOptionsMaskFor(RenderingScene.options._VIEWPORT_BIT)) == 0) {
-            layout |= RenderingScene.options.MODE_WINDOWED.bitMask();
+            layout |= RenderingScene.options.MODE_VIEWPORT_WINDOWED.bitMask();
         }
         guiLayout = layout;
     }
@@ -143,14 +144,14 @@ public class Sf3 implements AntApplet, net.sf.jiga.xtended.ui.Menu, GameInterfac
             /*
              * Chargement des options s'il y a une sauvegarde
              */
-            rASSet = new ReadAndSaveSettings(JXAenvUtils._USERHOMESTOREDIRECTORY + File.separator + GamePropertiesDialog.SETTINGSPATH, props);
+            rASSet = new ReadAndSaveSettings(FileHelper._USERHOMESTOREDIRECTORY + File.separator + GamePropertiesDialog.SETTINGSPATH, props);
             props = rASSet.loadOptions(null, 0);
             /**
              * loading of default option file included in class-path
              */
             if (rASSet.checkError()) {
                 try {
-                    rASSet = new ReadAndSaveSettings(JXAenvUtils._USERHOMESTOREDIRECTORY + File.separator + GamePropertiesDialog.SETTINGSPATH, getClass().getResourceAsStream("/thegame/" + GamePropertiesDialog.SETTINGSPATH));
+                    rASSet = new ReadAndSaveSettings(FileHelper._USERHOMESTOREDIRECTORY + File.separator + GamePropertiesDialog.SETTINGSPATH, getClass().getResourceAsStream("/thegame/" + GamePropertiesDialog.SETTINGSPATH));
                     props = rASSet.loadOptions(null, 0);
                 } catch (Exception ex1) {
                     ex1.printStackTrace();
@@ -168,7 +169,6 @@ public class Sf3 implements AntApplet, net.sf.jiga.xtended.ui.Menu, GameInterfac
         if (initialized) {
             return;
         }
-        SoundInput._genALBuffersAndSources(50);
         /*
          * Initialize variables
          */

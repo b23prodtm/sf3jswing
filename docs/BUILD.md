@@ -1,0 +1,138 @@
+# Build with Java 17
+
+Ant remains the reference build. The imported SourceForge projects are nested
+under `legacy-sourceforge/`; run Ant from a module's project directory, not the
+repository root.
+
+```sh
+export JAVA_HOME=/path/to/jdk-17
+export PATH="$JAVA_HOME/bin:$PATH"
+cd legacy-sourceforge/sf3jswing-jigaxtended-4.6.8/sf3jswing-jigaxtended-4.6.8
+ant compile
+```
+
+The current framework, game, IMC browser, converter, JXA test, and kernel
+descriptors target Java 17. They declare the historical Windows-1252 source
+encoding explicitly. The setup workflow installs Temurin 17.
+
+The kernel resolves Apache Commons HttpClient 3.1, Commons Codec 1.3,
+Commons IO 2.1, and Commons Logging 1.1.1 from Maven Central through
+`build-commons.xml`. Each downloaded jar is checked against a pinned SHA-256
+digest before compilation; the jars are placed under `lib/all/` and are not
+tracked in Git. These dependencies use the Apache License 2.0.
+
+The current framework and its consumers resolve
+`org.eclipse.imagen:imagen-legacy-all:0.9.3` from Maven Central through
+`build-imagen.xml`. The downloaded jar is placed under the module's
+`lib/all/`, is verified against a pinned SHA-256 digest, and is not tracked in
+Git. ImageN is distributed under the Apache License 2.0 and requires Java 17.
+ImageN 0.9.3 is a pre-release milestone. Its `lookup` operation is not
+registered in this release, so the image browser uses Java's standard
+`LookupOp`; perspective warping and histogram operations use ImageN.
+
+The approved framework, IMC browser, and game dependencies are resolved from
+Maven Central by `build-approved-dependencies.xml`; each artifact is pinned
+and SHA-256 checked before compilation:
+
+| Artifact | Used by | License |
+|---|---|---|
+| `org.swinglabs:swingx:0.9.5` | Framework and IMC browser widgets | LGPL-2.1-or-later |
+| `org.jitsi:fmj:1.0.2-jitsi` | IMC browser's JMF-compatible capture APIs | LGPL-2.1-or-later |
+| `com.mysql:mysql-connector-j:9.7.0` | Game database connector | GPL-2.0 with Universal FOSS Exception 1.0 |
+| `com.google.protobuf:protobuf-java:4.31.1` | Connector/J runtime dependency | BSD-3-Clause |
+| LWJGL `v.2.9.3-jxa` release jars and OS native ZIPs | Framework, game, and IMC Browser | BSD-3-Clause |
+| `net.java.jinput:jinput:2.0.10` and `natives-all` | Framework/game controllers | BSD |
+| `javazoom:jlayer:1.0.1` | Historical MP3 decoder dependency | LGPL |
+| `jakarta.activation:jakarta.activation-api:2.1.3` and `org.eclipse.angus:angus-activation:2.0.2` | Framework MIME registry | EDL-1.0 |
+| OpenJFX `17.0.21` (`base`, `graphics`, `controls`, `swing`, `web`, `media`) | IMC Browser JavaFX bridge | GPL-2.0 with Classpath Exception |
+| JAXB API `2.1`, `com.sun.xml.bind:jaxb-impl:2.1.9`, `com.sun.activation:javax.activation:1.2.0` | IMC Browser XML runtime | CDDL/GPL-2.0 with Classpath Exception |
+
+The FMJ artifact contains the JMF-compatible classes used by the browser.
+Actual camera capture and device-specific runtime behavior are not verified.
+Jigaxtended retains generic ImageIO TIFF reader/writer support where an
+ImageIO provider supplies it, but no longer applies the historical JAI-specific
+TIFF metadata/EXIF adjustments. The legacy JDIC tray backend is removed; the
+standard AWT `SystemTray` backend remains and falls back to an in-window notice
+when the desktop tray is unavailable.
+Framework model/image loading uses the kernel's blocking `ThreadWorks` API,
+which does not expose a timeout.
+The game now loads Connector/J 9.7.0 through `com.mysql.cj.jdbc.Driver`;
+database connectivity to the historical remote endpoint has not been tested.
+The game reads its SQL user/password from `SF3JSWING_SQL_USER_RW`,
+`SF3JSWING_SQL_PASSWORD_RW`, `SF3JSWING_SQL_USER_RO`, and
+`SF3JSWING_SQL_PASSWORD_RO` environment variables; no credentials are
+hard-coded. The game package includes Connector/J and Protobuf in the platform
+classpath.
+These third-party licenses are distinct from the repository's
+LGPL-3.0-or-later license; retain each upstream license and attribution when
+redistributing the dependencies.
+
+The LWJGL PR #23 source archive was tried at commit
+`676ace2e11847d83df6169f59434a0364eece5d6`. Its Ant build hard-codes Java
+1.5; the source target can be run on JDK 8 but is not usable as part of the
+required JDK 17 build. The build therefore uses the requested `v.2.9.3-jxa`
+release Java jars and downloads only the matching 64-bit native files from its
+Linux, macOS, or Windows ZIP, with SHA-256 checks. No native binaries or
+downloaded jars are tracked. macOS Apple Silicon and 32-bit platforms are not
+supported by these 2015 LWJGL binaries.
+
+The IMC Browser resolves only the JavaFX platform classifier matching the
+current OS. JAXB 2.1.9 passes a Java 17 marshal/unmarshal round-trip when the
+JVM is launched with
+`-Dcom.sun.xml.bind.v2.bytecode.ClassTailor.noOptimize=true`; without that
+property its runtime attempts reflective access blocked by Java modules.
+
+Build status on Temurin 17, using the module's `ant build-jar` target:
+
+| Module | Result | Remaining issue |
+|---|---|---|
+| Kernel 1.3.6 | Successful | Its jar and the framework's expected kernel bundle currently need to be staged into the next module's `lib/` directories. |
+| Jigaxtended 4.6.8 | Successful | Same staging requirement for consumers. |
+| ImageMultiConverter 2.3.9 | Successful | Packages an unsigned Linux amd64 jar; GUI/image conversion behavior has not been exercised. |
+| The Game 0.9.10 | Fails | UPnP classes are absent; game references also mismatch the available kernel/framework APIs, including rendering-scene and sound methods. |
+| IMC Browser 2.5.1 | Successful | `ant build-jar` compiles and packages on Temurin 17/Linux amd64 after staging unsigned kernel/framework jars. eSellerate validation/demo UI are disabled; no compiler errors remain. Xvfb launch stays alive but reports missing JXA runtime resources; camera is unavailable. |
+| JXA test 0.2.0 | Not yet verified | Requires the staged kernel/framework jars. |
+
+The browser's Share action copies the selected images/files to the clipboard
+and opens Facebook or Google Photos in the system browser. The user completes
+the upload on the destination site; the application does not call their APIs
+or claim direct upload support. The eSellerate superclass and product-key
+validation are removed; IMC Browser now implements the framework's frame and
+applet interfaces directly and has no demo/serial gating. The remaining
+compiler incompatibility was the obsolete `super(args)` call from that removed
+superclass; it is fixed, and the Java 17 compiler reports no errors.
+
+The active signing targets now request a 3072-bit RSA key and `SHA256withRSA`
+certificate signature (10-year validity). This was verified with JDK 17 using
+`ant genkey` and an isolated temporary JKS keystore; the keystore was removed
+after checking the key size and signature algorithm. Do not use the historical
+default signing configuration for release artifacts until its hard-coded
+password and external keystore setup are replaced with protected credentials.
+Use `ant build-jar` for unsigned jars.
+
+## Cross-platform build workflow
+
+`.github/workflows/build.yml` runs the unsigned `build-jar` target for the
+kernel, Jigaxtended framework, game, and IMC Browser on Temurin 17 across
+Linux, Windows, and Intel macOS. The matrix is x86_64 only; ARM runners and
+native binaries are not supported. The workflow stages the kernel/framework
+jars required by downstream modules and uploads any jars produced, including
+when another module fails.
+
+The game currently has known compilation errors involving missing UPnP APIs
+and framework API mismatches (see the build status above). The matrix reports
+these failures rather than treating an Ant invocation as a successful build;
+green status for all four modules awaits fixing those issues.
+
+Phase 2 smoke testing is incomplete. The IMC Browser process remained alive
+under Xvfb with Mesa software-rendering requested, but startup logged JXA
+extension installation failures, including missing `jaxb1-impl.jar` and
+framework `_signed.jar` resources; this does not count as successful GUI
+validation. The environment has no `/dev/video*` camera device, so capture could
+not be tested. No physical camera, controller, or GPU is available, and the
+10-minute software-rendering acceptance demo has not been performed. Resolve
+the local extension/runtime packaging failures and repeat the UI test before
+claiming Phase 2 complete.
+
+The archived Jigaxtended 4.6.7 sources remain unchanged. Only the current
+4.6.8 framework sources have been migrated.

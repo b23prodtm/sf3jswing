@@ -40,7 +40,7 @@
         <property name="co.prj.os.kernel.jar" value="${parent.prj}-${co.prj.os}-${co.prj.os.arch}-ext-kernel_signed.jar"/>
         <property name="co.prj.os.kernel.jar.token" value="PROJECTOSKERNELJAR"/>
         <property name="co.prj.os.jar.classpath" 
-              value="api/esell-validation-${co.prj.os}-${co.prj.os.arch}-ext_signed.jar mail_signed.jar ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar"/>
+              value="mail_signed.jar ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar"/>
         <property name="co.prj.os.jar.classpath.token" value="PROJECTJARCLASSPATH"/>
         <property name="co.prj.os.app.run.prefix" value="#!/bin/bash"/>
         <property name="co.prj.os.app.run.prefix.token" value="PROJECTAPPLICATIONRUNPREFIX"/>
@@ -55,7 +55,7 @@
               value="-Djxa.debugSPM=true -Djxa.ecl.io=false -Djxa.ecl.first=true -Djxa.ecl.res=false -Dorg.lwjgl.opengl.Display.allowSoftwareOpenGL=false -Xss2m -Xms${co.prj.os.app.run.minheap} -Xmx${co.prj.os.app.run.maxheap} -Dcom.sun.media.imageio.disableCodecLib=false -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote -Djava.security.policy=JavaSecurityPolicy -Dapple.laf.useScreenMenuBar=true -Dapple.awt.graphics.UseQuartz=true "/>
         <property name="co.prj.os.app.run.params.token" value="PROJECTAPPLICATIONPARAMS"/>
         <property name="co.prj.os.app.run.classpath" 
-              value="api/esell-validation-${co.prj.os}-${co.prj.os.arch}-ext_signed.jar:api/${co.prj.os.kernel.jar}:api/${parent.prj}-${co.prj.os}-${co.prj.os.arch}-ext_signed.jar:${co.prj}-${co.prj.os}-${co.prj.os.arch}_signed.jar:${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar:${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar:${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar"/>
+              value="api/${co.prj.os.kernel.jar}:api/${parent.prj}-${co.prj.os}-${co.prj.os.arch}-ext_signed.jar:${co.prj}-${co.prj.os}-${co.prj.os.arch}_signed.jar:${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar:${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar:${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar"/>
         <property name="co.prj.os.app.run.classpath.token" value="PROJECTAPPLICATIONRUNCLASSPATH"/>
         <property name="co.prj.os.app.run.main" value="net.sf.jiga.xtended.kernel.JFCFrameApp"/>
         <property name="co.prj.os.app.run.main.token" value="PROJECTAPPLICATIONRUNMAIN"/>
@@ -63,11 +63,11 @@
         <property name="co.prj.os.applet.width.token" value="PROJECTAPPLETWIDTH"/>
         <property name="co.prj.os.applet.height" value="600"/>
         <property name="co.prj.os.applet.height.token" value="PROJECTAPPLETHEIGHT"/>
-        <property name="co.prj.os.app.run.args" value="-antframe jxa.IMCBrowser -width ${co.prj.os.applet.width} -height ${co.prj.os.applet.height} -demo"/>
+        <property name="co.prj.os.app.run.args" value="-antframe jxa.IMCBrowser -width ${co.prj.os.applet.width} -height ${co.prj.os.applet.height}"/>
         <property name="co.prj.os.app.run.args.token" value="PROJECTAPPLICATIONRUNARGS"/>
         <property name="co.prj.os.applet.jnlphref" value="${co.prj.codebase}/${co.prj}.jnlp"/>
         <property name="co.prj.os.applet.jnlphref.token" value="PROJECTAPPLETJNLPHREF"/>
-        <property name="co.prj.os.applet.classpath" value="api/esell-validation-${co.prj.os}-${co.prj.os.arch}-ext_signed.jar, mail_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar"/>
+        <property name="co.prj.os.applet.classpath" value="mail_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar, ${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar"/>
         <property name="co.prj.os.applet.classpath.token" value="PROJECTAPPLETCLASSPATH"/>
         <property name="co.prj.os.applet.main" value="net.sf.jiga.xtended.ui.JFCApplet"/>
         <property name="co.prj.os.applet.main.token" value="PROJECTAPPLETMAIN"/>
@@ -159,7 +159,7 @@
         syntax is : nativeName:resourcePathToLibraryFile{:load}
         load is default to false which will not call System.load()
         seperate with " " (one blank space) /-->
-        <property name="co.prj.os.ei.extNatives" value="quaqua64:/libquaqua64.dylib quaqua:/libquaqua.dylib eSellerateValidateUniversal:/libeSellerateValidateUniversal.dylib jinput-osx:/libjinput-osx.dylib lwjgl:/liblwjgl.dylib openal:/openal.dylib jdic:/libjdic.dylib tray:/libtray.dylib"/>
+        <property name="co.prj.os.ei.extNatives" value="quaqua64:/libquaqua64.dylib quaqua:/libquaqua.dylib jinput-osx:/libjinput-osx.dylib lwjgl:/liblwjgl.dylib openal:/openal.dylib jdic:/libjdic.dylib tray:/libtray.dylib"/>
         <property name="co.prj.os.ei.extNatives.token" value="PROJECTEXTNATIVES"/>
         <!--  ONLY FOR APPLETS : here should be the extension JARS you want to install in ${java.home}/lib/ext
         seperate jar resources filenames by " " (one blank space)
@@ -219,7 +219,7 @@
                                 <include name="api/*.jar"/>
                         </classpath>
                         <!-- runtime classpath with no folder hierarchy /-->
-                        <option value="-Djava.class.path=${approotcp}${co.prj.os.kernel.jar}:${approotcp}esell-validation-${co.prj.os}-${co.prj.os.arch}-ext_signed.jar:${approotcp}esell-validation-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar:${approotcp}mail_signed.jar:${approotcp}${co.prj}-${co.prj.os}-${co.prj.os.arch}_signed.jar:${approotcp}${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar:${approotcp}${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar:${approotcp}${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar:${approotcp}${parent.prj}-${co.prj.os}-${co.prj.os.arch}_signed.jar:${approotcp}${parent.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar:${approotcp}${parent.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar:${approotcp}${parent.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar"/>
+                        <option value="-Djava.class.path=${approotcp}${co.prj.os.kernel.jar}:${approotcp}mail_signed.jar:${approotcp}${co.prj}-${co.prj.os}-${co.prj.os.arch}_signed.jar:${approotcp}${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar:${approotcp}${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar:${approotcp}${co.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar:${approotcp}${parent.prj}-${co.prj.os}-${co.prj.os.arch}_signed.jar:${approotcp}${parent.prj}-${co.prj.os}-${co.prj.os.arch}-ext-lib_signed.jar:${approotcp}${parent.prj}-${co.prj.os}-${co.prj.os.arch}-ext-props_signed.jar:${approotcp}${parent.prj}-${co.prj.os}-${co.prj.os.arch}-ext-native_signed.jar"/>
                         <arch name="x86_64"/>
                         <arch name="i386"/>
 

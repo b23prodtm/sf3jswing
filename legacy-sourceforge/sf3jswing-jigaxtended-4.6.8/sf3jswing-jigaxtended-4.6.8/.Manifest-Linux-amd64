@@ -1,0 +1,18 @@
+Class-Path: sf3jswing-jxakernel-Linux-amd64-ext-kernel_signed.jar sf3jswing-jigaxtended-Linux-amd64-ext-lib_signed.jar sf3jswing-jigaxtended-Linux-amd64-ext-props_signed.jar sf3jswing-jigaxtended-Linux-amd64-ext-native_signed.jar
+Manifest-Version: 1.2
+Trusted-Library: true
+Specification-Title: SF3JSWING JIGAXtended API
+Specification-Version: 4.6
+Specification-Vendor: b23:production GNU/GPL 2006 - 2014
+Implementation-Vendor-Id: net.sf.jiga.xtended
+Implementation-Title: Linux (amd64)
+Implementation-Version: 4.6.8_01
+Implementation-Vendor: b23:production GNU/GPL 2006 - 2014
+Extension-Name: net.sf.jiga.xtended.bin
+Sealed: false
+
+Name: net/sf/jiga/xtended/ui/ImageCollection.class
+Java-Bean: True
+
+Name: net/sf/jiga/xtended/ui/LogArea.class
+Java-Bean: True

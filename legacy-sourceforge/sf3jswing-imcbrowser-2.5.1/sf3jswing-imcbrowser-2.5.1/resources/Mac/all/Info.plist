@@ -216,7 +216,7 @@
             <key>WorkingDirectory</key>
             <string>$JAVAROOT/</string>
             <key>ClassPath</key>
-            <string>$JAVAROOT/api/esell-validation-@PROJECTOSNAME@-@PROJECTOSARCH@-ext_signed.jar:$JAVAROOT/@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@_signed.jar:$JAVAROOT/api/@PROJECTEXTBASEPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext_signed.jar:$JAVAROOT/api/@PROJECTEXTBASEPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext-kernel_signed.jar</string>
+            <string>$JAVAROOT/@ANTPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@_signed.jar:$JAVAROOT/api/@PROJECTEXTBASEPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext_signed.jar:$JAVAROOT/api/@PROJECTEXTBASEPROJECTNAME@-@PROJECTOSNAME@-@PROJECTOSARCH@-ext-kernel_signed.jar</string>
             <key>JVMVersion</key>
             <string>1.5+</string>
             <key>MainClass</key>

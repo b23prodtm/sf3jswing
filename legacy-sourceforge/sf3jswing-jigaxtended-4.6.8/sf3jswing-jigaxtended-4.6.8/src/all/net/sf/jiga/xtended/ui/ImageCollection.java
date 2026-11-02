@@ -12,9 +12,6 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.ImageTypeSpecifier;
@@ -900,11 +897,8 @@ public class ImageCollection implements Externalizable, Resource, ImageCollectio
                 }
             });
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             e.printStackTrace();
-        } catch (TimeoutException ex) {
-            Logger.getLogger(JXAenvUtils.LOGGER_NAME).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (ExecutionException ex) {
-            Logger.getLogger(JXAenvUtils.LOGGER_NAME).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }
     /**
